@@ -2,11 +2,11 @@
 En fullstack trading-plattform där användare kan köpa och sälj fotbollsspelare som aktier baserat på deras matchprestationer. Priserna fluktuerar baserat på köp/sälj och simulerade matchresultat.
 
 ✅ MVP (minsta funktionella version)
-– Auth: register, login, profil
-– Player/Card: lista spelare, card details, ett kort per spelare
-– Marketplace: köpa och sälja kort, säljaren sätter pris
-– Portfolio: se sina ägda kort
-– Transactions: enkel historik för köp/sälj
+- Auth: register, login, profil
+- Player/Card: lista spelare, card details, ett kort per spelare
+- Marketplace: köpa och sälja kort, säljaren sätter pris
+- Portfolio: se sina ägda kort
+- Transactions: enkel historik för köp/sälj
 
 1. Backend – .NET API (Clean Architecture)
 ✅ 5 entiteter: Player, User, Transaction, Portfolio, PriceHistory
