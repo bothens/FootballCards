@@ -1,7 +1,7 @@
 🎯 Projektöversikt
 En fullstack trading-plattform där användare kan köpa och sälj fotbollsspelare som aktier baserat på deras matchprestationer. Priserna fluktuerar baserat på köp/sälj och simulerade matchresultat.
 
-✅ **MVP (minsta funktionella version)**
+✅ MVP (minsta funktionella version)
 – Auth: register, login, profil
 – Player/Card: lista spelare, card details, ett kort per spelare
 – Marketplace: köpa och sälja kort, säljaren sätter pris
