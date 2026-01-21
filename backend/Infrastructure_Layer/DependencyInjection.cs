@@ -29,6 +29,7 @@ namespace Infrastructure_Layer
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IPriceHistoryRepository, PriceHistoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICardRepository, CardRepository>();
 
             return services;
         }
