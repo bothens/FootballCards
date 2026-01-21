@@ -14,9 +14,9 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(120);
 
-            builder.Property(x => x.Team)
-                .IsRequired()
-                .HasMaxLength(120);
+            //builder.Property(x => x.Team)
+            //    .IsRequired()
+            //    .HasMaxLength(120);
 
             builder.Property(x => x.Position)
                 .IsRequired()
@@ -26,8 +26,8 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            builder.Property(x => x.CreatedAt)
-                .IsRequired();
+            //builder.Property(x => x.CreatedAt)
+            //    .IsRequired();
 
             builder.HasMany(x => x.Transactions)
                 .WithOne(x => x.Player)
@@ -39,7 +39,7 @@ namespace Infrastructure_Layer.Data.Configurations
                 .HasForeignKey(x => x.PlayerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasIndex(x => x.Team);
+            //builder.HasIndex(x => x.Team);
             builder.HasIndex(x => x.Position);
         }
     }
