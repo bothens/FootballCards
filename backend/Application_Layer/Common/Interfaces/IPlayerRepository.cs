@@ -9,5 +9,6 @@ namespace Infrastructure_Layer.Repositories.Interfaces
         Task<List<Player>> FilterAsync(string? team, string? position, decimal? minPrice, decimal? maxPrice, CancellationToken ct = default);
         Task<(int total, decimal avg, decimal max, decimal min)> GetStatsAsync(CancellationToken ct = default);
         Task UpdateAsync(Player player, CancellationToken ct = default);
+        Task AddAsync(Player player, CancellationToken ct = default);
     }
 }

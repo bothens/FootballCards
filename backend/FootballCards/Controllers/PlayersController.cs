@@ -1,4 +1,6 @@
-﻿using Application_Layer.Features.Players.Queries.GetAll;
+﻿using Application_Layer.Features.Players.Commands.Create;
+using Application_Layer.Features.Players.DTOs;
+using Application_Layer.Features.Players.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,5 +38,15 @@ namespace FootballCards.Controllers
         [HttpGet("stats")]
         public IActionResult Stats()
             => Ok(new { message = "Stats (TODO)" });
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreatePlayerRequestDto request, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new CreatePlayerCommand(request), cancellationToken);
+
+            return result.Success
+                ? Ok(result.Data)
+                : BadRequest(result.Error);
+        }
     }
 }

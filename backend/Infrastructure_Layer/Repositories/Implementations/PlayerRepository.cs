@@ -56,5 +56,11 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db.Players.Update(player);
             await _db.SaveChangesAsync(ct);
         }
+
+        public async Task AddAsync(Player player, CancellationToken ct = default)
+        {
+            _db.Players.Add(player);
+            await _db.SaveChangesAsync(ct);
+        }
     }
 }

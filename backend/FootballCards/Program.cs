@@ -1,3 +1,4 @@
+using Application_Layer;
 using Application_Layer.Features.Auth.Commands.Register;
 using Application_Layer.Services;
 using FootballCards.API.Extensions;
@@ -5,7 +6,6 @@ using FootballCards.API.Middleware;
 using FootballCards.Extensions;
 using Infrastructure_layer.Auth;
 using Infrastructure_Layer;
-using Infrastructure_Layer.Auth;
 using MediatR;
 using Serilog;
 
