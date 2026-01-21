@@ -1,12 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application_Layer.Common.Interfaces;
+using Application_Layer.Services;
+using Domain_Layer.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure_Layer.Auth
+namespace Infrastructure_layer.Auth
 {
+    // Kommentar: Skapar JWT token.
     public sealed class JwtTokenService : IJwtTokenService
     {
         private readonly IConfiguration _config;
@@ -16,29 +18,27 @@ namespace Infrastructure_Layer.Auth
             _config = config;
         }
 
-        public string GenerateToken(Guid userId, string email)
+        public string CreateToken(User user)
         {
-            var secret = _config["Jwt:Secret"] ?? "PLEASE_CHANGE_ME";
-            var issuer = _config["Jwt:Issuer"] ?? "FootballCards";
-            var audience = _config["Jwt:Audience"] ?? "FootballCards";
-            var minutes = int.TryParse(_config["Jwt:ExpiryMinutes"], out var m) ? m : 60;
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = _config["Jwt:Key"] ?? throw new Exception("Jwt:Key saknas i appsettings.json");
+            var issuer = _config["Jwt:Issuer"] ?? "FootballCardsApi";
+            var audience = _config["Jwt:Audience"] ?? "FootballCardsClient";
 
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new(JwtRegisteredClaimNames.Email, email),
-                new(ClaimTypes.NameIdentifier, userId.ToString()),
-                new(ClaimTypes.Email, email)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.DisplayName)
             };
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(minutes),
+                expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds
             );
 

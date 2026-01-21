@@ -1,8 +1,11 @@
 using Application_Layer.Features.Auth.Commands.Register;
+using Application_Layer.Services;
 using FootballCards.API.Extensions;
 using FootballCards.API.Middleware;
 using FootballCards.Extensions;
+using Infrastructure_layer.Auth;
 using Infrastructure_Layer;
+using Infrastructure_Layer.Auth;
 using MediatR;
 using Serilog;
 
@@ -10,14 +13,31 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseFootballCardsSerilog(builder.Configuration);
 
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+
 builder.Services.AddControllers();
 builder.Services.AddFootballCardsSwagger();
 builder.Services.AddFootballCardsApplicationInsights(builder.Configuration);
+
+
+
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy
+            
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
 
 builder.Services.AddTransient<ExceptionMiddleware>();
 
@@ -37,6 +57,9 @@ app.MapGet("/", () => Results.Redirect("/swagger"));
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 

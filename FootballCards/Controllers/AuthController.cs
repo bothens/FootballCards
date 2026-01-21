@@ -22,9 +22,7 @@ namespace FootballCards.Controllers
             [FromBody] RegisterRequestDto request,
             CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(
-                new RegisterCommand(request),
-                cancellationToken);
+            var result = await _mediator.Send(new RegisterCommand(request), cancellationToken);
 
             return result.Success
                 ? Ok(result.Data)
@@ -36,13 +34,12 @@ namespace FootballCards.Controllers
             [FromBody] LoginRequestDto request,
             CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(
-                new LoginCommand(request),
-                cancellationToken);
+            
+            var result = await _mediator.Send(new LoginCommand(request), cancellationToken);
 
             return result.Success
                 ? Ok(result.Data)
-                : BadRequest(result.Error);
+                : Unauthorized(result.Error);
         }
 
         [HttpGet("profile")]
