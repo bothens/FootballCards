@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/useAuth';
@@ -27,32 +26,24 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean 
 };
 
 const AppContent: React.FC = () => {
+
+  useEffect(() => {
+    fetch("https://localhost:5025/api/test")
+      .then(res => res.text())
+      .then(data => console.log(data));
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       <main className="pb-20">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route 
-            path="/market" 
-            element={<ProtectedRoute><Market /></ProtectedRoute>} 
-          />
-          <Route 
-            path="/portfolio" 
-            element={<ProtectedRoute><Portfolio /></ProtectedRoute>} 
-          />
-          <Route 
-            path="/transactions" 
-            element={<ProtectedRoute><Transactions /></ProtectedRoute>} 
-          />
-          <Route 
-            path="/profile" 
-            element={<ProtectedRoute><Profile /></ProtectedRoute>} 
-          />
-          <Route 
-            path="/admin" 
-            element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} 
-          />
+          <Route path="/market" element={<ProtectedRoute><Market /></ProtectedRoute>} />
+          <Route path="/portfolio" element={<ProtectedRoute><Portfolio /></ProtectedRoute>} />
+          <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
@@ -71,4 +62,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
