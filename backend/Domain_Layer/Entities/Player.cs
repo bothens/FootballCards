@@ -12,8 +12,6 @@ namespace Domain_Layer.Entities
         public string Team { get; set; } = string.Empty;
         [Column("Position")]
         public string Position { get; set; } = string.Empty;
-        [Column("CurrentPrice")]
-        public decimal CurrentPrice { get; set; }
         [NotMapped]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

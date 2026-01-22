@@ -26,7 +26,6 @@ namespace Application_Layer.Features.Players.Commands.Create
                 {
                     Name = dto.Name,
                     Position = dto.Position,
-                    CurrentPrice = dto.CurrentPrice
                 };
 
                 // Lägg till i databasen via repository
@@ -38,7 +37,6 @@ namespace Application_Layer.Features.Players.Commands.Create
                     Id = player.Id,
                     Name = player.Name,
                     Position = player.Position,
-                    CurrentPrice = player.CurrentPrice,
                     Team = player.Team
                 };
 

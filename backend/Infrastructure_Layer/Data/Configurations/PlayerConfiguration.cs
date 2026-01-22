@@ -22,10 +22,6 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(40);
 
-            builder.Property(x => x.CurrentPrice)
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
-
             //builder.Property(x => x.CreatedAt)
             //    .IsRequired();
 
@@ -33,11 +29,6 @@ namespace Infrastructure_Layer.Data.Configurations
                 .WithOne(x => x.Player)
                 .HasForeignKey(x => x.PlayerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(x => x.PriceHistory)
-                .WithOne(x => x.Player)
-                .HasForeignKey(x => x.PlayerId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             //builder.HasIndex(x => x.Team);
             builder.HasIndex(x => x.Position);

@@ -45,8 +45,9 @@ namespace Application_Layer.Features.Cards.Commands.Issue
                 PlayerId = dto.PlayerId,
                 OwnerId = 8,
                 Status = "Available",
-                CardType = dto.CardType ?? "Common"
-            };
+                CardType = dto.CardType ?? "Common",
+                Price = dto.Price
+                };
 
             var addedCard = await _cardRepository.AddAsync(card, cancellationToken);
 
@@ -57,7 +58,7 @@ namespace Application_Layer.Features.Cards.Commands.Issue
                 PlayerId = player.Id,
                 PlayerName = player.Name,
                 PlayerPosition = player.Position,
-                PlayerPrice = player.CurrentPrice,
+                Price = addedCard.Price,
                 OwnerId = addedCard.OwnerId,
                 Status = addedCard.Status,
                 CardType = addedCard.CardType

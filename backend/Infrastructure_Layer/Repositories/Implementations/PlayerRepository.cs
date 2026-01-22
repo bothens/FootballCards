@@ -30,25 +30,7 @@ namespace Infrastructure_Layer.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(position))
                 q = q.Where(x => x.Position == position);
 
-            if (minPrice.HasValue)
-                q = q.Where(x => x.CurrentPrice >= minPrice.Value);
-
-            if (maxPrice.HasValue)
-                q = q.Where(x => x.CurrentPrice <= maxPrice.Value);
-
             return q.OrderBy(x => x.Id).ToListAsync(ct);
-        }
-
-        public async Task<(int total, decimal avg, decimal max, decimal min)> GetStatsAsync(CancellationToken ct = default)
-        {
-            var total = await _db.Players.CountAsync(ct);
-            if (total == 0) return (0, 0, 0, 0);
-
-            var avg = await _db.Players.AverageAsync(x => x.CurrentPrice, ct);
-            var max = await _db.Players.MaxAsync(x => x.CurrentPrice, ct);
-            var min = await _db.Players.MinAsync(x => x.CurrentPrice, ct);
-
-            return (total, avg, max, min);
         }
 
         public async Task UpdateAsync(Player player, CancellationToken ct = default)

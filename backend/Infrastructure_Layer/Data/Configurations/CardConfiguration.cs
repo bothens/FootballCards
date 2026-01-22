@@ -18,6 +18,10 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
+            builder.Property(x => x.Price)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
             builder.Property(x => x.OwnerId);
 
             builder.HasOne(x => x.Player)
