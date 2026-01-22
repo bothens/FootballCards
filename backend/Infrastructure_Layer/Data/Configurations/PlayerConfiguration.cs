@@ -25,10 +25,10 @@ namespace Infrastructure_Layer.Data.Configurations
             //builder.Property(x => x.CreatedAt)
             //    .IsRequired();
 
-            builder.HasMany(x => x.Transactions)
-                .WithOne(x => x.Player)
-                .HasForeignKey(x => x.PlayerId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasMany(x => x.Transactions)
+            //    .WithOne(x => x.Player)
+            //    .HasForeignKey(x => x.PlayerId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             //builder.HasIndex(x => x.Team);
             builder.HasIndex(x => x.Position);

@@ -2,8 +2,6 @@
 using Domain_Layer.Entities;
 using Infrastructure_Layer.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Infrastructure_Layer.Repositories.Implementations
 {
@@ -76,6 +74,24 @@ namespace Infrastructure_Layer.Repositories.Implementations
             }
 
             return await query.ToListAsync(ct);
+        }
+
+        public async Task<Card?> GetByIdAsync(
+            int cardId,
+            CancellationToken ct = default)
+        {
+            return await _db.Cards
+                .Include(c => c.Player)
+                .FirstOrDefaultAsync(c => c.CardId == cardId, ct);
+        }
+
+        public async Task<Card> UpdateAsync(
+            Card card,
+            CancellationToken ct = default)
+        {
+            _db.Cards.Update(card);
+            await _db.SaveChangesAsync(ct);
+            return card;
         }
     }
 }

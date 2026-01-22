@@ -18,8 +18,8 @@ namespace Infrastructure_Layer.Repositories.Implementations
         public Task<List<Transaction>> GetByUserIdAsync(Guid userId, CancellationToken ct = default)
             => _db.Transactions
                 .AsNoTracking()
-                .Where(x => x.UserId == userId)
-                .OrderByDescending(x => x.CreatedAt)
+                //.Where(x => x.UserId == userId)
+                //.OrderByDescending(x => x.CreatedAt)
                 .ToListAsync(ct);
 
         public async Task AddAsync(Transaction transaction, CancellationToken ct = default)
