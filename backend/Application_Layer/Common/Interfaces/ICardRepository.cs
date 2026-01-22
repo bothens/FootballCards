@@ -14,5 +14,12 @@ namespace Application_Layer.Common.Interfaces
             CancellationToken ct = default);
         Task<Card?> GetByIdAsync(int cardId, CancellationToken ct = default);
         Task<Card> UpdateAsync(Card card, CancellationToken ct = default);
+
+        Task<List<Card>> GetPortfolioCardsAsync(
+               int userId,
+               string? search = null,
+               string? filter = null,
+               string? sort = null,
+               CancellationToken ct = default);
     }
 }

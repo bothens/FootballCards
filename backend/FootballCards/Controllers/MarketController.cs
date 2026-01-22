@@ -74,7 +74,8 @@ public sealed class MarketController : ControllerBase
     public async Task<IActionResult> Sell(
             [FromBody] SellCardRequestDto request,
             CancellationToken cancellationToken)
-    {        //// Hämta SellerId från JWT
+    {
+        //// Hämta SellerId från JWT
         //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         //if (string.IsNullOrWhiteSpace(userIdClaim))
         //{
