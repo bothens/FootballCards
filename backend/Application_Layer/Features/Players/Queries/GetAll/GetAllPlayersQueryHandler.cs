@@ -1,5 +1,6 @@
 ﻿using Application_Layer.Common.Models;
 using Application_Layer.Features.Players.DTOs;
+using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
 
 namespace Application_Layer.Features.Players.Queries.GetAll
@@ -7,13 +8,30 @@ namespace Application_Layer.Features.Players.Queries.GetAll
     public sealed class GetAllPlayersQueryHandler
         : IRequestHandler<GetAllPlayersQuery, OperationResult<List<PlayerDto>>>
     {
-        public Task<OperationResult<List<PlayerDto>>> Handle(
+        private readonly IPlayerRepository _playerRepository;
+
+        public GetAllPlayersQueryHandler(IPlayerRepository playerRepository)
+        {
+            _playerRepository = playerRepository;
+        }
+
+        public async Task<OperationResult<List<PlayerDto>>> Handle(
             GetAllPlayersQuery request,
             CancellationToken cancellationToken)
         {
-            var players = new List<PlayerDto>();
+            // Hämtar alla spelare från databasen
+            var players = await _playerRepository.GetAllAsync(cancellationToken);
 
-            return Task.FromResult(OperationResult<List<PlayerDto>>.Ok(players));
+            // Konvertera till DTO
+            var playerDtos = players.Select(p => new PlayerDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Position = p.Position,
+                Team = string.Empty, // Eftersom DB inte har Team
+            }).ToList();
+
+            return OperationResult<List<PlayerDto>>.Ok(playerDtos);
         }
     }
 }
