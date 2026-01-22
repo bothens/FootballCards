@@ -30,7 +30,7 @@ namespace Application_Layer.Features.Card.Commands.Issue
             // Hämta spelaren
             var player = await _playerRepository.GetByIdAsync(dto.PlayerId, cancellationToken);
             if (player == null)
-                return OperationResult<CardDto>.Fail("Player not found");
+                return OperationResult<CardDto>.Fail("Spelare inte funnen");
 
                 // ---------------------------------------------------------
                 // MOCK ADMIN IMPLEMENTATION

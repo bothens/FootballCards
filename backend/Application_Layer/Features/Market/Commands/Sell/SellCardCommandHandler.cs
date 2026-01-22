@@ -25,19 +25,19 @@ namespace Application_Layer.Features.Market.Commands.Sell
                 var card = await _cardRepository.GetByIdAsync(request.CardId, cancellationToken);
                 if (card == null)
                 {
-                    return OperationResult<CardDto>.Fail("Card not found");
+                    return OperationResult<CardDto>.Fail("Kort inte funnet");
                 }
 
                 // Validera ägare
                 if (!card.OwnerId.HasValue || card.OwnerId.Value != request.SellerId)
                 {
-                    return OperationResult<CardDto>.Fail("You do not own this card");
+                    return OperationResult<CardDto>.Fail("Du äger inte detta kortet");
                 }
 
                 // Validera att kortet inte redan ligger ute på marknaden
                 if (card.Status == "Available")
                 {
-                    return OperationResult<CardDto>.Fail("Card is already listed on the market");
+                    return OperationResult<CardDto>.Fail("Kortet är redan ute till försäljning");
                 }
 
                 // Uppdatera kortets status och selling price

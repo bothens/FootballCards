@@ -33,24 +33,24 @@ namespace Application_Layer.Features.Market.Commands.Purchase
 
                 if (card == null)
                 {
-                    return OperationResult<CardDto>.Fail("Card not found");
+                    return OperationResult<CardDto>.Fail("Kort inte funnet");
                 }
 
                 // Validera status + pris
                 if (card.Status != "Available")
                 {
-                    return OperationResult<CardDto>.Fail("Card is not available for purchase");
+                    return OperationResult<CardDto>.Fail("Kort är inte tillgängligt att köpa");
                 }
 
                 if (card.SellingPrice == null)
                 {
-                    return OperationResult<CardDto>.Fail("Card has no selling price");
+                    return OperationResult<CardDto>.Fail("Kort har inget försäljningspris");
                 }
 
                 // Validera att man inte köper sitt eget kort
                 if (card.OwnerId.HasValue && card.OwnerId.Value == request.BuyerId)
                 {
-                    return OperationResult<CardDto>.Fail("You cannot purchase your own card");
+                    return OperationResult<CardDto>.Fail("Du kan inte köpa ditt egna kort");
                 }
 
                 var sellerId = card.OwnerId;
