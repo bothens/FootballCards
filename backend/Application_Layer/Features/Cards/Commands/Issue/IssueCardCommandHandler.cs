@@ -41,7 +41,7 @@ namespace Application_Layer.Features.Card.Commands.Issue
                 // När vi senare implementerar riktiga roller/claims kan detta uppdateras.
                 // ---------------------------------------------------------
                 // Skapa kortet med hårdkodat admin som ägare
-                var card = new Domain_Layer.Entities.Card
+                var card = new Card
                 {
                 PlayerId = dto.PlayerId,
                 OwnerId = 8,

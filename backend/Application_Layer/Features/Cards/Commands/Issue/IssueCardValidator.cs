@@ -1,7 +1,7 @@
 ﻿using Application_Layer.Features.Cards.Commands.Issue;
 using FluentValidation;
 
-namespace Application_Layer.Features.Card.Commands.Issue
+namespace Application_Layer.Features.Cards.Commands.Issue
 {
     public sealed class IssueCardValidator : AbstractValidator<IssueCardCommand>
     {
