@@ -24,10 +24,10 @@ namespace Infrastructure_Layer.Repositories.Implementations
         }
 
         public async Task<List<Card>> GetMarketCardsAsync(
-    string? search,
-    string? filter,
-    string? sort,
-    CancellationToken ct = default)
+            string? search,
+            string? filter,
+            string? sort,
+            CancellationToken ct = default)
         {
             // Alla kort som ligger ute på marknaden
             var query = _db.Cards
@@ -62,8 +62,8 @@ namespace Infrastructure_Layer.Repositories.Implementations
             {
                 query = sort switch
                 {
-                    "price_asc" => query.OrderBy(c => c.Price),
-                    "price_desc" => query.OrderByDescending(c => c.Price),
+                    "price_asc" => query.OrderBy(c => c.SellingPrice),
+                    "price_desc" => query.OrderByDescending(c => c.SellingPrice),
                     "name_asc" => query.OrderBy(c => c.Player!.Name),
                     "name_desc" => query.OrderByDescending(c => c.Player!.Name),
                     _ => query
@@ -72,7 +72,7 @@ namespace Infrastructure_Layer.Repositories.Implementations
             else
             {
                 // Default sort: pris stigande
-                query = query.OrderBy(c => c.Price);
+                query = query.OrderBy(c => c.SellingPrice);
             }
 
             return await query.ToListAsync(ct);

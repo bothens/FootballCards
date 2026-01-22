@@ -1,13 +1,14 @@
 ﻿using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
 using Application_Layer.Features.Cards.DTOs;
+using Application_Layer.Features.Market.DTOs;
 using Application_Layer.Features.Market.Queries;
 using MediatR;
 
 namespace Application_Layer.Features.Market.Handlers
 {
     public sealed class GetMarketCardsQueryHandler
-        : IRequestHandler<GetMarketCardsQuery, OperationResult<List<CardDto>>>
+        : IRequestHandler<GetMarketCardsQuery, OperationResult<List<MarketCardDto>>>
     {
         private readonly ICardRepository _cardRepository;
 
@@ -16,7 +17,7 @@ namespace Application_Layer.Features.Market.Handlers
             _cardRepository = cardRepository;
         }
 
-        public async Task<OperationResult<List<CardDto>>> Handle(
+        public async Task<OperationResult<List<MarketCardDto>>> Handle(
             GetMarketCardsQuery request,
             CancellationToken cancellationToken)
         {
@@ -30,23 +31,22 @@ namespace Application_Layer.Features.Market.Handlers
                     cancellationToken);
 
                 // Mappa entiteter till DTO
-                var result = cards.Select(c => new CardDto
+                var result = cards.Select(c => new MarketCardDto
                 {
                     CardId = c.CardId,
                     PlayerId = c.PlayerId,
                     PlayerName = c.Player!.Name,
                     PlayerPosition = c.Player.Position,
-                    Price = c.Price,
-                    OwnerId = c.OwnerId,
+                    SellingPrice = c.SellingPrice ?? c.Price,
                     Status = c.Status,
                     CardType = c.CardType
                 }).ToList();
 
-                return OperationResult<List<CardDto>>.Ok(result);
+                return OperationResult<List<MarketCardDto>>.Ok(result);
             }
             catch (Exception ex)
             {
-                return OperationResult<List<CardDto>>.Fail(
+                return OperationResult<List<MarketCardDto>>.Fail(
                     ex.InnerException?.Message ?? ex.Message);
             }
         }
