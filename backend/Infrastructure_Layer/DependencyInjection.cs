@@ -25,7 +25,7 @@ namespace Infrastructure_Layer
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<IPlayerRepository, PlayerRepository>();
-            services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+            //services.AddScoped<IPortfolioRepository, PortfolioRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IPriceHistoryRepository, PriceHistoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

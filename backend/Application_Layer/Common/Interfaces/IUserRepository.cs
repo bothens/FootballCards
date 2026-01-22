@@ -4,6 +4,7 @@ namespace Application_Layer.Common.Interfaces
 {
     public interface IUserRepository
     {
+        Task<User?> GetByUserIdAsync(int UserId, CancellationToken ct = default);
         Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default);
         Task<User?> GetByEmailAsync(string email, CancellationToken ct = default);
         Task AddAsync(User user, CancellationToken ct = default);

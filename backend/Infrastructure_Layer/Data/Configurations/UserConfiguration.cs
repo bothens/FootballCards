@@ -9,6 +9,8 @@ namespace Infrastructure_Layer.Data.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("User");
+            builder.HasKey(x => x.UserId);
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Email)
@@ -29,10 +31,10 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
 
-            builder.HasMany(x => x.Portfolios)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasMany(x => x.Portfolios)
+            //    .WithOne(x => x.User)
+            //    .HasForeignKey(x => x.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             //builder.HasMany(x => x.Transactions)
             //    .WithOne(x => x.User)
