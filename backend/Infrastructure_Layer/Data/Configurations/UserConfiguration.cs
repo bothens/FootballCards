@@ -8,6 +8,7 @@ namespace Infrastructure_Layer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("User");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Email)

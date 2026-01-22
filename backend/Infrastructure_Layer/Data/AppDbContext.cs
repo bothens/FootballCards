@@ -10,7 +10,7 @@ namespace Infrastructure_Layer.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<User> Users => Set<User>();
+        public DbSet<User> User => Set<User>();
         public DbSet<Player> Players => Set<Player>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
         public DbSet<Portfolio> Portfolios => Set<Portfolio>();
