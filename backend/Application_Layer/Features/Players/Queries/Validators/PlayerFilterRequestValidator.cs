@@ -12,6 +12,7 @@ namespace Application_Layer.Features.Players.Validators
 
             RuleFor(x => x.Position)
                 .MaximumLength(40);
+<<<<<<< HEAD
 
             RuleFor(x => x.MinPrice)
                 .GreaterThanOrEqualTo(0)
@@ -24,6 +25,8 @@ namespace Application_Layer.Features.Players.Validators
             RuleFor(x => x)
                 .Must(x => !x.MinPrice.HasValue || !x.MaxPrice.HasValue || x.MinPrice <= x.MaxPrice)
                 .WithMessage("MinPrice must be less than or equal to MaxPrice.");
+=======
+>>>>>>> main
         }
     }
 }

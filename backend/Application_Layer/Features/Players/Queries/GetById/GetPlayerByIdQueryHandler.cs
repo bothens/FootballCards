@@ -16,9 +16,7 @@ namespace Application_Layer.Features.Players.Queries.GetById
                 Id = request.Id,
                 Name = "",
                 Team = "",
-                Position = "",
-                CurrentPrice = 0,
-                PriceChange24h = 0
+                Position = ""
             };
 
             return Task.FromResult(OperationResult<PlayerDetailsDto>.Ok(dto));

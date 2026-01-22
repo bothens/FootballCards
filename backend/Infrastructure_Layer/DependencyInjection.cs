@@ -1,5 +1,7 @@
 ﻿using Application_Layer.Common.Interfaces;
 using Infrastructure_Layer.Auth;
+using Application_Layer.Services;
+using Infrastructure_layer.Auth;
 using Infrastructure_Layer.Data;
 using Infrastructure_Layer.Repositories.Implementations;
 using Infrastructure_Layer.Repositories.Interfaces;
@@ -28,6 +30,7 @@ namespace Infrastructure_Layer
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IPriceHistoryRepository, PriceHistoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICardRepository, CardRepository>();
 
             return services;
         }

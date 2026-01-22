@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using Domain_Layer.Entities;
+﻿using Domain_Layer.Entities;
 using Domain_Layer.Relations;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +14,19 @@ namespace Infrastructure_Layer.Data
         public DbSet<Portfolio> Portfolios => Set<Portfolio>();
         public DbSet<PortfolioItem> PortfolioItems => Set<PortfolioItem>();
         public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
+        public DbSet<Card> Cards => Set<Card>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+            
+            modelBuilder.Entity<User>().ToTable("User", "dbo");
+            modelBuilder.Entity<Player>().ToTable("Player", "dbo");
+            modelBuilder.Entity<Transaction>().ToTable("Transaction", "dbo");
+            modelBuilder.Entity<Portfolio>().ToTable("Portfolio", "dbo");
+            modelBuilder.Entity<Card>().ToTable("Card", "dbo");
+
         }
     }
 }

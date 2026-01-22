@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 ﻿using Microsoft.AspNetCore.Mvc;
+=======
+﻿using Application_Layer.Features.Players.Commands.Create;
+using Application_Layer.Features.Players.DTOs;
+using Application_Layer.Features.Players.Queries.GetAll;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> main
 
 namespace FootballCards.Controllers
 {
@@ -6,9 +14,28 @@ namespace FootballCards.Controllers
     [Route("api/[controller]")]
     public class PlayersController : ControllerBase
     {
+<<<<<<< HEAD
         [HttpGet]
         public IActionResult GetAll()
             => Ok(new { message = "Get all players (TODO)" });
+=======
+        private readonly IMediator _mediator;
+
+        public PlayersController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetAllPlayersQuery(), cancellationToken);
+
+            return result.Success
+                ? Ok(result.Data)
+                : BadRequest(result.Error);
+        }
+>>>>>>> main
 
         [HttpGet("{id:int}")]
         public IActionResult GetById([FromRoute] int id)
@@ -21,5 +48,18 @@ namespace FootballCards.Controllers
         [HttpGet("stats")]
         public IActionResult Stats()
             => Ok(new { message = "Stats (TODO)" });
+<<<<<<< HEAD
+=======
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreatePlayerRequestDto request, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new CreatePlayerCommand(request), cancellationToken);
+
+            return result.Success
+                ? Ok(result.Data)
+                : BadRequest(result.Error);
+        }
+>>>>>>> main
     }
 }

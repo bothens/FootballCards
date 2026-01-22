@@ -14,9 +14,6 @@ namespace Application_Layer.Features.Players.Queries.Stats
             var dto = new PlayerStatsResponseDto
             {
                 TotalPlayers = 0,
-                AveragePrice = 0,
-                HighestPrice = 0,
-                LowestPrice = 0
             };
 
             return Task.FromResult(OperationResult<PlayerStatsResponseDto>.Ok(dto));

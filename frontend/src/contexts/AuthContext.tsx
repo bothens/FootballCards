@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { AuthState, User } from "../types/types";
@@ -6,6 +7,16 @@ import * as api from "../api/api";
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, displayName: string) => Promise<void>;
+=======
+
+import React, { createContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import type { AuthState, User } from '../types/types';
+import * as api from '../api/api';
+
+interface AuthContextType extends AuthState {
+  login: (identifier: string) => Promise<void>;
+>>>>>>> main
   logout: () => Promise<void>;
   updateBalance: (newBalance: number) => void;
   changePassword: (current: string, next: string) => Promise<void>;
@@ -23,14 +34,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   useEffect(() => {
+<<<<<<< HEAD
     const token = localStorage.getItem("ft_token") || localStorage.getItem("token");
     const user = localStorage.getItem("ft_user");
 
+=======
+    // Check for saved token in local storage on mount
+    const token = localStorage.getItem('ft_token');
+    const user = localStorage.getItem('ft_user');
+    
+>>>>>>> main
     if (token && user) {
       setState({
         token,
         user: JSON.parse(user),
         isAuthenticated: true,
+<<<<<<< HEAD
         loading: false,
       });
     } else {
@@ -45,10 +64,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem("ft_token", token);
       localStorage.setItem("ft_user", JSON.stringify(user));
 
+=======
+        loading: false
+      });
+    } else {
+      setState(prev => ({ ...prev, loading: false }));
+    }
+  }, []);
+
+  const login = async (identifier: string) => {
+    setState(prev => ({ ...prev, loading: true }));
+    try {
+      const { user, token } = await api.login(identifier);
+      localStorage.setItem('ft_token', token);
+      localStorage.setItem('ft_user', JSON.stringify(user));
+>>>>>>> main
       setState({
         user,
         token,
         isAuthenticated: true,
+<<<<<<< HEAD
         loading: false,
       });
     } catch (error) {
@@ -72,21 +107,36 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
     } catch (error) {
       setState((prev) => ({ ...prev, loading: false }));
+=======
+        loading: false
+      });
+    } catch (error) {
+      setState(prev => ({ ...prev, loading: false }));
+>>>>>>> main
       throw error;
     }
   };
 
   const logout = async () => {
     await api.logout();
+<<<<<<< HEAD
     localStorage.removeItem("ft_token");
     localStorage.removeItem("ft_user");
     localStorage.removeItem("token");
 
+=======
+    localStorage.removeItem('ft_token');
+    localStorage.removeItem('ft_user');
+>>>>>>> main
     setState({
       user: null,
       token: null,
       isAuthenticated: false,
+<<<<<<< HEAD
       loading: false,
+=======
+      loading: false
+>>>>>>> main
     });
   };
 
@@ -96,6 +146,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateProfile = async (data: Partial<User>) => {
     const updatedUser = await api.updateProfile(data);
+<<<<<<< HEAD
     localStorage.setItem("ft_user", JSON.stringify(updatedUser));
     setState((prev) => ({ ...prev, user: updatedUser }));
   };
@@ -105,11 +156,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (!prev.user) return prev;
       const updatedUser = { ...prev.user, balance: newBalance };
       localStorage.setItem("ft_user", JSON.stringify(updatedUser));
+=======
+    localStorage.setItem('ft_user', JSON.stringify(updatedUser));
+    setState(prev => ({ ...prev, user: updatedUser }));
+  };
+
+  const updateBalance = (newBalance: number) => {
+    setState(prev => {
+      if (!prev.user) return prev;
+      const updatedUser = { ...prev.user, balance: newBalance };
+      localStorage.setItem('ft_user', JSON.stringify(updatedUser));
+>>>>>>> main
       return { ...prev, user: updatedUser };
     });
   };
 
   return (
+<<<<<<< HEAD
     <AuthContext.Provider
       value={{
         ...state,
@@ -121,6 +184,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateProfile,
       }}
     >
+=======
+    <AuthContext.Provider value={{ ...state, login, logout, updateBalance, changePassword, updateProfile }}>
+>>>>>>> main
       {children}
     </AuthContext.Provider>
   );
