@@ -1,11 +1,10 @@
 ﻿using Application_Layer.Common.Models;
 using Application_Layer.Features.Cards.DTOs;
-using Application_Layer.Features.Market.Commands.Purchase;
 using Domain_Layer.Entities;
 using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
 
-namespace Application_Layer.Features.Market.Handlers
+namespace Application_Layer.Features.Market.Commands.Purchase
 {
     public sealed class PurchaseCardCommandHandler
         : IRequestHandler<PurchaseCardCommand, OperationResult<CardDto>>

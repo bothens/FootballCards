@@ -1,4 +1,6 @@
 ﻿using Application_Layer.Features.Market.Commands.Purchase;
+using Application_Layer.Features.Market.Commands.Sell;
+using Application_Layer.Features.Market.DTOs;
 using Application_Layer.Features.Market.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -56,9 +58,38 @@ public sealed class MarketController : ControllerBase
         //{
         //    return Unauthorized("Invalid user id in token");
         //}
+        int buyerId = 10;
+
 
         var result = await _mediator.Send(
-            new PurchaseCardCommand(10, request.CardId),
+            new PurchaseCardCommand(buyerId, request.CardId),
+            cancellationToken);
+
+        return result.Success
+            ? Ok(result.Data)
+            : BadRequest(result.Error);
+    }
+
+    [HttpPost("sell")]
+    public async Task<IActionResult> Sell(
+            [FromBody] SellCardRequestDto request,
+            CancellationToken cancellationToken)
+    {        //// Hämta SellerId från JWT
+        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //if (string.IsNullOrWhiteSpace(userIdClaim))
+        //{
+        //    return Unauthorized("User id missing in token");
+        //}
+
+        //if (!int.TryParse(userIdClaim, out var sellerId))
+        //{
+        //    return Unauthorized("Invalid user id in token");
+        //}
+        // Hårdkodat SellerId för test; TODO: hämta från JWT
+        int sellerId = 10;
+
+        var result = await _mediator.Send(
+            new SellCardCommand(sellerId, request.CardId, request.SellingPrice),
             cancellationToken);
 
         return result.Success
