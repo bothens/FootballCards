@@ -1,6 +1,6 @@
-﻿using Domain_Layer.Entities;
+using Domain_Layer.Entities;
 
-namespace Infrastructure_Layer.Repositories.Interfaces
+namespace Application_Layer.Common.Interfaces
 {
     public interface IUserRepository
     {

@@ -1,54 +1,58 @@
-﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
-using Application_Layer.Services;
-
 using Application_Layer.Features.Auth.DTOs;
 using Domain_Layer.Entities;
-using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application_Layer.Features.Auth.Commands.Register
 {
     public sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, OperationResult<UserProfileDto>>
     {
-        private readonly IUserRepository _users;
         private readonly IJwtTokenService _jwt;
-        private readonly PasswordHasher<User> _hasher = new();
+        private readonly IUserRepository _users;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public RegisterCommandHandler(IUserRepository users, IJwtTokenService jwt)
+        public RegisterCommandHandler(
+            IJwtTokenService jwt,
+            IUserRepository users,
+            IPasswordHasher passwordHasher)
         {
-            _users = users;
             _jwt = jwt;
+            _users = users;
+            _passwordHasher = passwordHasher;
         }
 
-        public async Task<OperationResult<UserProfileDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<UserProfileDto>> Handle(
+            RegisterCommand request,
+            CancellationToken cancellationToken)
         {
             var email = request.Request.Email.Trim();
             var displayName = request.Request.DisplayName.Trim();
 
             if (await _users.EmailExistsAsync(email, cancellationToken))
-                return OperationResult<UserProfileDto>.Fail("Email is already registered.");
+            {
+                return OperationResult<UserProfileDto>.Fail("Email already exists");
+            }
 
+            var userId = Guid.NewGuid();
             var user = new User
             {
-                Id = Guid.NewGuid(),
+                Id = userId,
                 Email = email,
                 DisplayName = displayName,
+                PasswordHash = _passwordHasher.Hash(request.Request.Password),
                 CreatedAt = DateTime.UtcNow
             };
-
-            user.PasswordHash = _hasher.HashPassword(user, request.Request.Password);
 
             await _users.AddAsync(user, cancellationToken);
             await _users.SaveChangesAsync(cancellationToken);
 
             var profile = new UserProfileDto
             {
-                UserId = user.Id,
+                UserId = userId,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = _jwt.CreateToken(user)
+                Token = _jwt.GenerateToken(userId, user.Email)
             };
 
             return OperationResult<UserProfileDto>.Ok(profile);

@@ -23,6 +23,7 @@ namespace Infrastructure_Layer
 
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<IPlayerRepository, PlayerRepository>();
             services.AddScoped<IPortfolioRepository, PortfolioRepository>();
