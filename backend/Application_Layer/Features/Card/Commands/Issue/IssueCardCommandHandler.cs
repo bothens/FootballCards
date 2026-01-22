@@ -44,7 +44,7 @@ namespace Application_Layer.Features.Cards.Commands.Issue
             {
                 PlayerId = dto.PlayerId,
                 OwnerId = 8,
-                Status = dto.Status ?? "Available",
+                Status = "Available",
                 CardType = dto.CardType ?? "Common"
             };
 
