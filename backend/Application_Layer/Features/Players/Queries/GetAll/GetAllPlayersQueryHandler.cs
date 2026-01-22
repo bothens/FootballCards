@@ -1,9 +1,6 @@
 ﻿using Application_Layer.Common.Models;
 using Application_Layer.Features.Players.DTOs;
-<<<<<<< HEAD
-=======
 using Infrastructure_Layer.Repositories.Interfaces;
->>>>>>> main
 using MediatR;
 
 namespace Application_Layer.Features.Players.Queries.GetAll
@@ -11,15 +8,6 @@ namespace Application_Layer.Features.Players.Queries.GetAll
     public sealed class GetAllPlayersQueryHandler
         : IRequestHandler<GetAllPlayersQuery, OperationResult<List<PlayerDto>>>
     {
-<<<<<<< HEAD
-        public Task<OperationResult<List<PlayerDto>>> Handle(
-            GetAllPlayersQuery request,
-            CancellationToken cancellationToken)
-        {
-            var players = new List<PlayerDto>();
-
-            return Task.FromResult(OperationResult<List<PlayerDto>>.Ok(players));
-=======
         private readonly IPlayerRepository _playerRepository;
 
         public GetAllPlayersQueryHandler(IPlayerRepository playerRepository)
@@ -44,7 +32,6 @@ namespace Application_Layer.Features.Players.Queries.GetAll
             }).ToList();
 
             return OperationResult<List<PlayerDto>>.Ok(playerDtos);
->>>>>>> main
         }
     }
 }

@@ -5,12 +5,12 @@ import { useAuth } from "../hooks/useAuth";
 export const Home: React.FC = () => {
   const { isAuthenticated, login, register } = useAuth();
 
+  const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [loading, setLoading] = useState(false);
 
   if (isAuthenticated) {
     return <Navigate to="/market" replace />;
@@ -25,8 +25,7 @@ export const Home: React.FC = () => {
       if (mode === "login") {
         await login(email, password);
       } else {
-        
-        const nameToUse = displayName?.trim() || email.split("@")[0];
+        const nameToUse = displayName.trim() || email.split("@")[0];
         await register(email, password, nameToUse);
       }
     } catch (err: any) {
@@ -36,14 +35,12 @@ export const Home: React.FC = () => {
     }
   };
 
-  // Kommentar: Quick login fyller i demo-credentials (du behöver ha dessa users i DB).
   const handleQuickLogin = (role: "user" | "admin") => {
+    setMode("login");
     if (role === "user") {
-      setMode("login");
       setEmail("user@test.se");
       setPassword("Test!12345");
     } else {
-      setMode("login");
       setEmail("admin@test.se");
       setPassword("Test!12345");
     }
@@ -52,6 +49,7 @@ export const Home: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2000')] bg-cover bg-center">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-2xl mb-4 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
@@ -74,6 +72,7 @@ export const Home: React.FC = () => {
                   ? "bg-emerald-500 text-black"
                   : "text-zinc-500 hover:text-white"
               }`}
+              type="button"
             >
               LOG IN
             </button>
@@ -84,13 +83,13 @@ export const Home: React.FC = () => {
                   ? "bg-emerald-500 text-black"
                   : "text-zinc-500 hover:text-white"
               }`}
+              type="button"
             >
               REGISTER
             </button>
           </div>
 
           <form onSubmit={handleFormSubmit} className="space-y-5">
-            {/* DisplayName endast vid register */}
             {mode === "register" && (
               <div>
                 <label className="block text-[10px] uppercase font-bold text-zinc-500 mb-2 tracking-widest">
@@ -127,9 +126,9 @@ export const Home: React.FC = () => {
               <input
                 type="password"
                 placeholder="••••••••"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
                 className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-emerald-500 transition-colors text-sm"
               />
             </div>
@@ -146,7 +145,6 @@ export const Home: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Login Options */}
           <div className="mt-8 pt-6 border-t border-zinc-800">
             <p className="text-[10px] text-center text-zinc-500 uppercase font-black tracking-widest mb-4">
               Quick Trader Access
@@ -179,3 +177,4 @@ export const Home: React.FC = () => {
     </div>
   );
 };
+
