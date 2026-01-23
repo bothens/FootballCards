@@ -15,7 +15,7 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db = db;
         }
 
-        public async Task<List<Transaction>> GetByUserIdAsync(int userId,string filter, CancellationToken ct = default)
+        public async Task<List<Transaction>> GetByUserIdAsync(int userId,string? filter, CancellationToken ct = default)
         {
             IQueryable<Transaction> query = _db.Transactions
                 .Include(t => t.Card)
@@ -45,6 +45,13 @@ namespace Infrastructure_Layer.Repositories.Implementations
         {
                 await _db.Transactions.AddAsync(transaction, ct);
                 await _db.SaveChangesAsync(ct);
+        }
+
+        public async Task<Transaction> UpdateAsync(Transaction transaction, CancellationToken ct = default)
+        {
+            _db.Transactions.Update(transaction);
+            await _db.SaveChangesAsync(ct);
+            return transaction;
         }
 
         public Task SaveChangesAsync(CancellationToken ct = default)

@@ -21,5 +21,15 @@ namespace Application_Layer.Common.Interfaces
                string? filter = null,
                string? sort = null,
                CancellationToken ct = default);
+
+        Task<List<Card>> GetCardsAsync(
+            int? userId = null,
+            bool onlyAvailable = false,
+            string? search = null,
+            string? filter = null,
+            string? sort = null,
+            CancellationToken ct = default);
+
+        Task DeleteAsync(Card card, CancellationToken ct = default);
     }
 }

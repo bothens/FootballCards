@@ -33,6 +33,12 @@ namespace Infrastructure_Layer.Repositories.Implementations
             => _db.SaveChangesAsync(ct);
 
         public Task<bool> EmailExistsAsync(string email, CancellationToken ct = default)
-            => _db.User.AnyAsync(x => x.Email == email, ct);
+            => _db.User.AnyAsync(x => x.Email == email, ct); 
+
+        public async Task DeleteAsync(User user, CancellationToken ct = default)
+        {
+            _db.User.Remove(user);
+            await _db.SaveChangesAsync(ct);
+        }
     }
 }

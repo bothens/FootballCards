@@ -13,11 +13,9 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(x => x.CardId)
                 .IsRequired();
 
-            builder.Property(x => x.BuyerId)
-                .IsRequired();
+            builder.Property(x => x.BuyerId);
 
-            builder.Property(x => x.SellerId)
-                .IsRequired();
+            builder.Property(x => x.SellerId);
 
             builder.Property(x => x.Price)
                 .HasColumnType("decimal(18,2)")

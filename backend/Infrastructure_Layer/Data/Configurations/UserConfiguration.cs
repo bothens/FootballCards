@@ -31,6 +31,15 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
 
+            builder.Property(x => x.ImageUrl)
+                .HasMaxLength(500)
+                .IsRequired(false);
+
+            builder.Property(x => x.UserRole)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasDefaultValue("user");
+
             //builder.HasMany(x => x.Portfolios)
             //    .WithOne(x => x.User)
             //    .HasForeignKey(x => x.UserId)

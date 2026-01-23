@@ -108,6 +108,12 @@ namespace Infrastructure_Layer.Repositories.Implementations
         {
             return await GetCardsAsync(userId: userId, search: search, filter: filter, sort: sort, ct: ct);
         }
+
+        public async Task DeleteAsync(Card card, CancellationToken ct = default)
+        {
+            _db.Cards.Remove(card);
+            await _db.SaveChangesAsync(ct);
+        }
     }
 }
 

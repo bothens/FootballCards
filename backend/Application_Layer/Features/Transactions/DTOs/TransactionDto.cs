@@ -4,7 +4,7 @@
     {
         public int TransactionId { get; init; }
         public int CardId { get; init; }
-        public int BuyerId { get; init; }
+        public int? BuyerId { get; init; }
         public int? SellerId { get; init; }
         public decimal Price { get; init; }
         public DateTime Date { get; init; }
