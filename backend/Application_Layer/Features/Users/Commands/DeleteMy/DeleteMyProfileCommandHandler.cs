@@ -1,5 +1,5 @@
-﻿using Application_Layer.Common.Models;
-using Infrastructure_Layer.Repositories.Interfaces;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
 using MediatR;
 
 namespace Application_Layer.Features.Users.Commands.DeleteMy
@@ -27,7 +27,7 @@ namespace Application_Layer.Features.Users.Commands.DeleteMy
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+                var user = await _userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
                 if (user == null)
                     return OperationResult<bool>.Fail("User not found");
 

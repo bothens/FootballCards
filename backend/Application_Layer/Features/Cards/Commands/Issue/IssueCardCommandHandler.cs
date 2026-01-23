@@ -5,7 +5,7 @@ using Application_Layer.Features.Cards.DTOs;
 using Domain_Layer.Entities;
 using MediatR;
 
-namespace Application_Layer.Features.Card.Commands.Issue
+namespace Application_Layer.Features.Cards.Commands.Issue
 {
     public sealed class IssueCardCommandHandler
         : IRequestHandler<IssueCardCommand, OperationResult<CardDto>>

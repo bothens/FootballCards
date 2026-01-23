@@ -1,11 +1,8 @@
 ﻿using Application_Layer.Common.Models;
 using Application_Layer.Features.Cards.DTOs;
-using Application_Layer.Features.Market.Commands.Sell;
 using Application_Layer.Features.Portfolio.Queries.GetMyPortfolio;
-using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 
 namespace FootballCards.Controllers
 {

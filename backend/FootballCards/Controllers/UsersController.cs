@@ -48,16 +48,16 @@ namespace FootballCards.Controllers
             //if (!int.TryParse(userIdClaim, out var userId))
             //    return Unauthorized(OperationResult<List<CardDto>>.Fail("User not authenticated"));
             // TODO: Hämta userId från JWT i produktion
-            int userId = 2; // Hårdkodat för test
+            int userId = 3; // Hårdkodat för test
 
             var result = await _mediator.Send(
                 new DeleteMyProfileCommand(userId),
                 cancellationToken);
 
             if (!result.Success)
-                return BadRequest(result);
+                return BadRequest(result.Data);
 
-            return Ok(result);
+            return Ok(result.Data);
         }
     }
 }

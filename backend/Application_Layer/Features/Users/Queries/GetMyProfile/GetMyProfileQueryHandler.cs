@@ -1,6 +1,6 @@
-﻿using Application_Layer.Common.Models;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
 using Application_Layer.Features.Users.DTOs;
-using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
 
 namespace Application_Layer.Features.Users.Queries.GetMyProfile
@@ -21,7 +21,7 @@ namespace Application_Layer.Features.Users.Queries.GetMyProfile
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+                var user = await _userRepository.GetByUserIdAsync(request.UserId, cancellationToken);
                 if (user == null)
                     return OperationResult<UserDto>.Fail("User not found");
 
