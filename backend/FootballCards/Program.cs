@@ -1,4 +1,5 @@
 using Application_Layer;
+using Application_Layer.Common.Interfaces;
 using Application_Layer.Features.Auth.Commands.Register;
 using Application_Layer.Services;
 using FootballCards.API.Extensions;
@@ -6,6 +7,8 @@ using FootballCards.API.Middleware;
 using FootballCards.Extensions;
 using Infrastructure_layer.Auth;
 using Infrastructure_Layer;
+using Infrastructure_Layer.Auth;
+using Infrastructure_Layer.Repositories.Implementations;
 using MediatR;
 using Serilog;
 
@@ -14,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseFootballCardsSerilog(builder.Configuration);
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddControllers();
 builder.Services.AddFootballCardsSwagger();

@@ -1,14 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Application_Layer.Services;
+﻿using Application_Layer.Services;
 using Domain_Layer.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-namespace Infrastructure_layer.Auth
+namespace Infrastructure_Layer.Auth
 {
-    // Kommentar: Skapar JWT token.
     public sealed class JwtTokenService : IJwtTokenService
     {
         private readonly IConfiguration _config;
@@ -20,15 +20,18 @@ namespace Infrastructure_layer.Auth
 
         public string CreateToken(User user)
         {
-            var key = _config["Jwt:Key"] ?? throw new Exception("Jwt:Key saknas i appsettings.json");
-            var issuer = _config["Jwt:Issuer"] ?? "FootballCardsApi";
-            var audience = _config["Jwt:Audience"] ?? "FootballCardsClient";
+            var key = _config["Jwt:Key"];
+            if (string.IsNullOrWhiteSpace(key))
+                throw new InvalidOperationException("Jwt:Key saknas i appsettings.json");
 
-            var claims = new List<Claim>
+            var issuer = _config["Jwt:Issuer"];
+            var audience = _config["Jwt:Audience"];
+
+            var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.DisplayName)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("displayName", user.DisplayName)
             };
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -38,9 +41,8 @@ namespace Infrastructure_layer.Auth
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: creds
-            );
+                expires: DateTime.UtcNow.AddHours(4),
+                signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

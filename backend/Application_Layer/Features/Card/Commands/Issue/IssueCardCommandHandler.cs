@@ -1,10 +1,11 @@
-﻿using Application_Layer.Common.Models;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
+using Application_Layer.Features.Cards.Commands.Issue;
 using Application_Layer.Features.Cards.DTOs;
 using Domain_Layer.Entities;
-using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
 
-namespace Application_Layer.Features.Cards.Commands.Issue
+namespace Application_Layer.Features.Card.Commands.Issue
 {
     public sealed class IssueCardCommandHandler
         : IRequestHandler<IssueCardCommand, OperationResult<CardDto>>
@@ -40,8 +41,8 @@ namespace Application_Layer.Features.Cards.Commands.Issue
                 // När vi senare implementerar riktiga roller/claims kan detta uppdateras.
                 // ---------------------------------------------------------
                 // Skapa kortet med hårdkodat admin som ägare
-                var card = new Card
-            {
+                var card = new Domain_Layer.Entities.Card
+                {
                 PlayerId = dto.PlayerId,
                 OwnerId = 8,
                 Status = "Available",

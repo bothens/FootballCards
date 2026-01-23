@@ -1,6 +1,6 @@
-﻿using Domain_Layer.Entities;
+﻿using Application_Layer.Common.Interfaces;
+using Domain_Layer.Entities;
 using Infrastructure_Layer.Data;
-using Infrastructure_Layer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;

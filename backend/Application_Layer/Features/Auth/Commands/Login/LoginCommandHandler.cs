@@ -1,7 +1,10 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
 using Application_Layer.Features.Auth.DTOs;
+using Application_Layer.Services;
 using MediatR;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application_Layer.Features.Auth.Commands.Login
 {
@@ -30,16 +33,16 @@ namespace Application_Layer.Features.Auth.Commands.Login
             var user = await _users.GetByEmailAsync(email, cancellationToken);
 
             if (user is null || !_passwordHasher.Verify(request.Request.Password, user.PasswordHash))
-            {
                 return OperationResult<UserProfileDto>.Fail("Invalid email or password");
-            }
+
+            var token = _jwt.CreateToken(user);
 
             var profile = new UserProfileDto
             {
                 UserId = user.Id,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = _jwt.GenerateToken(user.Id, user.Email)
+                Token = token
             };
 
             return OperationResult<UserProfileDto>.Ok(profile);

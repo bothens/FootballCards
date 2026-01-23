@@ -1,6 +1,6 @@
-﻿using Application_Layer.Common.Models;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
 using Application_Layer.Features.Players.DTOs;
-using Infrastructure_Layer.Repositories.Interfaces;
 using MediatR;
 
 namespace Application_Layer.Features.Players.Queries.GetAll

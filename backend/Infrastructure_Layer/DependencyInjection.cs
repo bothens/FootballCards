@@ -4,7 +4,6 @@ using Application_Layer.Services;
 using Infrastructure_layer.Auth;
 using Infrastructure_Layer.Data;
 using Infrastructure_Layer.Repositories.Implementations;
-using Infrastructure_Layer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

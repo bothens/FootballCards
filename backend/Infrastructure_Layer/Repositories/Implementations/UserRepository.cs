@@ -23,6 +23,7 @@ namespace Infrastructure_Layer.Repositories.Implementations
         public async Task AddAsync(User user, CancellationToken ct = default)
         {
             await _db.User.AddAsync(user, ct);
+            await _db.SaveChangesAsync(ct);
         }
 
         public Task SaveChangesAsync(CancellationToken ct = default)

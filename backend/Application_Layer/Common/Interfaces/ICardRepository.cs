@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure_Layer.Repositories.Interfaces
+namespace Application_Layer.Common.Interfaces
 {
     public interface ICardRepository
     {
