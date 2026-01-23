@@ -2,12 +2,14 @@
 {
     public sealed class TransactionDto
     {
-        public int Id { get; init; }
-        public int PlayerId { get; init; }
-        public string PlayerName { get; init; } = string.Empty;
-        public string Type { get; init; } = string.Empty;
-        public int Quantity { get; init; }
+        public int TransactionId { get; init; }
+        public int CardId { get; init; }
+        public int? BuyerId { get; init; }
+        public int? SellerId { get; init; }
         public decimal Price { get; init; }
-        public DateTime CreatedAt { get; init; }
+        public DateTime Date { get; init; }
+
+        public string PlayerName { get; init; } = string.Empty;
+        public string CardType { get; init; } = string.Empty;
     }
 }

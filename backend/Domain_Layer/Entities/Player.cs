@@ -16,6 +16,6 @@ namespace Domain_Layer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
-        public ICollection<PriceHistory> PriceHistory { get; set; } = new List<PriceHistory>();
+        //public ICollection<PriceHistory> PriceHistory { get; set; } = new List<PriceHistory>();
     }
 }

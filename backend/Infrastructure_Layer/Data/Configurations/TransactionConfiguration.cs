@@ -8,35 +8,31 @@ namespace Infrastructure_Layer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Transaction> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.TransactionId);
 
-            builder.Property(x => x.UserId)
+            builder.Property(x => x.CardId)
                 .IsRequired();
 
-            builder.Property(x => x.PlayerId)
-                .IsRequired();
+            builder.Property(x => x.BuyerId);
 
-            builder.Property(x => x.Type)
-                .IsRequired()
-                .HasMaxLength(10);
+            builder.Property(x => x.SellerId);
 
-            builder.Property(x => x.Quantity)
-                .IsRequired();
-
-            builder.Property(x => x.PricePerUnit)
+            builder.Property(x => x.Price)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.Property(x => x.Total)
-                .HasColumnType("decimal(18,2)")
+            builder.Property(x => x.Date)
                 .IsRequired();
 
-            builder.Property(x => x.CreatedAt)
-                .IsRequired();
+            builder.HasOne(t => t.Card)
+                   .WithMany()
+                   .HasForeignKey(t => t.CardId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasIndex(x => x.UserId);
-            builder.HasIndex(x => x.PlayerId);
-            builder.HasIndex(x => x.CreatedAt);
+            builder.HasIndex(x => x.BuyerId);
+            builder.HasIndex(x => x.SellerId);
+            builder.HasIndex(x => x.CardId);
+            builder.HasIndex(x => x.Date);
         }
     }
 }

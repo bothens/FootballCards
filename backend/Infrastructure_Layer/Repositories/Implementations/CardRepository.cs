@@ -2,8 +2,6 @@
 using Domain_Layer.Entities;
 using Infrastructure_Layer.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Infrastructure_Layer.Repositories.Implementations
 {
@@ -23,59 +21,98 @@ namespace Infrastructure_Layer.Repositories.Implementations
             return card;
         }
 
-        public async Task<List<Card>> GetMarketCardsAsync(
-    string? search,
-    string? filter,
-    string? sort,
-    CancellationToken ct = default)
+        public async Task<Card?> GetByIdAsync(
+            int cardId,
+            CancellationToken ct = default)
         {
-            // Alla kort som ligger ute på marknaden
+            return await _db.Cards
+                .Include(c => c.Player)
+                .FirstOrDefaultAsync(c => c.CardId == cardId, ct);
+        }
+
+        public async Task<Card> UpdateAsync(
+            Card card,
+            CancellationToken ct = default)
+        {
+            _db.Cards.Update(card);
+            await _db.SaveChangesAsync(ct);
+            return card;
+        }
+
+        public async Task<List<Card>> GetCardsAsync(
+            int? userId = null,
+            bool onlyAvailable = false,
+            string? search = null,
+            string? filter = null,
+            string? sort = null,
+            CancellationToken ct = default)
+        {
             var query = _db.Cards
                 .Include(c => c.Player)
-                .Where(c => c.Status == "Available");
+                .AsQueryable();
 
-            // Trimma och lower-case på filter/sort
-            filter = filter?.Trim().ToLower();
-            sort = sort?.Trim().ToLower();
+            if (onlyAvailable)
+                query = query.Where(c => c.Status == "Available");
 
-            // Case-insensitive search på Player.Name
+            if (userId.HasValue)
+                query = query.Where(c => c.OwnerId == userId.Value); // båda int nu
+
+            // Sök på Player.Name
             if (!string.IsNullOrWhiteSpace(search))
             {
                 var lowerSearch = search.Trim().ToLower();
                 query = query.Where(c => c.Player!.Name.ToLower().Contains(lowerSearch));
             }
 
-            // Filtrering på CardType om filter-param finns
+            // Filtrering på CardType
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                query = filter switch
+                query = filter.ToLower() switch
                 {
                     "common" => query.Where(c => c.CardType == "Common"),
                     "rare" => query.Where(c => c.CardType == "Rare"),
                     "legendary" => query.Where(c => c.CardType == "Legendary"),
-                    _ => query.Where(c => false) // tom lista för okänd filter
+                    _ => query.Where(c => false)
                 };
             }
 
-            // Sortering på optional sort-param
-            if (!string.IsNullOrWhiteSpace(sort))
+            // Sortering
+            query = sort?.ToLower() switch
             {
-                query = sort switch
-                {
-                    "price_asc" => query.OrderBy(c => c.Price),
-                    "price_desc" => query.OrderByDescending(c => c.Price),
-                    "name_asc" => query.OrderBy(c => c.Player!.Name),
-                    "name_desc" => query.OrderByDescending(c => c.Player!.Name),
-                    _ => query
-                };
-            }
-            else
-            {
-                // Default sort: pris stigande
-                query = query.OrderBy(c => c.Price);
-            }
+                "price_asc" => query.OrderBy(c => c.SellingPrice),
+                "price_desc" => query.OrderByDescending(c => c.SellingPrice),
+                "name_asc" => query.OrderBy(c => c.Player!.Name),
+                "name_desc" => query.OrderByDescending(c => c.Player!.Name),
+                _ => query.OrderBy(c => c.SellingPrice)
+            };
 
             return await query.ToListAsync(ct);
+        }
+
+
+        public async Task<List<Card>> GetMarketCardsAsync(
+            string? search,
+            string? filter,
+            string? sort,
+            CancellationToken ct = default)
+        {
+            return await GetCardsAsync(onlyAvailable: true, search: search, filter: filter, sort: sort, ct: ct);
+        }
+
+        public async Task<List<Card>> GetPortfolioCardsAsync(
+            int userId,
+            string? search = null,
+            string? filter = null,
+            string? sort = null,
+            CancellationToken ct = default)
+        {
+            return await GetCardsAsync(userId: userId, search: search, filter: filter, sort: sort, ct: ct);
+        }
+
+        public async Task DeleteAsync(Card card, CancellationToken ct = default)
+        {
+            _db.Cards.Remove(card);
+            await _db.SaveChangesAsync(ct);
         }
     }
 }

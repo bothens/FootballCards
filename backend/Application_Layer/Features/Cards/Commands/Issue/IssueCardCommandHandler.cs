@@ -5,7 +5,7 @@ using Application_Layer.Features.Cards.DTOs;
 using Domain_Layer.Entities;
 using MediatR;
 
-namespace Application_Layer.Features.Card.Commands.Issue
+namespace Application_Layer.Features.Cards.Commands.Issue
 {
     public sealed class IssueCardCommandHandler
         : IRequestHandler<IssueCardCommand, OperationResult<CardDto>>
@@ -30,7 +30,7 @@ namespace Application_Layer.Features.Card.Commands.Issue
             // Hämta spelaren
             var player = await _playerRepository.GetByIdAsync(dto.PlayerId, cancellationToken);
             if (player == null)
-                return OperationResult<CardDto>.Fail("Player not found");
+                return OperationResult<CardDto>.Fail("Spelare inte funnen");
 
                 // ---------------------------------------------------------
                 // MOCK ADMIN IMPLEMENTATION
@@ -41,13 +41,14 @@ namespace Application_Layer.Features.Card.Commands.Issue
                 // När vi senare implementerar riktiga roller/claims kan detta uppdateras.
                 // ---------------------------------------------------------
                 // Skapa kortet med hårdkodat admin som ägare
-                var card = new Domain_Layer.Entities.Card
+                var card = new Card
                 {
                 PlayerId = dto.PlayerId,
                 OwnerId = 8,
                 Status = "Available",
                 CardType = dto.CardType ?? "Common",
-                Price = dto.Price
+                Price = dto.Price,
+                SellingPrice = dto.Price
                 };
 
             var addedCard = await _cardRepository.AddAsync(card, cancellationToken);
@@ -60,6 +61,7 @@ namespace Application_Layer.Features.Card.Commands.Issue
                 PlayerName = player.Name,
                 PlayerPosition = player.Position,
                 Price = addedCard.Price,
+                SellingPrice = addedCard.SellingPrice,
                 OwnerId = addedCard.OwnerId,
                 Status = addedCard.Status,
                 CardType = addedCard.CardType

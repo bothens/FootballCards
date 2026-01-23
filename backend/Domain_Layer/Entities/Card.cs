@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain_Layer.Entities
 {
@@ -11,6 +10,8 @@ namespace Domain_Layer.Entities
         public string Status { get; set; } = "Selling";
         public string CardType { get; set; } = "Common"; 
         public decimal Price { get; set; }
+        public decimal? SellingPrice { get; set; }
+
         [NotMapped]
         public DateTime IssuedAt { get; set; } = DateTime.UtcNow;
 

@@ -44,7 +44,7 @@ namespace Application_Layer.Features.Players.Commands.Create
             }
             catch (Exception ex)
             {
-                return OperationResult<PlayerDto>.Fail($"Could not create player: {ex.Message}");
+                return OperationResult<PlayerDto>.Fail($"Kunde inte skapa spelare: {ex.Message}");
             }
         }
     }

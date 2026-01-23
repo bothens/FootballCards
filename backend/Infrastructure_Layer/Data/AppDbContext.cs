@@ -1,5 +1,4 @@
 ﻿using Domain_Layer.Entities;
-using Domain_Layer.Relations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure_Layer.Data
@@ -11,9 +10,9 @@ namespace Infrastructure_Layer.Data
         public DbSet<User> User => Set<User>();
         public DbSet<Player> Players => Set<Player>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
-        public DbSet<Portfolio> Portfolios => Set<Portfolio>();
-        public DbSet<PortfolioItem> PortfolioItems => Set<PortfolioItem>();
-        public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
+        //public DbSet<Portfolio> Portfolios => Set<Portfolio>();
+        //public DbSet<PortfolioItem> PortfolioItems => Set<PortfolioItem>();
+        //public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
         public DbSet<Card> Cards => Set<Card>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,7 +23,7 @@ namespace Infrastructure_Layer.Data
             modelBuilder.Entity<User>().ToTable("User", "dbo");
             modelBuilder.Entity<Player>().ToTable("Player", "dbo");
             modelBuilder.Entity<Transaction>().ToTable("Transaction", "dbo");
-            modelBuilder.Entity<Portfolio>().ToTable("Portfolio", "dbo");
+            //modelBuilder.Entity<Portfolio>().ToTable("Portfolio", "dbo");
             modelBuilder.Entity<Card>().ToTable("Card", "dbo");
 
         }

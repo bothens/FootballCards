@@ -17,6 +17,9 @@ namespace Infrastructure_Layer.Repositories.Implementations
         public Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default)
             => _db.User.FirstOrDefaultAsync(x => x.Id == id, ct);
 
+        public Task<User?> GetByUserIdAsync(int userId, CancellationToken ct = default)
+            => _db.User.FirstOrDefaultAsync(x => x.UserId == userId, ct);
+
         public Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
             => _db.User.FirstOrDefaultAsync(x => x.Email == email, ct);
 
@@ -30,6 +33,12 @@ namespace Infrastructure_Layer.Repositories.Implementations
             => _db.SaveChangesAsync(ct);
 
         public Task<bool> EmailExistsAsync(string email, CancellationToken ct = default)
-            => _db.User.AnyAsync(x => x.Email == email, ct);
+            => _db.User.AnyAsync(x => x.Email == email, ct); 
+
+        public async Task DeleteAsync(User user, CancellationToken ct = default)
+        {
+            _db.User.Remove(user);
+            await _db.SaveChangesAsync(ct);
+        }
     }
 }

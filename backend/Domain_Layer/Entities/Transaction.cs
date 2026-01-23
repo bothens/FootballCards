@@ -2,20 +2,14 @@
 {
     public sealed class Transaction
     {
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
+        public int CardId { get; set; }
+        public int? BuyerId { get; set; }
+        public int? SellerId { get; set; }
+        public decimal Price { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
-        public Guid UserId { get; set; }
-        public int PlayerId { get; set; }
-
-        public string Type { get; set; } = string.Empty;
-
-        public int Quantity { get; set; }
-        public decimal PricePerUnit { get; set; }
-        public decimal Total { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public User? User { get; set; }
-        public Player? Player { get; set; }
+        // Navigation property
+        public Card? Card { get; set; }
     }
 }

@@ -1,32 +1,54 @@
 ﻿using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
-using Application_Layer.Features.Portfolio.DTOs;
+using Application_Layer.Features.Cards.DTOs;
 using MediatR;
 
 namespace Application_Layer.Features.Portfolio.Queries.GetMyPortfolio
 {
     public sealed class GetMyPortfolioQueryHandler
-        : IRequestHandler<GetMyPortfolioQuery, OperationResult<PortfolioDto>>
+    : IRequestHandler<GetMyPortfolioQuery, OperationResult<List<CardDto>>>
     {
-        private readonly ICurrentUserService _currentUser;
+        private readonly ICardRepository _cardRepository;
 
-        public GetMyPortfolioQueryHandler(ICurrentUserService currentUser)
+        public GetMyPortfolioQueryHandler(ICardRepository cardRepository)
         {
-            _currentUser = currentUser;
+            _cardRepository = cardRepository;
         }
 
-        public Task<OperationResult<PortfolioDto>> Handle(
+        public async Task<OperationResult<List<CardDto>>> Handle(
             GetMyPortfolioQuery request,
             CancellationToken cancellationToken)
         {
-            var dto = new PortfolioDto
+            try
             {
-                UserId = _currentUser.UserId,
-                TotalValue = 0,
-                Items = []
-            };
+                var cards = await _cardRepository.GetPortfolioCardsAsync(
+                    request.UserId,
+                    request.Search,
+                    request.Filter,
+                    request.Sort,
+                    cancellationToken
+                );
 
-            return Task.FromResult(OperationResult<PortfolioDto>.Ok(dto));
+                var result = cards.Select(c => new CardDto
+                {
+                    CardId = c.CardId,
+                    PlayerId = c.PlayerId,
+                    PlayerName = c.Player?.Name ?? string.Empty,
+                    PlayerPosition = c.Player?.Position ?? string.Empty,
+                    Price = c.Price,
+                    SellingPrice = c.SellingPrice,
+                    OwnerId = c.OwnerId,
+                    Status = c.Status,
+                    CardType = c.CardType
+                }).ToList();
+
+                return OperationResult<List<CardDto>>.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<CardDto>>.Fail(
+                    ex.InnerException?.Message ?? ex.Message);
+            }
         }
     }
 }
