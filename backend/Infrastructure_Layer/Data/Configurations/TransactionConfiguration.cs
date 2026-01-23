@@ -26,6 +26,11 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(x => x.Date)
                 .IsRequired();
 
+            builder.HasOne(t => t.Card)
+                   .WithMany()
+                   .HasForeignKey(t => t.CardId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasIndex(x => x.BuyerId);
             builder.HasIndex(x => x.SellerId);
             builder.HasIndex(x => x.CardId);

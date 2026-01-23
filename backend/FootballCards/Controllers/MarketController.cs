@@ -87,7 +87,7 @@ public sealed class MarketController : ControllerBase
         //    return Unauthorized("Invalid user id in token");
         //}
         // Hårdkodat SellerId för test; TODO: hämta från JWT
-        int sellerId = 10;
+        int sellerId = 9;
 
         var result = await _mediator.Send(
             new SellCardCommand(sellerId, request.CardId, request.SellingPrice),

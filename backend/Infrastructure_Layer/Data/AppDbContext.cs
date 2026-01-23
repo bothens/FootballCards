@@ -12,7 +12,7 @@ namespace Infrastructure_Layer.Data
         public DbSet<Transaction> Transactions => Set<Transaction>();
         //public DbSet<Portfolio> Portfolios => Set<Portfolio>();
         //public DbSet<PortfolioItem> PortfolioItems => Set<PortfolioItem>();
-        public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
+        //public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
         public DbSet<Card> Cards => Set<Card>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

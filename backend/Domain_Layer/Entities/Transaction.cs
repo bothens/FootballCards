@@ -8,5 +8,8 @@
         public int? SellerId { get; set; }
         public decimal Price { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
+
+        // Navigation property
+        public Card? Card { get; set; }
     }
 }
