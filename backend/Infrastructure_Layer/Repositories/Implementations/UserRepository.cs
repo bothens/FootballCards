@@ -42,10 +42,11 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db.User.Remove(user);
             await _db.SaveChangesAsync(ct);
         }
-        public async Task UpdateAsync(User user, CancellationToken ct = default)
+        public async Task<User> UpdateAsync(User user, CancellationToken ct = default)
         {
             _db.User.Update(user);
             await _db.SaveChangesAsync(ct);
+            return user;
         }
     }
 }

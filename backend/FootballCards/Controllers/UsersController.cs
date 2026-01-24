@@ -2,6 +2,7 @@
 using Application_Layer.Features.Users.Commands.UpdateProfile;
 ﻿using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
+using Application_Layer.Features.Users.Commands.ChangeMyPassword;
 using Application_Layer.Features.Users.Commands.DeleteMy;
 using Application_Layer.Features.Users.DTOs;
 using MediatR;
@@ -54,6 +55,25 @@ namespace FootballCards.Controllers
 
             var result = await _mediator.Send(
                 new DeleteMyProfileCommand(userId),
+                cancellationToken);
+
+            if (!result.Success)
+                return BadRequest(result.Data);
+
+            return Ok(result.Data);
+        }
+
+        [HttpPut("me/password")]
+        public async Task<ActionResult<OperationResult<bool>>> ChangeMyPassword(
+            [FromBody] ChangePasswordRequestDto dto,
+            CancellationToken cancellationToken)
+        {
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
+
+            var result = await _mediator.Send(
+                new ChangeMyPasswordCommand(userId, dto),
                 cancellationToken);
 
             if (!result.Success)

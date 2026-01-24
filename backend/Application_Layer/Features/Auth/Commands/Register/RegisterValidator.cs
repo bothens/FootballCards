@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application_Layer.Common.Validators;
+using FluentValidation;
 
 namespace Application_Layer.Features.Auth.Commands.Register
 {
@@ -11,8 +12,7 @@ namespace Application_Layer.Features.Auth.Commands.Register
                 .EmailAddress();
 
             RuleFor(x => x.Request.Password)
-                .NotEmpty()
-                .MinimumLength(6);
+               .ApplyPasswordRules();
 
             RuleFor(x => x.Request.DisplayName)
                 .NotEmpty()
