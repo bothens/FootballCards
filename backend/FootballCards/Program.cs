@@ -32,14 +32,23 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
+    // Policy som tillåter ALLT (kan användas för test)
+    options.AddPolicy("Frontend", policy =>
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+
+    // Policy som tillåter bara frontend på localhost:5173
     options.AddPolicy("AllowFrontend", policy =>
         policy
             .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials()
-    );
+            .AllowCredentials());
 });
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -96,7 +105,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.UseCors("AllowFrontend");
+
+app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

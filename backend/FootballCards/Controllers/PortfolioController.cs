@@ -1,36 +1,38 @@
-﻿using Application_Layer.Common.Models;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
 using Application_Layer.Features.Cards.DTOs;
 using Application_Layer.Features.Portfolio.Queries.GetMyPortfolio;
+using Application_Layer.Features.Users.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballCards.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class PortfolioController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICurrentUserService _currentUser;
 
-        public PortfolioController(IMediator mediator)
+        public PortfolioController(IMediator mediator, ICurrentUserService currentUser)
         {
             _mediator = mediator;
+            _currentUser = currentUser;
         }
 
-        [HttpGet("my")]
+        [HttpGet("me")]
         public async Task<ActionResult<OperationResult<List<CardDto>>>> GetMyPortfolio(
             [FromQuery] string? search,
             [FromQuery] string? filter,
             [FromQuery] string? sort, 
             CancellationToken cancellationToken)
         {
-            //// Här skickar vi in UserId som int från claims
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-
-            //if (!int.TryParse(userIdClaim, out var userId))
-            //    return Unauthorized(OperationResult<List<CardDto>>.Fail("User not authenticated"));
-            // Hårdkodat UserId för test: TODO: hämta från JWT
-            int userId = 10;
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
 
             var result = await _mediator.Send(
                 new GetMyPortfolioQuery(userId, search, filter, sort),

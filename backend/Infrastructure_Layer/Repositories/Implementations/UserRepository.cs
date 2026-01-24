@@ -47,6 +47,5 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db.User.Update(user);
             await _db.SaveChangesAsync(ct);
         }
-
     }
 }

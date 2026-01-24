@@ -13,14 +13,14 @@ namespace Infrastructure_Layer.Auth
             _http = http;
         }
 
-        public Guid UserId
+        public int UserId
         {
             get
             {
                 var user = _http.HttpContext?.User;
                 var id = user?.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                return Guid.TryParse(id, out var guid) ? guid : Guid.Empty;
+                return int.TryParse(id, out var userId) ? userId : 0;
             }
         }
     }

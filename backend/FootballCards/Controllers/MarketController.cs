@@ -1,21 +1,27 @@
-﻿using Application_Layer.Features.Market.Commands.Purchase;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
+using Application_Layer.Features.Market.Commands.Purchase;
 using Application_Layer.Features.Market.Commands.Sell;
 using Application_Layer.Features.Market.DTOs;
 using Application_Layer.Features.Market.Queries;
+using Application_Layer.Features.Users.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public sealed class MarketController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ICurrentUserService _currentUser;
 
-    public MarketController(IMediator mediator)
+    public MarketController(IMediator mediator, ICurrentUserService currentUser)
     {
         _mediator = mediator;
+        _currentUser = currentUser;
     }
 
     [HttpGet]
@@ -40,26 +46,11 @@ public sealed class MarketController : ControllerBase
            [FromBody] PurchaseCardRequestDto request,
            CancellationToken cancellationToken)
     {
-        // ================================
-        // NOTE: BuyerId is currently hardcoded to 10 for testing purposes.
-        // The JWT authentication logic is commented out below so that
-        // we can test the purchase flow without requiring login.
-        // TODO: Replace hardcoded BuyerId with the value from JWT when auth is implemented.
-        // ================================
+        var userId = _currentUser.UserId;
+        if (userId == 0)
+            return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
 
-        //// Hämta BuyerId från JWT
-        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //if (string.IsNullOrWhiteSpace(userIdClaim))
-        //{
-        //    return Unauthorized("User id missing in token");
-        //}
-
-        //if (!int.TryParse(userIdClaim, out var buyerId))
-        //{
-        //    return Unauthorized("Invalid user id in token");
-        //}
-        int buyerId = 10;
-
+        int buyerId = userId;
 
         var result = await _mediator.Send(
             new PurchaseCardCommand(buyerId, request.CardId),
@@ -75,19 +66,11 @@ public sealed class MarketController : ControllerBase
             [FromBody] SellCardRequestDto request,
             CancellationToken cancellationToken)
     {
-        //// Hämta SellerId från JWT
-        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //if (string.IsNullOrWhiteSpace(userIdClaim))
-        //{
-        //    return Unauthorized("User id missing in token");
-        //}
+        var userId = _currentUser.UserId;
+        if (userId == 0)
+            return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
 
-        //if (!int.TryParse(userIdClaim, out var sellerId))
-        //{
-        //    return Unauthorized("Invalid user id in token");
-        //}
-        // Hårdkodat SellerId för test; TODO: hämta från JWT
-        int sellerId = 9;
+        int sellerId = userId;
 
         var result = await _mediator.Send(
             new SellCardCommand(sellerId, request.CardId, request.SellingPrice),
