@@ -14,8 +14,10 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db = db;
         }
 
-        public Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default)
-            => _db.User.FirstOrDefaultAsync(x => x.Id == id, ct);
+        public Task<User?> GetByIdAsync(int Userid, CancellationToken ct = default)
+        {
+            return _db.User.FirstOrDefaultAsync(x => x.UserId == Userid, ct);
+        }
 
         public Task<User?> GetByUserIdAsync(int userId, CancellationToken ct = default)
             => _db.User.FirstOrDefaultAsync(x => x.UserId == userId, ct);
@@ -40,5 +42,11 @@ namespace Infrastructure_Layer.Repositories.Implementations
             _db.User.Remove(user);
             await _db.SaveChangesAsync(ct);
         }
+        public async Task UpdateAsync(User user, CancellationToken ct = default)
+        {
+            _db.User.Update(user);
+            await _db.SaveChangesAsync(ct);
+        }
+
     }
 }

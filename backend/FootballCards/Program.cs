@@ -1,15 +1,16 @@
-using Application_Layer;
+using System.Text;
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Features.Auth.Commands.Register;
 using Application_Layer.Services;
 using FootballCards.API.Extensions;
 using FootballCards.API.Middleware;
 using FootballCards.Extensions;
-using Infrastructure_layer.Auth;
 using Infrastructure_Layer;
 using Infrastructure_Layer.Auth;
 using Infrastructure_Layer.Repositories.Implementations;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,32 +25,54 @@ builder.Services.AddControllers();
 builder.Services.AddFootballCardsSwagger();
 builder.Services.AddFootballCardsApplicationInsights(builder.Configuration);
 
-
-
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Frontend", policy =>
-        policy
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod());
-});
-
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
         policy
-            
             .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
     );
 });
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    var key = builder.Configuration["Jwt:Key"] ?? builder.Configuration["Jwt:Secret"];
+    var issuer = builder.Configuration["Jwt:Issuer"];
+    var audience = builder.Configuration["Jwt:Audience"];
+
+    if (string.IsNullOrWhiteSpace(key))
+        throw new InvalidOperationException("Jwt:Key/Jwt:Secret saknas i appsettings.json");
+    if (string.IsNullOrWhiteSpace(issuer))
+        throw new InvalidOperationException("Jwt:Issuer saknas i appsettings.json");
+    if (string.IsNullOrWhiteSpace(audience))
+        throw new InvalidOperationException("Jwt:Audience saknas i appsettings.json");
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = issuer,
+        ValidAudience = audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+        ClockSkew = TimeSpan.FromSeconds(30)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddTransient<ExceptionMiddleware>();
 
@@ -73,10 +96,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.UseCors("Frontend");
-
-
 app.UseCors("AllowFrontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

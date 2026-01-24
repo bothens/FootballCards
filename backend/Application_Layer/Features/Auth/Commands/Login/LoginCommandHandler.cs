@@ -1,6 +1,6 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
-using Application_Layer.Features.Auth.DTOs;
+using Application_Layer.Features.Users.DTOs;
 using Application_Layer.Services;
 using MediatR;
 using System.Threading;
@@ -39,7 +39,7 @@ namespace Application_Layer.Features.Auth.Commands.Login
 
             var profile = new UserProfileDto
             {
-                UserId = user.Id,
+                UserId = user.UserId,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
                 Token = token

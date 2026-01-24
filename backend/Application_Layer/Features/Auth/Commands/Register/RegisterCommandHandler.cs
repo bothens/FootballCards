@@ -1,6 +1,6 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
-using Application_Layer.Features.Auth.DTOs;
+using Application_Layer.Features.Users.DTOs;
 using Application_Layer.Services;
 using Domain_Layer.Entities;
 using MediatR;
@@ -13,6 +13,7 @@ namespace Application_Layer.Features.Auth.Commands.Register
         private readonly IUserRepository _users;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenService _jwt;
+        private readonly int Userid;
 
         public RegisterCommandHandler(
             IUserRepository users,
@@ -36,7 +37,7 @@ namespace Application_Layer.Features.Auth.Commands.Register
 
             var user = new User
             {
-                Id = Guid.NewGuid(),
+                UserId = Userid,
                 Email = email,
                 DisplayName = string.IsNullOrWhiteSpace(displayName) ? email.Split('@')[0] : displayName,
                 PasswordHash = _passwordHasher.Hash(password),
@@ -49,7 +50,7 @@ namespace Application_Layer.Features.Auth.Commands.Register
 
             return OperationResult<UserProfileDto>.Ok(new UserProfileDto
             {
-                UserId = user.Id,
+                UserId = user.UserId,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
                 Token = token

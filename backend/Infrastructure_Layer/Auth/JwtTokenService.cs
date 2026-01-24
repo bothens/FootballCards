@@ -2,7 +2,6 @@
 using Domain_Layer.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,21 +19,26 @@ namespace Infrastructure_Layer.Auth
 
         public string CreateToken(User user)
         {
-            var key = _config["Jwt:Key"];
-            if (string.IsNullOrWhiteSpace(key))
-                throw new InvalidOperationException("Jwt:Key saknas i appsettings.json");
+            var secret = _config["Jwt:Secret"];
+            if (string.IsNullOrWhiteSpace(secret))
+                throw new InvalidOperationException("Jwt:Secret saknas i appsettings.json");
 
             var issuer = _config["Jwt:Issuer"];
+            if (string.IsNullOrWhiteSpace(issuer))
+                throw new InvalidOperationException("Jwt:Issuer saknas i appsettings.json");
+
             var audience = _config["Jwt:Audience"];
+            if (string.IsNullOrWhiteSpace(audience))
+                throw new InvalidOperationException("Jwt:Audience saknas i appsettings.json");
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("displayName", user.DisplayName)
             };
 
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -42,7 +46,8 @@ namespace Infrastructure_Layer.Auth
                 audience: audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(4),
-                signingCredentials: creds);
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

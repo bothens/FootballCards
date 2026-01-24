@@ -8,10 +8,16 @@ namespace Infrastructure_Layer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("User");
-            builder.HasKey(x => x.UserId);
+            builder.ToTable("User", "dbo");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(u => u.UserId); 
+
+            builder.Property(u => u.UserId)
+                   .ValueGeneratedOnAdd();
+
+            
+
+
 
             builder.Property(x => x.Email)
                 .IsRequired()
