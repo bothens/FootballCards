@@ -38,6 +38,5 @@ namespace FootballCards.API.Controllers
 
             return Ok(result.Data);
         }
-
     }
 }
