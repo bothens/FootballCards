@@ -1,5 +1,7 @@
 import { getToken } from './authService';
 
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://localhost:7038";
+
 export async function apiFetch<T = any>(url: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
 
