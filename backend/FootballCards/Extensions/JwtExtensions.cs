@@ -9,6 +9,8 @@ namespace FootballCards.Extensions
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
             var key = Encoding.ASCII.GetBytes(config["Jwt:Key"]);
+            var issuer = config["Jwt:Issuer"];
+            var audience = config["Jwt:Audience"];
 
             services.AddAuthentication(options =>
             {
@@ -23,8 +25,11 @@ namespace FootballCards.Extensions
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
             });
