@@ -26,6 +26,8 @@ export async function apiFetch<T = any>(url: string, options: RequestInit = {}):
 
   // Parsta JSON säkert
   const text = await res.text();       // Läs som text först
+    console.log('API raw response for', url, ':', text);
+
   if (!text) {
     // Ingen respons (ex: 204 No Content)
     throw new Error('Empty response from API');
