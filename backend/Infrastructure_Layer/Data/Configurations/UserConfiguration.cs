@@ -15,10 +15,6 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(u => u.UserId)
                    .ValueGeneratedOnAdd();
 
-            
-
-
-
             builder.Property(x => x.Email)
                 .IsRequired()
                 .HasMaxLength(256);

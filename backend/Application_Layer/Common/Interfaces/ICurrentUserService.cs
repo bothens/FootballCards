@@ -2,6 +2,6 @@
 {
     public interface ICurrentUserService
     {
-        Guid UserId { get; }
+        int UserId { get; }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Application_Layer.Features.Cards.Commands.Issue;
 using Application_Layer.Features.Cards.DTOs;
-using Domain_Layer.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FootballCards.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CardsController : ControllerBase
     {
         private readonly IMediator _mediator;

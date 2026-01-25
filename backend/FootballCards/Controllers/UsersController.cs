@@ -1,5 +1,9 @@
 ﻿using System.Security.Claims;
 using Application_Layer.Features.Users.Commands.UpdateProfile;
+﻿using Application_Layer.Common.Interfaces;
+using Application_Layer.Common.Models;
+using Application_Layer.Features.Users.Commands.ChangeMyPassword;
+using Application_Layer.Features.Users.Commands.DeleteMy;
 using Application_Layer.Features.Users.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +14,15 @@ namespace FootballCards.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public sealed class UsersController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICurrentUserService _currentUser;
 
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator, ICurrentUserService currentUser)
         {
             _mediator = mediator;
+            _currentUser = currentUser;
         }
 
         [HttpPut("me")]
@@ -24,12 +30,10 @@ namespace FootballCards.Controllers
             [FromBody] UpdateProfileRequestDto request,
             CancellationToken cancellationToken)
         {
-            var userIdClaim =
-                User.FindFirstValue(ClaimTypes.NameIdentifier)
-                ?? User.FindFirstValue("sub");
 
-            if (!int.TryParse(userIdClaim, out var userId))
-                return Unauthorized("Invalid token");
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
 
             var result = await _mediator.Send(
                 new UpdateProfileCommand(userId, request),
@@ -38,6 +42,44 @@ namespace FootballCards.Controllers
             return result.Success
                 ? Ok(result.Data)
                 : BadRequest(result.Error);
+
+        }
+
+        [HttpDelete("me")]
+        public async Task<ActionResult<OperationResult>> DeleteMyProfile(
+    CancellationToken cancellationToken)
+        {
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
+
+            var result = await _mediator.Send(
+                new DeleteMyProfileCommand(userId),
+                cancellationToken);
+
+            if (!result.Success)
+                return BadRequest(result.Data);
+
+            return Ok(result.Data);
+        }
+
+        [HttpPut("me/password")]
+        public async Task<ActionResult<OperationResult<bool>>> ChangeMyPassword(
+            [FromBody] ChangePasswordRequestDto dto,
+            CancellationToken cancellationToken)
+        {
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
+
+            var result = await _mediator.Send(
+                new ChangeMyPasswordCommand(userId, dto),
+                cancellationToken);
+
+            if (!result.Success)
+                return BadRequest(result.Data);
+
+            return Ok(result.Data);
         }
     }
 }

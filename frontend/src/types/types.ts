@@ -1,4 +1,3 @@
-
 export interface PlayerIdentity {
   id: string;
   name: string;

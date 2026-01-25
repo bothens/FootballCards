@@ -37,7 +37,6 @@ namespace Application_Layer.Features.Auth.Commands.Register
 
             var user = new User
             {
-                UserId = Userid,
                 Email = email,
                 DisplayName = string.IsNullOrWhiteSpace(displayName) ? email.Split('@')[0] : displayName,
                 PasswordHash = _passwordHasher.Hash(password),
