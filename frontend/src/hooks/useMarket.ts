@@ -1,44 +1,42 @@
-
 import { useState, useEffect, useCallback } from 'react';
-import type { Player } from '../types/types';
-import * as api from '../api/api';
-import { useAuth } from './useAuth';
+import type { QueryParams } from '../types/ui/types';
+import type { UICardItem } from '../utils/cardMapper';
+import MarketService from '../services/MarketService';
+import { mapMarketCardDtoToUIMarketItem } from '../utils/marketMapper';
 
-export const useMarket = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [loading, setLoading] = useState(true);
+export const useMarketCards = (initialParams?: QueryParams) => {
+  const [cards, setCards] = useState<UICardItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { updateBalance } = useAuth();
+  const [params, setParams] = useState<QueryParams>(initialParams || {});
 
-  const fetchPlayers = useCallback(async () => {
+  const fetchMarketCards = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
-      const data = await api.getPlayers();
-      setPlayers(data);
-    } catch (err) {
-      setError('Failed to fetch market data');
+      const dtos = await MarketService.getMarketCards(params);
+const mapped = mapMarketCardDtoToUIMarketItem(dtos);
+      setCards(mapped);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to fetch market cards');
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  const purchasePlayer = async (playerId: string) => {
-    try {
-      const result = await api.buyCard(playerId);
-      if (result.success) {
-        updateBalance(result.newBalance);
-        return true;
-      }
-      return false;
-    } catch (err: any) {
-      alert(err || 'Purchase failed');
-      return false;
-    }
-  };
+  }, [params]);
 
   useEffect(() => {
-    fetchPlayers();
-  }, [fetchPlayers]);
+    fetchMarketCards();
+  }, [fetchMarketCards]);
 
-  return { players, loading, error, purchasePlayer, refresh: fetchPlayers };
+  const updateParams = (newParams: Partial<QueryParams>) => {
+    setParams((prev) => ({ ...prev, ...newParams }));
+  };
+
+  return {
+    cards,
+    loading,
+    error,
+    refresh: fetchMarketCards,
+    setParams: updateParams,
+  };
 };

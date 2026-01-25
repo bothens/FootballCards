@@ -1,17 +1,19 @@
-import { apiFetch } from '../api/apiClient';
-import type { MarketCardDto, SellCardRequestDto, PurchaseCardRequestDto } from '../types/market';
+import { API_BASE, apiFetch,  } from '../api/apiClient';
+import type { MarketCardDto, SellCardRequestDto, PurchaseCardRequestDto } from '../types/dtos/market';
+import type { QueryParams } from '../types/ui/types';
+
 
 class MarketService {
-    private baseUrl = '/api/market';
+    private baseUrl = `${API_BASE}/api/market`;
 
     // Hämta marknadens kort
-    async getMarketCards(search?: string, filter?: string, sort?: string): Promise<MarketCardDto[]> {
-        const params = new URLSearchParams();
-        if (search) params.append('search', search);
-        if (filter) params.append('filter', filter);
-        if (sort) params.append('sort', sort);
+    async getMarketCards(params: QueryParams): Promise<MarketCardDto[]> {
+        const searchParams = new URLSearchParams();
+        if (params.search) searchParams.append('search', params.search);
+        if (params.filter) searchParams.append('filter', params.filter);
+        if (params.sort) searchParams.append('sort', params.sort);
 
-        const url = params.toString() ? `${this.baseUrl}?${params.toString()}` : this.baseUrl;
+        const url = searchParams.toString() ? `${this.baseUrl}?${searchParams.toString()}` : this.baseUrl;
         return apiFetch(url);
     }
 

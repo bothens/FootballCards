@@ -85,6 +85,7 @@ export const Portfolio: React.FC = () => {
               actionLabel="Lista / Sälj"
               onAction={() => handleSell(item.id)}
               isProcessing={sellingId === item.id}
+              isListed={item.status === 'Available'}
             />
           ))}
         </div>

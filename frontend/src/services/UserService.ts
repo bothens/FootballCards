@@ -1,8 +1,8 @@
-import { apiFetch } from './apiClient';
-import type { UserDto, ChangePasswordRequestDto } from '../types/user';
+import { API_BASE, apiFetch } from '../api/apiClient';
+import type { UserDto, ChangePasswordRequestDto } from '../types/dtos/user';
 
 class UserService {
-    private baseUrl = '/api/users/me';
+    private baseUrl = `${API_BASE}/api/users/me`;
 
     // Hämta användarprofil
     async getProfile(): Promise<UserDto> {

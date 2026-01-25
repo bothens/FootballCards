@@ -1,13 +1,12 @@
-import { apiFetch } from '../api/apiClient';
-import type { TransactionDto } from '../types/transaction';
+import { API_BASE, apiFetch } from '../api/apiClient';
+import type { TransactionDto } from '../types/dtos/transaction';
 
 class TransactionService {
-    private baseUrl = '/api/transactions/transactions';
+    private baseUrl = `${API_BASE}/api/transactions/transactions`;
 
-    // Hämta alla transaktioner för aktuell användare
-    async getMyTransactions(filter?: string): Promise<TransactionDto[]> {
-        const url = filter ? `${this.baseUrl}?filter=${encodeURIComponent(filter)}` : this.baseUrl;
-        return apiFetch(url);
+  async getMyTransactions(filter?: 'BUY' | 'SELL'): Promise<TransactionDto[]> {
+    const query = filter ? `?filter=${filter.toLowerCase()}` : '';
+    return apiFetch(`${this.baseUrl}${query}`);
     }
 }
 
