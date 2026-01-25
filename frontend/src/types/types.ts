@@ -43,17 +43,18 @@ export interface PortfolioItem {
   acquiredAt: string;
 }
 
-export interface Transaction {
-  id: string;
-  type: 'BUY' | 'SELL';
-  playerName: string;
-  amount: number;
-  timestamp: string;
-}
-
 export interface LeaderboardEntry {
   username: string;
   avatar: string;
   portfolioValue: number;
   rank: number;
 }
+
+export type Transaction = {
+  id: number;
+  type: 'BUY' | 'SELL';
+  playerName: string;
+  cardType: string;
+  amount: number;
+  timestamp: string;
+};

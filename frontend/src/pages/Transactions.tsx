@@ -1,28 +1,17 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
-import * as api from '../api/api';
-import type { Transaction } from '../types/types';
+import React, { useState, useMemo } from 'react';
+import { useTransactions } from '../hooks/useTransactions';
 
 type FilterType = 'ALL' | 'BUY' | 'SELL';
 
 export const Transactions: React.FC = () => {
-  const [history, setHistory] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { transactions, loading } = useTransactions();
   const [filter, setFilter] = useState<FilterType>('ALL');
 
-  useEffect(() => {
-    const load = async () => {
-      const data = await api.getTransactions();
-      setHistory(data);
-      setLoading(false);
-    };
-    load();
-  }, []);
-
   const filteredHistory = useMemo(() => {
-    if (filter === 'ALL') return history;
-    return history.filter(tx => tx.type === filter);
-  }, [history, filter]);
+    if (filter === 'ALL') return transactions;
+    return transactions.filter(tx => tx.type === filter);
+  }, [transactions, filter]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
@@ -117,7 +106,7 @@ export const Transactions: React.FC = () => {
 
       <div className="mt-8 flex items-center justify-between px-6 text-zinc-600 text-[10px] font-black uppercase tracking-widest">
         <span>History verified by FootyTrade Ledger</span>
-        <span>Showing {filteredHistory.length} of {history.length} records</span>
+        <span>Showing {filteredHistory.length} of {transactions.length} records</span>
       </div>
     </div>
   );
