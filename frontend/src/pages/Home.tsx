@@ -38,11 +38,11 @@ export const Home: React.FC = () => {
   const handleQuickLogin = (role: "user" | "admin") => {
     setMode("login");
     if (role === "user") {
-      setEmail("user@test.se");
-      setPassword("Test!12345");
+      setEmail("user@user.com");
+      setPassword("Password123!");
     } else {
-      setEmail("admin@test.se");
-      setPassword("Test!12345");
+      setEmail("admin@admin.com");
+      setPassword("Password123!");
     }
   };
 

@@ -1,46 +1,40 @@
-
-import { useState, useEffect, useCallback } from 'react';
-import type { PortfolioItem } from '../types/types';
-import * as api from '../api/api';
-import { useAuth } from './useAuth';
+import { useState, useEffect } from 'react';
+import PortfolioService from '../services/PortfolioService';
+import MarketService from '../services/MarketService';
+import type { CardDto } from '../types/card';
+import { mapCardDtoToUIPortfolioItem, type UIPortfolioItem } from '../utils/cardMapper';
 
 export const usePortfolio = () => {
-  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [items, setItems] = useState<UIPortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const { updateBalance } = useAuth();
 
-  const fetchPortfolio = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await api.getPortfolio();
-      setItems(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const loadPortfolio = async () => {
+      try {
+        const response: CardDto[] = await PortfolioService.getMyPortfolio();
+        console.log("API response:", response);
+        setItems(mapCardDtoToUIPortfolioItem(response));
+      } catch (err) {
+        console.error('Failed to load portfolio', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPortfolio();
   }, []);
 
-  const sellItem = async (itemId: string) => {
+
+  const sellItem = async (itemId: string, sellingPrice: number) => {
     try {
-      const result = await api.sellCard(itemId);
-      if (result.success) {
-        setItems(prev => prev.filter(i => i.id !== itemId));
-        updateBalance(result.newBalance);
-        return true;
-      }
-      return false;
-    } catch (err) {
-      alert('Selling failed');
-      return false;
+      await MarketService.sellCard({ cardId: Number(itemId), sellingPrice });
+      const updated: CardDto[] = await PortfolioService.getMyPortfolio();
+      setItems(mapCardDtoToUIPortfolioItem(updated));
+    } catch (error) {
+      console.error('Failed to sell card', error);
+      throw error;
     }
   };
 
-  useEffect(() => {
-    fetchPortfolio();
-  }, [fetchPortfolio]);
-
-  const totalValue = items.reduce((sum, item) => sum + item.player.price, 0);
-
-  return { items, loading, totalValue, sellItem, refresh: fetchPortfolio };
+  return { items, loading, sellItem };
 };

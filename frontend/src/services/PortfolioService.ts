@@ -1,4 +1,4 @@
-import { apiFetch } from './apiClient';
+import { apiFetch } from '../api/apiClient';
 import type { CardDto } from '../types/card';
 
 class PortfolioService {
@@ -11,7 +11,7 @@ class PortfolioService {
         if (sort) params.append('sort', sort);
 
         const url = params.toString() ? `${this.baseUrl}?${params.toString()}` : this.baseUrl;
-        return apiFetch(url);
+        return apiFetch<CardDto[]>(url); 
     }
 }
 

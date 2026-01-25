@@ -1,4 +1,4 @@
-import { apiFetch } from './apiClient';
+import { apiFetch } from '../api/apiClient';
 import type { TransactionDto } from '../types/transaction';
 
 class TransactionService {

@@ -18,10 +18,24 @@ export const Portfolio: React.FC = () => {
   }, [items, searchTerm]);
 
   const handleSell = async (itemId: string) => {
-    if (confirm('Vill du lista detta kort till försäljning? Du får 90% av marknadsvärdet direkt.')) {
+    const priceStr = prompt("Ange försäljningspris för kortet:");
+    if (!priceStr) return;
+
+    const sellingPrice = parseFloat(priceStr);
+    if (isNaN(sellingPrice) || sellingPrice <= 0) {
+      alert("Ogiltigt pris");
+      return;
+    }
+
+    if (confirm(`Vill du lista detta kort för ${sellingPrice} €?`)) {
       setSellingId(itemId);
-      await sellItem(itemId);
-      setSellingId(null);
+      try {
+        await sellItem(itemId, sellingPrice); // använder metoden från hook
+      } catch (err) {
+        alert("Försäljning misslyckades");
+      } finally {
+        setSellingId(null);
+      }
     }
   };
 
@@ -64,11 +78,11 @@ export const Portfolio: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredItems.map((item) => (
-            <CardItem 
-              key={item.id} 
-              player={item.player} 
+            <CardItem
+              key={item.id}
+              player={item.player}
               variant="sell"
-              actionLabel="Lista / Sälj" 
+              actionLabel="Lista / Sälj"
               onAction={() => handleSell(item.id)}
               isProcessing={sellingId === item.id}
             />

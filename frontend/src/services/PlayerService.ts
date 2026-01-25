@@ -1,4 +1,4 @@
-import { apiFetch } from './apiClient';
+import { apiFetch } from '../api/apiClient';
 import type { PlayerDto, CreatePlayerRequestDto } from '../types/player';
 
 class PlayerService {
