@@ -7,6 +7,7 @@ export interface AuthResponse {
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://localhost:7038";
 
+
 async function postJson<T>(url: string, body: unknown): Promise<T> {
   const res = await fetch(url, {
     method: "POST",
