@@ -17,6 +17,7 @@ export type UIPlayer = {
 export type UIPortfolioItem = {
   id: string;
   player: UIPlayer;
+  status: string;
 };
 
 const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
@@ -68,5 +69,6 @@ export const mapCardDtoToUIPortfolioItem = (cards: CardDto[]): UIPortfolioItem[]
       image: '',
       rarity: mapRarity(c.cardType),
     },
+    status: c.status,
   }));
 };

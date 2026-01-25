@@ -8,6 +8,7 @@ interface CardItemProps {
   onAction: () => void;
   variant?: 'buy' | 'sell';
   isProcessing?: boolean;
+  isListed?: boolean;
 }
 
 export const CardItem: React.FC<CardItemProps> = ({ 
@@ -15,7 +16,8 @@ export const CardItem: React.FC<CardItemProps> = ({
   actionLabel, 
   onAction, 
   variant = 'buy',
-  isProcessing = false
+  isProcessing = false,
+  isListed = false
 }) => {
   // Konfiguration för stilar baserat på spelarens raritet
   const rarityStyles = {
@@ -54,6 +56,8 @@ export const CardItem: React.FC<CardItemProps> = ({
   };
 
   const style = rarityStyles[player.rarity];
+  
+  const disabled = isProcessing || isListed;
 
   return (
     <div className={`group relative flex flex-col rounded-[2rem] border-2 ${style.border} bg-gradient-to-br ${style.bg} overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] shadow-2xl ${style.glow} h-[520px] cursor-pointer`}>
@@ -113,29 +117,40 @@ export const CardItem: React.FC<CardItemProps> = ({
                 </span>
             </div>
           </div>
-
           <button 
             onClick={(e) => {
-              e.stopPropagation(); // Hindra klick på knappen från att trigga andra händelser
-              onAction();
+              e.stopPropagation();
+              if (!disabled) {
+                onAction();
+              }
             }}
-            disabled={isProcessing}
+            disabled={disabled}
             className={`h-12 px-6 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 active:scale-95 flex items-center justify-center ${
               variant === 'buy' 
-              ? 'bg-emerald-500 hover:bg-emerald-400 text-black shadow-lg shadow-emerald-500/20' 
-              : 'bg-zinc-800 hover:bg-red-500 text-white border border-white/5 hover:border-red-400'
+                ? 'bg-emerald-500 hover:bg-emerald-400 text-black shadow-lg shadow-emerald-500/20' 
+                : isListed
+                  ? 'bg-zinc-700 text-zinc-400 border border-white/5'
+                  : 'bg-zinc-800 hover:bg-red-500 text-white border border-white/5 hover:border-red-400'
             } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {isProcessing ? (
               <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
             ) : (
               <span className="flex items-center gap-2">
-                {variant === 'buy' ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                {!isListed && (
+                  variant === 'buy' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="9" cy="21" r="1"/>
+                      <circle cx="20" cy="21" r="1"/>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                  )
                 )}
-                {actionLabel}
+                {isListed ? 'Redan listad' : actionLabel}
               </span>
             )}
           </button>

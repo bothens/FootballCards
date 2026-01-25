@@ -1,6 +1,5 @@
-import { apiFetch } from '../api/apiClient';
+import { API_BASE, apiFetch } from '../api/apiClient';
 import type { CardDto } from '../types/card';
-import { API_BASE } from '../api/authService';
 
 
 class PortfolioService {

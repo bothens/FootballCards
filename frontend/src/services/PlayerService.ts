@@ -1,8 +1,8 @@
-import { apiFetch } from '../api/apiClient';
+import { API_BASE, apiFetch } from '../api/apiClient';
 import type { PlayerDto, CreatePlayerRequestDto } from '../types/player';
 
 class PlayerService {
-    private baseUrl = '/api/players';
+    private baseUrl = `${API_BASE}/api/players`;
 
     // Hämta alla spelare
     async getAll(): Promise<PlayerDto[]> {

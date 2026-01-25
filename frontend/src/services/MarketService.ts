@@ -1,8 +1,8 @@
-import { apiFetch } from '../api/apiClient';
+import { API_BASE, apiFetch,  } from '../api/apiClient';
 import type { MarketCardDto, SellCardRequestDto, PurchaseCardRequestDto } from '../types/market';
 
 class MarketService {
-    private baseUrl = '/api/market';
+    private baseUrl = `${API_BASE}/api/market`;
 
     // Hämta marknadens kort
     async getMarketCards(search?: string, filter?: string, sort?: string): Promise<MarketCardDto[]> {
