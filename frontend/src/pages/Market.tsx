@@ -19,21 +19,37 @@ export const Market: React.FC = () => {
     );
   }, [cards, searchTerm]);
 
-  const handleBuy = async (cardId: number) => {
-    if (user?.role === 'admin') {
-      alert('Administratörer kan inte delta i handeln');
-      return;
+const handleBuy = async (cardId: number) => {
+  if (!user) {
+    alert("Du måste vara inloggad för att köpa kort.");
+    return;
+  }
+
+  if (user.role === "admin") {
+    alert("Administratörer kan inte delta i handeln.");
+    return;
+  }
+
+  setBuyingId(cardId.toString());
+
+  try {
+    const purchasedCard = await MarketService.purchaseCard({ cardId });
+
+    if (!purchasedCard || purchasedCard.status !== "Sold") {
+      alert("Köpet lyckades inte. Kortet är kanske redan sålt.");
+    } else {
+      alert(`Du köpte ${purchasedCard.playerName} för ${purchasedCard.sellingPrice ?? purchasedCard.sellingPrice } €`);
     }
-    setBuyingId(cardId.toString());
-    try {
-      await MarketService.purchaseCard({ cardId });
-      await refresh();
-    } catch (err) {
-      alert('Purchase failed');
-    } finally {
-      setBuyingId(null);
-    }
-  };
+
+    await refresh();
+  } catch (err: any) {
+    console.error("Purchase failed:", err);
+    alert(err?.message || "Köpet misslyckades, försök igen senare.");
+  } finally {
+    setBuyingId(null);
+  }
+};
+
 
   if (loading) {
     return (
