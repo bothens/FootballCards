@@ -107,4 +107,5 @@ export function getUser(): UserProfile | null {
 export function clearAuth() {
   localStorage.removeItem("ft_token");
   localStorage.removeItem("ft_user");
+  localStorage.removeItem("token");
 }
