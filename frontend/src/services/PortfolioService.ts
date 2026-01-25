@@ -1,8 +1,10 @@
 import { apiFetch } from '../api/apiClient';
 import type { CardDto } from '../types/card';
+import { API_BASE } from '../api/authService';
+
 
 class PortfolioService {
-    private baseUrl = 'https://localhost:7038/api/portfolio/me';
+private baseUrl = `${API_BASE}/api/portfolio/me`;
 
     async getMyPortfolio(search?: string, filter?: string, sort?: string): Promise<CardDto[]> {
         const params = new URLSearchParams();
