@@ -1,5 +1,4 @@
-// src/utils/cardMapper.ts
-import type { CardDto } from '../types/card';
+import type { CardDto } from '../types/dtos/card';
 
 // Definiera UI-spelaren så att den matchar Player-typen i CardItem
 export type UIPlayer = {
@@ -13,14 +12,13 @@ export type UIPlayer = {
   rarity: "Common" | "Rare" | "Epic" | "Legendary";
 };
 
-// Portfolio item innehåller en spelare
-export type UIPortfolioItem = {
+export type UICardItem  = {
   id: string;
   player: UIPlayer;
   status: string;
 };
 
-const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
+export const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
   switch (pos.toLowerCase()) {
     case "goalkeeper":
     case "gk":
@@ -39,7 +37,7 @@ const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
   }
 };
 
-const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary" => {
+export const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary" => {
   switch (type.toLowerCase()) {
     case "common":
       return "Common";
@@ -52,23 +50,4 @@ const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary" => {
     default:
       return "Common"; // fallback
   }
-};
-
-
-// Mappa en lista av CardDto till UIPortfolioItem
-export const mapCardDtoToUIPortfolioItem = (cards: CardDto[]): UIPortfolioItem[] => {
-  return cards.map(c => ({
-    id: String(c.cardId),
-    player: {
-      id: String(c.playerId),
-      identityId: '', // kan sättas om du har identityId i backend
-      name: c.playerName,
-      team: 'Unknown Team', // kan uppdateras om backend skickar team
-      position: mapPosition(c.playerPosition),
-      price: c.price,
-      image: '',
-      rarity: mapRarity(c.cardType),
-    },
-    status: c.status,
-  }));
 };

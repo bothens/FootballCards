@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import PortfolioService from '../services/PortfolioService';
 import MarketService from '../services/MarketService';
-import type { CardDto } from '../types/card';
-import { mapCardDtoToUIPortfolioItem, type UIPortfolioItem } from '../utils/cardMapper';
+import type { CardDto } from '../types/dtos/card';
+import { mapCardDtoToUIPortfolioItem  } from '../utils/portfolioMapper';
 
 export const usePortfolio = () => {
-  const [items, setItems] = useState<UIPortfolioItem[]>([]);
+const [items, setItems] = useState(mapCardDtoToUIPortfolioItem([]));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

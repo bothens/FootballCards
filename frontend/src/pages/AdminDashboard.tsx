@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import * as api from '../api/api';
-import type { PlayerIdentity, Player } from '../types/types';
+import type { PlayerIdentity, Player } from '../types/ui/types';
 import { SearchInput } from '../components/Common/SearchInput';
 
 export const AdminDashboard: React.FC = () => {

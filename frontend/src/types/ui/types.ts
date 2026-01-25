@@ -58,3 +58,22 @@ export type Transaction = {
   amount: number;
   timestamp: string;
 };
+
+export type MarketCard = {
+  id: number;
+  playerId: number;
+  playerName: string;
+  position: string;
+  price: number;
+  status: 'Available' | 'Sold' | string;
+  type: 'Common' | 'Rare' | 'Legendary' | string;
+  team: string;
+  image: string;
+
+};
+
+export type QueryParams = {
+  search?: string;             // text-sök
+  filter?: 'common' | 'rare' | 'legendary';  // korttypfilter
+  sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
+};

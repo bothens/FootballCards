@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Player } from '../../types/types';
+import type { Player } from '../../types/ui/types';
 
 interface CardItemProps {
   player: Player;

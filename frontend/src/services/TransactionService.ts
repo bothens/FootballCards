@@ -1,5 +1,5 @@
 import { API_BASE, apiFetch } from '../api/apiClient';
-import type { TransactionDto } from '../types/transaction';
+import type { TransactionDto } from '../types/dtos/transaction';
 
 class TransactionService {
     private baseUrl = `${API_BASE}/api/transactions/transactions`;

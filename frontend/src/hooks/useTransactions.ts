@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import TransactionService from '../services/TransactionService';
 import { mapDtosToTransactions } from '../utils/transactionMapper';
-import type { Transaction } from '../types/types';
+import type { Transaction } from '../types/ui/types';
 
 export const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

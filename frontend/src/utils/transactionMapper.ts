@@ -1,5 +1,5 @@
-import type { TransactionDto } from '../types/transaction';
-import type { Transaction } from '../types/types';
+import type { TransactionDto } from '../types/dtos/transaction';
+import type { Transaction } from '../types/ui/types';
 
 export const mapDtoToTransaction = (dto: TransactionDto): Transaction => {
   return {

@@ -1,8 +1,8 @@
-import { API_BASE, apiFetch } from '../api/apiClient';
+import { apiFetch } from './apiClient';
 import type { CardDto, CreateCardDto } from '../types/dtos/card';
 
 class CardService {
-    private baseUrl = `${API_BASE}/api/cards`;
+    private baseUrl = '/api/cards';
 
     // Skapa/issue nytt kort
     async issueCard(card: CreateCardDto): Promise<CardDto> {
