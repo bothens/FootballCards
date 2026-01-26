@@ -2,7 +2,20 @@ import { getToken } from './authService';
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://localhost:7038';
 
-export async function apiFetch<T = any>(url: string, options: RequestInit = {}): Promise<T> {
+type ErrorPayload = {
+  detail?: string;
+  message?: string;
+};
+
+const getErrorMessage = (value: unknown): string | undefined => {
+  if (!value || typeof value !== 'object') return undefined;
+  const record = value as Record<string, unknown>;
+  const detail = typeof record.detail === 'string' ? record.detail : undefined;
+  const message = typeof record.message === 'string' ? record.message : undefined;
+  return detail || message;
+};
+
+export async function apiFetch<T = unknown>(url: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
 
   const headers: Record<string, string> = {
@@ -20,11 +33,8 @@ export async function apiFetch<T = any>(url: string, options: RequestInit = {}):
     let errorMessage = `HTTP ${res.status}`;
     try {
       if (contentType.includes('application/json')) {
-        const errorData = await res.json();
-        errorMessage =
-          (errorData as any)?.detail ||
-          (errorData as any)?.message ||
-          JSON.stringify(errorData);
+        const errorData = (await res.json()) as ErrorPayload;
+        errorMessage = getErrorMessage(errorData) || JSON.stringify(errorData);
       } else {
         const errorText = await res.text();
         errorMessage = errorText || errorMessage;
@@ -51,7 +61,7 @@ export async function apiFetch<T = any>(url: string, options: RequestInit = {}):
   try {
     const data = JSON.parse(text);     // Parsta texten som JSON
     return data as T;
-  } catch (err) {
+  } catch {
     throw new Error('Invalid JSON returned from API');
   }
 }

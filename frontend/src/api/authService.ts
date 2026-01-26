@@ -9,6 +9,14 @@ export type UserProfile = Omit<AuthResponse, "token">;
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5025";
 
+const getErrorMessage = (value: unknown): string | undefined => {
+  if (!value || typeof value !== "object") return undefined;
+  const record = value as Record<string, unknown>;
+  const detail = typeof record.detail === "string" ? record.detail : undefined;
+  const message = typeof record.message === "string" ? record.message : undefined;
+  return detail || message;
+};
+
 function authHeaders() {
   const token = getToken();
   return {
@@ -20,7 +28,7 @@ function authHeaders() {
 async function parseResponse(res: Response) {
   const text = await res.text();
 
-  let data: any = null;
+  let data: unknown = null;
   try {
     data = text ? JSON.parse(text) : null;
   } catch {
@@ -28,7 +36,7 @@ async function parseResponse(res: Response) {
   }
 
   if (!res.ok) {
-    const msg = data?.detail || data?.message || text || `HTTP ${res.status}`;
+    const msg = getErrorMessage(data) || text || `HTTP ${res.status}`;
     throw new Error(msg);
   }
 

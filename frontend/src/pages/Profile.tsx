@@ -1,58 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import type { User } from "../types/ui/types";
 
 export const Profile: React.FC = () => {
-  const { isAuthenticated, user, updateProfile, logout } = useAuth();
+  const { isAuthenticated, user, updateProfile, changePassword, logout } = useAuth();
 
-  const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setDisplayName(user?.displayName ?? "");
-  }, [user?.displayName]);
+    setUsername(user?.username ?? "");
+  }, [user?.username]);
 
   if (!isAuthenticated) return <Navigate to="/" replace />;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload: {
-      displayName?: string;
-      currentPassword?: string;
-      newPassword?: string;
-    } = {};
-
-    const dn = displayName.trim();
-    if (dn && dn !== (user?.displayName ?? "")) payload.displayName = dn;
+    const payload: Partial<User> = {};
+    const dn = username.trim();
+    if (dn && dn !== (user?.username ?? "")) payload.username = dn;
 
     const cp = currentPassword.trim();
     const np = newPassword.trim();
-    if (cp || np) {
-      if (!cp || !np) {
-        alert("Fyll i både currentPassword och newPassword");
-        return;
-      }
-      payload.currentPassword = cp;
-      payload.newPassword = np;
+    const wantsPasswordChange = cp.length > 0 || np.length > 0;
+    if (wantsPasswordChange && (!cp || !np)) {
+      alert("Fyll i bÃ¥de currentPassword och newPassword");
+      return;
     }
 
-    if (!payload.displayName && !payload.currentPassword && !payload.newPassword) {
+    if (!payload.username && !wantsPasswordChange) {
       alert("Inget att uppdatera");
       return;
     }
 
     setLoading(true);
     try {
-      await updateProfile(payload);
+      if (payload.username) {
+        await updateProfile({ username: payload.username });
+      }
+      if (wantsPasswordChange && cp && np) {
+        await changePassword(cp, np);
+      }
       setCurrentPassword("");
       setNewPassword("");
       alert("Profil uppdaterad");
-    } catch (err: any) {
-      alert(err?.message ?? "Kunde inte uppdatera profilen");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Kunde inte uppdatera profilen";
+      alert(message);
     } finally {
       setLoading(false);
     }
@@ -83,8 +81,8 @@ export const Profile: React.FC = () => {
                 Display Name
               </label>
               <input
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-emerald-500 transition-colors text-sm"
                 placeholder="Display name"
               />
@@ -100,7 +98,7 @@ export const Profile: React.FC = () => {
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-emerald-500 transition-colors text-sm"
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 />
               </div>
 
@@ -113,7 +111,7 @@ export const Profile: React.FC = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-emerald-500 transition-colors text-sm"
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 />
               </div>
             </div>

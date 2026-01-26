@@ -1,6 +1,4 @@
-import type { CardDto } from '../types/dtos/card';
-
-// Definiera UI-spelaren så att den matchar Player-typen i CardItem
+// Definiera UI-spelaren sÃ¥ att den matchar Player-typen i CardItem
 export type UIPlayer = {
   id: string;
   identityId: string;

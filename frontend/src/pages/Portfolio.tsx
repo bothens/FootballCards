@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { usePortfolio } from '../hooks/usePortfolio';
 import { CardItem } from '../components/Card/CardItem';
@@ -18,7 +17,7 @@ export const Portfolio: React.FC = () => {
   }, [items, searchTerm]);
 
   const handleSell = async (itemId: string) => {
-    const priceStr = prompt("Ange försäljningspris för kortet:");
+    const priceStr = prompt("Ange fÃ¶rsÃ¤ljningspris fÃ¶r kortet:");
     if (!priceStr) return;
 
     const sellingPrice = parseFloat(priceStr);
@@ -27,12 +26,12 @@ export const Portfolio: React.FC = () => {
       return;
     }
 
-    if (confirm(`Vill du lista detta kort för ${sellingPrice} €?`)) {
+    if (confirm(`Vill du lista detta kort fÃ¶r ${sellingPrice} â‚¬?`)) {
       setSellingId(itemId);
       try {
-        await sellItem(itemId, sellingPrice); // använder metoden från hook
-      } catch (err) {
-        alert("Försäljning misslyckades");
+        await sellItem(itemId, sellingPrice); // anvÃ¤nder metoden frÃ¥n hook
+      } catch {
+        alert("FÃ¶rsÃ¤ljning misslyckades");
       } finally {
         setSellingId(null);
       }
@@ -58,7 +57,7 @@ export const Portfolio: React.FC = () => {
         <SearchInput 
           value={searchTerm} 
           onChange={setSearchTerm} 
-          placeholder="Sök i din trupp..." 
+          placeholder="SÃ¶k i din trupp..." 
           className="w-full sm:w-80"
         />
       </header>
@@ -72,7 +71,7 @@ export const Portfolio: React.FC = () => {
         </div>
       ) : filteredItems.length === 0 ? (
         <div className="text-center py-20 bg-zinc-900/30 rounded-3xl border border-dashed border-zinc-800">
-          <div className="text-zinc-600 mb-2 font-medium uppercase tracking-widest text-[10px]">Inga träffar</div>
+          <div className="text-zinc-600 mb-2 font-medium uppercase tracking-widest text-[10px]">Inga trÃ¤ffar</div>
           <p className="text-zinc-500 text-sm">Ingen spelare i din trupp matchar "{searchTerm}"</p>
         </div>
       ) : (
@@ -82,7 +81,7 @@ export const Portfolio: React.FC = () => {
               key={item.id}
               player={item.player}
               variant="sell"
-              actionLabel="Lista / Sälj"
+              actionLabel="Lista / SÃ¤lj"
               onAction={() => handleSell(item.id)}
               isProcessing={sellingId === item.id}
               isListed={item.status === 'Available'}

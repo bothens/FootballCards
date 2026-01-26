@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { AuthState, User } from "../types/ui/types";
 import * as api from "../api/api";
@@ -15,28 +16,26 @@ interface AuthContextType extends AuthState {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    loading: true,
-  });
-
-  useEffect(() => {
+  const [state, setState] = useState<AuthState>(() => {
     const token = localStorage.getItem("ft_token") || localStorage.getItem("token");
     const user = localStorage.getItem("ft_user");
 
     if (token && user) {
-      setState({
+      return {
         token,
-        user: JSON.parse(user),
+        user: JSON.parse(user) as User,
         isAuthenticated: true,
         loading: false,
-      });
-    } else {
-      setState((prev) => ({ ...prev, loading: false }));
+      };
     }
-  }, []);
+
+    return {
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      loading: false,
+    };
+  });
 
   const login = async (email: string, password: string) => {
     setState((prev) => ({ ...prev, loading: true }));

@@ -28,8 +28,9 @@ export const Home: React.FC = () => {
         const nameToUse = displayName.trim() || email.split("@")[0];
         await register(email, password, nameToUse);
       }
-    } catch (err: any) {
-      alert(err?.message ?? "Inloggning/registrering misslyckades");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Inloggning/registrering misslyckades";
+      alert(message);
     } finally {
       setLoading(false);
     }

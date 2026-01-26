@@ -20,6 +20,11 @@ export const AdminDashboard: React.FC = () => {
   const [cardPrice, setCardPrice] = useState(1000000);
   const [cardRarity, setCardRarity] = useState<Player['rarity']>('Common');
 
+  const positions = ['GK', 'DEF', 'MID', 'FWD'] as const;
+  type Position = (typeof positions)[number];
+  const isPosition = (value: string): value is Position =>
+    (positions as readonly string[]).includes(value);
+
   const loadData = async () => {
     setLoading(true);
     const data = await api.getPlayerDb();
@@ -28,6 +33,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, []);
 
@@ -102,7 +108,11 @@ export const AdminDashboard: React.FC = () => {
             </div>
             <div>
               <label className="block text-[10px] font-black uppercase text-zinc-500 mb-2">Position</label>
-              <select value={newPos} onChange={e => setNewPos(e.target.value as any)} className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none">
+              <select
+                value={newPos}
+                onChange={(e) => setNewPos(isPosition(e.target.value) ? e.target.value : 'FWD')}
+                className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none"
+              >
                 <option value="GK">GK</option>
                 <option value="DEF">DEF</option>
                 <option value="MID">MID</option>

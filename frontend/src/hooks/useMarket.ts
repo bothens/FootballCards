@@ -15,10 +15,11 @@ export const useMarketCards = (initialParams?: QueryParams) => {
     setError(null);
     try {
       const dtos = await MarketService.getMarketCards(params);
-const mapped = mapMarketCardDtoToUIMarketItem(dtos);
+      const mapped = mapMarketCardDtoToUIMarketItem(dtos);
       setCards(mapped);
-    } catch (err: any) {
-      setError(err?.message || 'Failed to fetch market cards');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch market cards';
+      setError(message);
     } finally {
       setLoading(false);
     }
