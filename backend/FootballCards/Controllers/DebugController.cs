@@ -1,4 +1,4 @@
-﻿using Infrastructure_Layer.Data;
+using Infrastructure_Layer.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
