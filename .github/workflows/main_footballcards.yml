@@ -12,8 +12,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
+    defaults:
+      run:
+        working-directory: backend/FootballCards
+
 
     steps:
       - uses: actions/checkout@v4
@@ -62,4 +64,5 @@ jobs:
           app-name: 'FootballCards'
           slot-name: 'Production'
           package: .
+
           
