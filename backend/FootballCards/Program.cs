@@ -1,6 +1,7 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Features.Auth.Commands.Register;
 using Application_Layer.Services;
+using Infrastructure_Layer.Data;
 using FootballCards.API.Extensions;
 using FootballCards.API.Middleware;
 using FootballCards.Extensions;
@@ -29,14 +30,14 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
-    // Policy som tillåter ALLT (kan användas för test)
+    // Policy som tillÃ¥ter ALLT (kan anvÃ¤ndas fÃ¶r test)
     options.AddPolicy("Frontend", policy =>
         policy
             .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod());
 
-    // Policy som tillåter bara frontend på localhost:5173
+    // Policy som tillÃ¥ter bara frontend pÃ¥ localhost:5173
     options.AddPolicy("AllowFrontend", policy =>
         policy
             .WithOrigins("http://localhost:5173")
