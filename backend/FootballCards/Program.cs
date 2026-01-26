@@ -1,6 +1,7 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Features.Auth.Commands.Register;
 using Application_Layer.Services;
+using Infrastructure_layer;
 using Infrastructure_Layer.Data;
 using FootballCards.API.Extensions;
 using FootballCards.API.Middleware;
