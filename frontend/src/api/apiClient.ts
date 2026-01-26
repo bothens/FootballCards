@@ -1,6 +1,6 @@
 import { getToken } from './authService';
 
-export const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://localhost:7038";
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://localhost:7038';
 
 export async function apiFetch<T = any>(url: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
@@ -13,26 +13,39 @@ export async function apiFetch<T = any>(url: string, options: RequestInit = {}):
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const res = await fetch(url, { ...options, headers });
+  const contentType = res.headers.get('content-type') || '';
 
-  // Om status inte är OK, kasta fel med meddelande från backend om möjligt
+  // Om status inte Ã¤r OK, kasta fel med meddelande frÃ¥n backend om mÃ¶jligt
   if (!res.ok) {
     let errorMessage = `HTTP ${res.status}`;
     try {
-      const errorData = await res.json();
-      errorMessage = (errorData as any)?.detail || (errorData as any)?.message || JSON.stringify(errorData);
+      if (contentType.includes('application/json')) {
+        const errorData = await res.json();
+        errorMessage =
+          (errorData as any)?.detail ||
+          (errorData as any)?.message ||
+          JSON.stringify(errorData);
+      } else {
+        const errorText = await res.text();
+        errorMessage = errorText || errorMessage;
+      }
     } catch {
-      // fallback: behåll status som felmeddelande
+      // fallback: behÃ¥ll status som felmeddelande
     }
     throw new Error(errorMessage);
   }
 
-  // Parsta JSON säkert
-  const text = await res.text();       // Läs som text först
-    console.log('API raw response for', url, ':', text);
+  // Parsta JSON sÃ¤kert
+  const text = await res.text();       // LÃ¤s som text fÃ¶rst
+  console.log('API raw response for', url, ':', text);
 
   if (!text) {
     // Ingen respons (ex: 204 No Content)
-    throw new Error('Empty response from API');
+    return null as T;
+  }
+
+  if (!contentType.includes('application/json')) {
+    return text as T;
   }
 
   try {
