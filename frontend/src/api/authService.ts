@@ -94,7 +94,7 @@ export function saveToken(token: string) {
 }
 
 export function getToken() {
-  return localStorage.getItem("ft_token");
+  return localStorage.getItem("ft_token") || localStorage.getItem("token");
 }
 
 export function clearToken() {
