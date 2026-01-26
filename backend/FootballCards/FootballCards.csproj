@@ -25,7 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application_Layer\Application_Layer.csproj" />
-    <ProjectReference Include="..\Infrastructure_layer\Infrastructure_layer.csproj" />
+    <ProjectReference Include="..\Infrastructure_Layer\Infrastructure_layer.csproj" />
+
   </ItemGroup>
 
 </Project>
