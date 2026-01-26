@@ -5,7 +5,6 @@ using Infrastructure_Layer.Data;
 using FootballCards.API.Extensions;
 using FootballCards.API.Middleware;
 using FootballCards.Extensions;
-using Infrastructure_Layer;
 using Infrastructure_Layer.Auth;
 using Infrastructure_Layer.Repositories.Implementations;
 using MediatR;
