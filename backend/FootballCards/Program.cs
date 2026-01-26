@@ -26,7 +26,8 @@ builder.Services.AddFootballCardsApplicationInsights(builder.Configuration);
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterCommand).Assembly));
 
-builder.Services.AddInfrastructure(builder.Configuration);
+Infrastructure_layer.DependencyInjection.AddInfrastructure(builder.Services, builder.Configuration);
+
 
 builder.Services.AddCors(options =>
 {
