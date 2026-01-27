@@ -20,12 +20,12 @@ export const Market: React.FC = () => {
 
   const handleBuy = async (cardId: number) => {
     if (!user) {
-      alert("Du mÃ¥ste vara inloggad fÃ¶r att kÃ¶pa kort.");
+      alert("Du måste vara inloggad för att köpa kort.");
       return;
     }
 
     if (user.role === "admin") {
-      alert("AdministratÃ¶rer kan inte delta i handeln.");
+      alert("Administratörer kan inte delta i handeln.");
       return;
     }
 
@@ -35,17 +35,17 @@ export const Market: React.FC = () => {
       const purchasedCard = await MarketService.purchaseCard({ cardId });
 
       if (!purchasedCard || purchasedCard.status !== "Sold") {
-        alert("KÃ¶pet lyckades inte. Kortet Ã¤r kanske redan sÃ¥lt.");
+        alert("Köpet lyckades inte. Kortet är kanske redan sålt.");
       } else {
         alert(
-          `Du kÃ¶pte ${purchasedCard.playerName} fÃ¶r ${purchasedCard.sellingPrice ?? purchasedCard.sellingPrice} â‚¬`
+          `Du köpte ${purchasedCard.playerName} för ${purchasedCard.sellingPrice ?? purchasedCard.sellingPrice} €`
         );
       }
 
       await refresh();
     } catch (err: unknown) {
       console.error("Purchase failed:", err);
-      const message = err instanceof Error ? err.message : "KÃ¶pet misslyckades, fÃ¶rsÃ¶k igen senare.";
+      const message = err instanceof Error ? err.message : "Köpet misslyckades, försök igen senare.";
       alert(message);
     } finally {
       setBuyingId(null);
@@ -86,7 +86,7 @@ export const Market: React.FC = () => {
       {filteredCards.length === 0 ? (
         <div className="text-center py-24 bg-zinc-900/20 rounded-3xl border border-dashed border-zinc-800">
            <p className="text-zinc-500 uppercase text-xs font-black tracking-widest mb-2">
-             {searchTerm ? 'Inga trÃ¤ffar' : 'Market Sold Out'}
+             {searchTerm ? 'Inga träffar' : 'Market Sold Out'}
            </p>
            <p className="text-zinc-600">
              {searchTerm ? `Hittade inga spelare som matchade "${searchTerm}"` : 'No players currently available for acquisition.'}
@@ -98,7 +98,7 @@ export const Market: React.FC = () => {
             <CardItem 
               key={card.id}
               player={card.player}
-              actionLabel={isAdmin ? "Admin Vy" : "KÃ¶p"} 
+              actionLabel={isAdmin ? "Admin Vy" : "Köp"} 
               onAction={() => handleBuy(Number(card.id))}
               isProcessing={buyingId === card.id.toString()}
             />

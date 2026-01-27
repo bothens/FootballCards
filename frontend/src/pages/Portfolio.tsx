@@ -71,7 +71,7 @@ export const Portfolio: React.FC = () => {
         </div>
       ) : filteredItems.length === 0 ? (
         <div className="text-center py-20 bg-zinc-900/30 rounded-3xl border border-dashed border-zinc-800">
-          <div className="text-zinc-600 mb-2 font-medium uppercase tracking-widest text-[10px]">Inga trÃ¤ffar</div>
+          <div className="text-zinc-600 mb-2 font-medium uppercase tracking-widest text-[10px]">Inga träffar</div>
           <p className="text-zinc-500 text-sm">Ingen spelare i din trupp matchar "{searchTerm}"</p>
         </div>
       ) : (
@@ -81,7 +81,7 @@ export const Portfolio: React.FC = () => {
               key={item.id}
               player={item.player}
               variant="sell"
-              actionLabel="Lista / SÃ¤lj"
+              actionLabel="Lista / Sälj"
               onAction={() => handleSell(item.id)}
               isProcessing={sellingId === item.id}
               isListed={item.status === 'Available'}
