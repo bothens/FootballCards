@@ -35,6 +35,7 @@ namespace Application_Layer.Features.Portfolio.Queries.GetMyPortfolio
                     PlayerId = c.PlayerId,
                     PlayerName = c.Player?.Name ?? string.Empty,
                     PlayerPosition = c.Player?.Position ?? string.Empty,
+                    PlayerImageUrl = c.Player?.ImageUrl ?? string.Empty,
                     Price = c.Price,
                     SellingPrice = c.SellingPrice,
                     OwnerId = c.OwnerId,

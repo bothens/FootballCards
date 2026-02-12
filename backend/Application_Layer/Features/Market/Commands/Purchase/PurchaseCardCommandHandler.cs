@@ -87,6 +87,7 @@ namespace Application_Layer.Features.Market.Commands.Purchase
                     PlayerId = updatedCard.PlayerId,
                     PlayerName = updatedCard.Player?.Name ?? string.Empty,
                     PlayerPosition = updatedCard.Player?.Position ?? string.Empty,
+                    PlayerImageUrl = updatedCard.Player?.ImageUrl ?? string.Empty,
                     Price = updatedCard.Price,
                     OwnerId = updatedCard.OwnerId,
                     Status = updatedCard.Status,

@@ -16,7 +16,8 @@ namespace Application_Layer.Features.Players.Queries.GetById
                 Id = request.Id,
                 Name = "",
                 Team = "",
-                Position = ""
+                Position = "",
+                ImageUrl = ""
             };
 
             return Task.FromResult(OperationResult<PlayerDetailsDto>.Ok(dto));

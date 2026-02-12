@@ -6,6 +6,7 @@
         public int PlayerId { get; set; }
         public string PlayerName { get; set; } = string.Empty;
         public string PlayerPosition { get; set; } = string.Empty;
+        public string PlayerImageUrl { get; set; } = string.Empty;
         public decimal SellingPrice { get; set; }
         public string Status { get; set; } = "Available";
         public string CardType { get; set; } = "Common";

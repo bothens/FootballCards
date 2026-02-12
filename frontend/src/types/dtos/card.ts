@@ -3,6 +3,7 @@ export interface CardDto {
     playerId: number;
     playerName: string;
     playerPosition: string;
+    playerImageUrl: string;
     price: number;
     sellingPrice?: number;
     ownerId?: number;

@@ -3,6 +3,7 @@ export interface MarketCardDto {
     playerId: number;
     playerName: string;
     playerPosition: string;
+    playerImageUrl: string;
     sellingPrice: number;
     status: string;
     cardType: string;

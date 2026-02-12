@@ -36,6 +36,7 @@ namespace Application_Layer.Features.Market.Queries
                     PlayerId = c.PlayerId,
                     PlayerName = c.Player!.Name,
                     PlayerPosition = c.Player.Position,
+                    PlayerImageUrl = c.Player.ImageUrl,
                     SellingPrice = c.SellingPrice ?? c.Price,
                     Status = c.Status,
                     CardType = c.CardType

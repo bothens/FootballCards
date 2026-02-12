@@ -11,6 +11,7 @@ namespace Application_Layer.Mapping
         {
             CreateMap<CreatePlayerRequestDto, Player>();
             CreateMap<Player, PlayerDto>();
+            CreateMap<Player, PlayerDetailsDto>();
             CreateMap<object, PlayerDetailsDto>();
         }
     }

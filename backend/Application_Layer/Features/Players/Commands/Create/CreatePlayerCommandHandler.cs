@@ -26,6 +26,7 @@ namespace Application_Layer.Features.Players.Commands.Create
                 {
                     Name = dto.Name,
                     Position = dto.Position,
+                    ImageUrl = dto.ImageUrl
                 };
 
                 // Lägg till i databasen via repository
@@ -37,7 +38,8 @@ namespace Application_Layer.Features.Players.Commands.Create
                     Id = player.Id,
                     Name = player.Name,
                     Position = player.Position,
-                    Team = player.Team
+                    Team = player.Team,
+                    ImageUrl = player.ImageUrl
                 };
 
                 return OperationResult<PlayerDto>.Ok(resultDto);

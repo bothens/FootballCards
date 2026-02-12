@@ -60,6 +60,7 @@ namespace Application_Layer.Features.Cards.Commands.Issue
                 PlayerId = player.Id,
                 PlayerName = player.Name,
                 PlayerPosition = player.Position,
+                PlayerImageUrl = player.ImageUrl,
                 Price = addedCard.Price,
                 SellingPrice = addedCard.SellingPrice,
                 OwnerId = addedCard.OwnerId,

@@ -29,6 +29,7 @@ namespace Application_Layer.Features.Players.Queries.GetAll
                 Name = p.Name,
                 Position = p.Position,
                 Team = string.Empty, // Eftersom DB inte har Team
+                ImageUrl = p.ImageUrl
             }).ToList();
 
             return OperationResult<List<PlayerDto>>.Ok(playerDtos);
