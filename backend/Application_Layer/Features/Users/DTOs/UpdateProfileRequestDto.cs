@@ -2,6 +2,7 @@
 {
     public sealed class UpdateProfileRequestDto
     {
-        public string DisplayName { get; set; } = string.Empty;
+        public string? DisplayName { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

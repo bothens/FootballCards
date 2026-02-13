@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useI18n } from '../../hooks/useI18n';
 
 interface SearchInputProps {
   value: string;
@@ -11,9 +12,10 @@ interface SearchInputProps {
 export const SearchInput: React.FC<SearchInputProps> = ({ 
   value, 
   onChange, 
-  placeholder = "Sök spelare...", 
+  placeholder,
   className = "" 
 }) => {
+  const { t } = useI18n();
   return (
     <div className={`relative ${className}`}>
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -26,7 +28,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="block w-full bg-black border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
-        placeholder={placeholder}
+        placeholder={placeholder || t('searchPlaceholder')}
       />
       {value && (
         <button

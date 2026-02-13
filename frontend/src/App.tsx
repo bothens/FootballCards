@@ -10,12 +10,29 @@ import { Portfolio } from "./pages/Portfolio";
 import { Transactions } from "./pages/Transactions";
 import { Profile } from "./pages/Profile";
 import { AdminDashboard } from "./pages/AdminDashboard";
+import { Settings } from "./pages/Settings";
+import { Friends } from "./pages/Friends";
+import { FriendsChat } from "./pages/FriendsChat";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, user } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (user?.role !== "admin") {
+    return <Navigate to="/market" replace />;
   }
 
   return <>{children}</>;
@@ -62,11 +79,35 @@ const AppContent: React.FC = () => {
             }
           />
           <Route
-            path="/admin"
+            path="/settings"
             element={
               <ProtectedRoute>
-                <AdminDashboard />
+                <Settings />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends"
+            element={
+              <ProtectedRoute>
+                <Friends />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/friends/chat/:friendId"
+            element={
+              <ProtectedRoute>
+                <FriendsChat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
             }
           />
 

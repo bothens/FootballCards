@@ -4,7 +4,9 @@ export interface MarketCardDto {
     playerName: string;
     playerPosition: string;
     playerImageUrl: string;
+    cardImageUrl?: string | null;
     sellingPrice: number;
+    highestBid?: number | null;
     status: string;
     cardType: string;
 }
@@ -16,4 +18,14 @@ export interface SellCardRequestDto {
 
 export interface PurchaseCardRequestDto {
     cardId: number;
+}
+
+export interface BidCardRequestDto {
+    cardId: number;
+    bidAmount: number;
+}
+
+export interface BidResultDto {
+    cardId: number;
+    highestBid: number;
 }

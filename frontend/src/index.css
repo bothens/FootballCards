@@ -2012,6 +2012,107 @@ video {
   --tw-shadow: var(--tw-shadow-colored);
 }
 
+.theme-light body {
+  background-color: #f7f7f8;
+  color: #0a0a0a;
+}
+
+.theme-light .bg-black {
+  background-color: #f7f7f8 !important;
+}
+
+.theme-light .bg-black\/80 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.theme-light .bg-black\/70 {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.theme-light .bg-black\/60 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.theme-light .bg-black\/50 {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.theme-light .bg-black\/40 {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.theme-light .bg-black\/30 {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.theme-light .bg-zinc-900 {
+  background-color: #f0f1f4 !important;
+}
+
+.theme-light .bg-zinc-900\/90 {
+  background-color: rgba(240, 241, 244, 0.9) !important;
+}
+
+.theme-light .bg-zinc-900\/50 {
+  background-color: rgba(240, 241, 244, 0.5) !important;
+}
+
+.theme-light .bg-zinc-900\/30 {
+  background-color: rgba(240, 241, 244, 0.3) !important;
+}
+
+.theme-light .bg-zinc-900\/20 {
+  background-color: rgba(240, 241, 244, 0.2) !important;
+}
+
+.theme-light .bg-zinc-800 {
+  background-color: #e6e7eb !important;
+}
+
+.theme-light .bg-zinc-800\/30 {
+  background-color: rgba(230, 231, 235, 0.3) !important;
+}
+
+.theme-light .border-zinc-800 {
+  border-color: #e2e4ea !important;
+}
+
+.theme-light .border-zinc-700 {
+  border-color: #d4d7df !important;
+}
+
+.theme-light .text-white {
+  color: #0a0a0a !important;
+}
+
+.theme-light .text-white\/40 {
+  color: #6b7280 !important;
+}
+
+.theme-light .text-zinc-600 {
+  color: #4b5563 !important;
+}
+
+.theme-light .text-zinc-500 {
+  color: #6b7280 !important;
+}
+
+.theme-light .text-zinc-400 {
+  color: #6b7280 !important;
+}
+
+.theme-light .text-zinc-300 {
+  color: #374151 !important;
+}
+
+.theme-light .border-white\/10 {
+  border-color: #e5e7eb !important;
+}
+
+.theme-light .border-white\/5 {
+  border-color: #eef0f4 !important;
+}
+
 @media (min-width: 640px) {
   .sm\:block {
     display: block;

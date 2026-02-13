@@ -37,12 +37,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   });
 
+  const markWelcome = (userId: string) => {
+    const key = `ft_welcome_seen_${userId}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem("ft_show_welcome", "true");
+    }
+  };
+
   const login = async (email: string, password: string) => {
     setState((prev) => ({ ...prev, loading: true }));
     try {
       const { user, token } = await api.login(email, password);
       localStorage.setItem("ft_token", token);
       localStorage.setItem("ft_user", JSON.stringify(user));
+      markWelcome(user.id);
 
       setState({
         user,
@@ -62,6 +70,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const { user, token } = await api.register(email, password, displayName);
       localStorage.setItem("ft_token", token);
       localStorage.setItem("ft_user", JSON.stringify(user));
+      markWelcome(user.id);
 
       setState({
         user,
@@ -80,6 +89,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem("ft_token");
     localStorage.removeItem("ft_user");
     localStorage.removeItem("token");
+    localStorage.removeItem("ft_show_welcome");
 
     setState({
       user: null,

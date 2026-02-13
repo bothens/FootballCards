@@ -5,5 +5,6 @@
         public int PlayerId { get; set; }
         public string? CardType { get; set; }
         public decimal Price { get; set; } // används både för Price och SellingPrice
+        public string? ImageUrl { get; set; }
     }
 }

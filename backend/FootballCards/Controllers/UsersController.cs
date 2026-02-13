@@ -8,6 +8,7 @@ using Application_Layer.Features.Users.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace FootballCards.Controllers
 {
@@ -18,11 +19,13 @@ namespace FootballCards.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ICurrentUserService _currentUser;
+        private readonly IUserRepository _users;
 
-        public UsersController(IMediator mediator, ICurrentUserService currentUser)
+        public UsersController(IMediator mediator, ICurrentUserService currentUser, IUserRepository users)
         {
             _mediator = mediator;
             _currentUser = currentUser;
+            _users = users;
         }
 
         [HttpPut("me")]
@@ -58,7 +61,7 @@ namespace FootballCards.Controllers
                 cancellationToken);
 
             if (!result.Success)
-                return BadRequest(result.Data);
+                return BadRequest(result.Error);
 
             return Ok(result.Data);
         }
@@ -77,9 +80,33 @@ namespace FootballCards.Controllers
                 cancellationToken);
 
             if (!result.Success)
-                return BadRequest(result.Data);
+                return BadRequest(result.Error);
 
             return Ok(result.Data);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(
+            [FromQuery] string query,
+            CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Ok(new List<UserProfileDto>());
+            }
+
+            var users = await _users.SearchAsync(query, 10, cancellationToken);
+            var result = users.Select(u => new UserProfileDto
+            {
+                UserId = u.UserId,
+                Email = u.Email,
+                DisplayName = u.DisplayName,
+                UserRole = u.UserRole,
+                Balance = u.Balance,
+                ImageUrl = u.ImageUrl
+            }).ToList();
+
+            return Ok(result);
         }
     }
 }

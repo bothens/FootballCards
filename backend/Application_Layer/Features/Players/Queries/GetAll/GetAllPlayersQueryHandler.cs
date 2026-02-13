@@ -28,7 +28,7 @@ namespace Application_Layer.Features.Players.Queries.GetAll
                 Id = p.Id,
                 Name = p.Name,
                 Position = p.Position,
-                Team = string.Empty, // Eftersom DB inte har Team
+                Team = p.Team,
                 ImageUrl = p.ImageUrl
             }).ToList();
 

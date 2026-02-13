@@ -25,6 +25,16 @@ namespace Infrastructure_Layer.Repositories.Implementations
         public Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
             => _db.User.FirstOrDefaultAsync(x => x.Email == email, ct);
 
+        public async Task<List<User>> SearchAsync(string query, int limit = 10, CancellationToken ct = default)
+        {
+            var normalized = query.Trim().ToLower();
+            return await _db.User
+                .Where(u => u.DisplayName.ToLower().Contains(normalized) || u.Email.ToLower().Contains(normalized))
+                .OrderBy(u => u.DisplayName)
+                .Take(limit)
+                .ToListAsync(ct);
+        }
+
         public async Task AddAsync(User user, CancellationToken ct = default)
         {
             await _db.User.AddAsync(user, ct);

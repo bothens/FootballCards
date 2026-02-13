@@ -1,4 +1,4 @@
-// Definiera UI-spelaren sÃ¥ att den matchar Player-typen i CardItem
+// Define UI player to match CardItem player type
 export type UIPlayer = {
   id: string;
   identityId: string;
@@ -7,13 +7,14 @@ export type UIPlayer = {
   position: "GK" | "DEF" | "MID" | "FWD";
   price: number;
   image: string;
-  rarity: "Common" | "Rare" | "Epic" | "Legendary";
+  rarity: "Common" | "Rare" | "Epic" | "Legendary" | "Skiller" | "Historical Moment";
 };
 
 export type UICardItem  = {
   id: string;
   player: UIPlayer;
   status: string;
+  highestBid?: number | null;
 };
 
 export const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
@@ -35,7 +36,7 @@ export const mapPosition = (pos: string): "GK" | "DEF" | "MID" | "FWD" => {
   }
 };
 
-export const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary" => {
+export const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary" | "Skiller" | "Historical Moment" => {
   switch (type.toLowerCase()) {
     case "common":
       return "Common";
@@ -45,7 +46,13 @@ export const mapRarity = (type: string): "Common" | "Rare" | "Epic" | "Legendary
       return "Epic";
     case "legendary":
       return "Legendary";
+    case "skiller":
+      return "Skiller";
+    case "historical moment":
+    case "historical_moment":
+      return "Historical Moment";
     default:
       return "Common"; // fallback
   }
 };
+

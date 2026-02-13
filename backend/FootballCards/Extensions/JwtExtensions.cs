@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace FootballCards.Extensions
@@ -8,7 +9,10 @@ namespace FootballCards.Extensions
     {
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
-            var key = Encoding.ASCII.GetBytes(config["Jwt:Key"]);
+            var jwtKey = config["Jwt:Key"] ?? config["Jwt:Secret"];
+            if (string.IsNullOrWhiteSpace(jwtKey))
+                throw new InvalidOperationException("Jwt:Key saknas i appsettings.json");
+            var key = Encoding.ASCII.GetBytes(jwtKey);
             var issuer = config["Jwt:Issuer"];
             var audience = config["Jwt:Audience"];
 
@@ -30,6 +34,8 @@ namespace FootballCards.Extensions
                     ValidateAudience = true,
                     ValidAudience = audience,
                     ValidateLifetime = true,
+                    NameClaimType = ClaimTypes.NameIdentifier,
+                    RoleClaimType = ClaimTypes.Role,
                     ClockSkew = TimeSpan.Zero
                 };
             });

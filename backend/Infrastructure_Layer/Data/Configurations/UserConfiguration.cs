@@ -37,6 +37,10 @@ namespace Infrastructure_Layer.Data.Configurations
                 .HasMaxLength(500)
                 .IsRequired(false);
 
+            builder.Property(x => x.Balance)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
             builder.Property(x => x.UserRole)
                 .IsRequired()
                 .HasMaxLength(50)

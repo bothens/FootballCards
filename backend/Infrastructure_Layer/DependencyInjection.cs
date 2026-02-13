@@ -29,6 +29,9 @@ namespace Infrastructure_layer
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<ITradeOfferRepository, TradeOfferRepository>();
 
             return services;
         }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SearchInput } from '../Common/SearchInput';
 import type { QueryParams } from '../../types/ui/types';
+import { useI18n } from '../../hooks/useI18n';
 
 interface CardSortAndFilterProps {
   searchTerm: string;
@@ -9,7 +10,7 @@ interface CardSortAndFilterProps {
   sortOptions?: { label: string; value: QueryParams['sort'] }[];
   onFilterChange?: (filter: QueryParams['filter']) => void;
   onSortChange?: (sort: QueryParams['sort']) => void;
-  onReset?: () => void;  // Callback för reset
+  onReset?: () => void;  // Callback for reset
 }
 
 export const CardSortAndFilter: React.FC<CardSortAndFilterProps> = ({
@@ -18,25 +19,62 @@ export const CardSortAndFilter: React.FC<CardSortAndFilterProps> = ({
   filterOptions = [
     { label: 'Common', value: 'common' },
     { label: 'Rare', value: 'rare' },
+    { label: 'Epic', value: 'epic' },
     { label: 'Legendary', value: 'legendary' },
+    { label: 'Skiller', value: 'skiller' },
+    { label: 'Historical Moment', value: 'historical_moment' },
   ],
   sortOptions = [
-    { label: 'Pris ↑', value: 'price_asc' },
-    { label: 'Pris ↓', value: 'price_desc' },
-    { label: 'Namn ↑', value: 'name_asc' },
-    { label: 'Namn ↓', value: 'name_desc' },
+    { label: 'Pris asc', value: 'price_asc' },
+    { label: 'Pris desc', value: 'price_desc' },
+    { label: 'Namn asc', value: 'name_asc' },
+    { label: 'Namn desc', value: 'name_desc' },
   ],
   onFilterChange,
   onSortChange,
   onReset,  // Get reset callback
 }) => {
+  const { t } = useI18n();
+
+  const localizedFilterOptions = filterOptions.map((opt) => {
+    const label =
+      opt.value === 'common'
+        ? t('common')
+        : opt.value === 'rare'
+        ? t('rare')
+        : opt.value === 'epic'
+        ? t('epic')
+        : opt.value === 'legendary'
+        ? t('legendary')
+        : opt.value === 'skiller'
+        ? t('skiller')
+        : opt.value === 'historical_moment'
+        ? t('historicalMoment')
+        : opt.label;
+    return { ...opt, label };
+  });
+
+  const localizedSortOptions = sortOptions.map((opt) => {
+    const label =
+      opt.value === 'price_asc'
+        ? t('priceAsc')
+        : opt.value === 'price_desc'
+        ? t('priceDesc')
+        : opt.value === 'name_asc'
+        ? t('nameAsc')
+        : opt.value === 'name_desc'
+        ? t('nameDesc')
+        : opt.label;
+    return { ...opt, label };
+  });
+
   return (
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
       {/* Search */}
       <SearchInput
         value={searchTerm}
         onChange={onSearchChange}
-        placeholder="Sök spelare ..."
+        placeholder={t('searchPlaceholder')}
         className="w-full sm:w-64"
       />
 
@@ -45,17 +83,18 @@ export const CardSortAndFilter: React.FC<CardSortAndFilterProps> = ({
         {/* Filter Dropdown */}
         <div className="flex items-center gap-2">
           <label htmlFor="filter" className="text-xs font-bold uppercase text-zinc-500">
-            {filterOptions.length ? 'Filter' : 'Välj Filter'}
+            {t('filterBy')}
           </label>
           <select
             id="filter"
             onChange={(e) => onFilterChange?.(e.target.value as QueryParams['filter'])}
+            defaultValue=""
             className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-white font-bold focus:outline-none"
           >
-            <option value="" disabled selected>
-              Välj Filter
+            <option value="" disabled>
+              {t('chooseFilter')}
             </option>
-            {filterOptions.map((opt) => (
+            {localizedFilterOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
@@ -66,17 +105,18 @@ export const CardSortAndFilter: React.FC<CardSortAndFilterProps> = ({
         {/* Sort Dropdown */}
         <div className="flex items-center gap-2">
           <label htmlFor="sort" className="text-xs font-bold uppercase text-zinc-500">
-            {sortOptions.length ? 'Sort' : 'Välj Sortering'}
+            {t('sortBy')}
           </label>
           <select
             id="sort"
             onChange={(e) => onSortChange?.(e.target.value as QueryParams['sort'])}
+            defaultValue=""
             className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs text-white font-bold focus:outline-none"
           >
-            <option value="" disabled selected>
-              Välj Sortering
+            <option value="" disabled>
+              {t('chooseSort')}
             </option>
-            {sortOptions.map((opt) => (
+            {localizedSortOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
@@ -90,7 +130,7 @@ export const CardSortAndFilter: React.FC<CardSortAndFilterProps> = ({
             onClick={onReset}
             className="px-4 py-2 bg-red-500 hover:bg-red-400 text-white text-xs font-bold uppercase rounded-xl transition-colors"
           >
-            Reset
+            {t('reset')}
           </button>
         </div>
       </div>

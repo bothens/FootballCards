@@ -14,7 +14,7 @@ export interface Player {
   position: 'GK' | 'DEF' | 'MID' | 'FWD';
   price: number;
   image: string;
-  rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary';
+  rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary' | 'Skiller' | 'Historical Moment';
 }
 
 export interface User {
@@ -65,8 +65,9 @@ export type MarketCard = {
   playerName: string;
   position: string;
   price: number;
+  highestBid?: number | null;
   status: 'Available' | 'Sold' | string;
-  type: 'Common' | 'Rare' | 'Legendary' | string;
+  type: 'Common' | 'Rare' | 'Epic' | 'Legendary' | 'Skiller' | 'Historical Moment' | string;
   team: string;
   image: string;
 
@@ -74,6 +75,6 @@ export type MarketCard = {
 
 export type QueryParams = {
   search?: string;             // text-sök
-  filter?: 'common' | 'rare' | 'legendary';  // korttypfilter
+  filter?: 'common' | 'rare' | 'epic' | 'legendary' | 'skiller' | 'historical_moment';  // korttypfilter
   sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
 };

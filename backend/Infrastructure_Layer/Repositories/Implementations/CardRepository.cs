@@ -71,7 +71,11 @@ namespace Infrastructure_Layer.Repositories.Implementations
                 {
                     "common" => query.Where(c => c.CardType == "Common"),
                     "rare" => query.Where(c => c.CardType == "Rare"),
+                    "epic" => query.Where(c => c.CardType == "Epic"),
                     "legendary" => query.Where(c => c.CardType == "Legendary"),
+                    "skiller" => query.Where(c => c.CardType == "Skiller"),
+                    "historical_moment" => query.Where(c => c.CardType == "Historical Moment"),
+                    "historical moment" => query.Where(c => c.CardType == "Historical Moment"),
                     _ => query.Where(c => false)
                 };
             }

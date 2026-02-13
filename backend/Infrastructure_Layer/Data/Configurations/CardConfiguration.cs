@@ -22,6 +22,14 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
+            builder.Property(x => x.ImageUrl)
+                .HasMaxLength(500);
+
+            builder.Property(x => x.HighestBid)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Property(x => x.HighestBidderId);
+
             builder.Property(x => x.OwnerId);
 
             builder.HasOne(x => x.Player)

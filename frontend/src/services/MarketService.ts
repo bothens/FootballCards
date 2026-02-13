@@ -1,5 +1,6 @@
 import { API_BASE, apiFetch,  } from '../api/apiClient';
-import type { MarketCardDto, SellCardRequestDto, PurchaseCardRequestDto } from '../types/dtos/market';
+import type { SellCardRequestDto, PurchaseCardRequestDto, BidCardRequestDto, BidResultDto, MarketCardDto } from '../types/dtos/market';
+import type { CardDto } from '../types/dtos/card';
 import type { QueryParams } from '../types/ui/types';
 
 
@@ -18,7 +19,7 @@ class MarketService {
     }
 
     // Köp kort
-    async purchaseCard(request: PurchaseCardRequestDto): Promise<MarketCardDto> {
+    async purchaseCard(request: PurchaseCardRequestDto): Promise<CardDto> {
         return apiFetch(`${this.baseUrl}/purchase`, {
             method: 'POST',
             body: JSON.stringify(request),
@@ -26,8 +27,16 @@ class MarketService {
     }
 
     // Sälj kort
-    async sellCard(request: SellCardRequestDto): Promise<MarketCardDto> {
+    async sellCard(request: SellCardRequestDto): Promise<CardDto> {
         return apiFetch(`${this.baseUrl}/sell`, {
+            method: 'POST',
+            body: JSON.stringify(request),
+        });
+    }
+
+    // LÃ¤gg bud
+    async bidCard(request: BidCardRequestDto): Promise<BidResultDto> {
+        return apiFetch(`${this.baseUrl}/bid`, {
             method: 'POST',
             body: JSON.stringify(request),
         });

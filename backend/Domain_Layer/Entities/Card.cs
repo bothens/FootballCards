@@ -11,6 +11,9 @@ namespace Domain_Layer.Entities
         public string CardType { get; set; } = "Common"; 
         public decimal Price { get; set; }
         public decimal? SellingPrice { get; set; }
+        public decimal? HighestBid { get; set; }
+        public int? HighestBidderId { get; set; }
+        public string? ImageUrl { get; set; }
 
         [NotMapped]
         public DateTime IssuedAt { get; set; } = DateTime.UtcNow;

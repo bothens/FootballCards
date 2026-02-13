@@ -8,7 +8,7 @@ namespace Domain_Layer.Entities
         public int Id { get; set; }
         [Column("Name")]
         public string Name { get; set; } = string.Empty;
-        [NotMapped]
+        [Column("Team")]
         public string Team { get; set; } = string.Empty;
         [Column("Position")]
         public string Position { get; set; } = string.Empty;

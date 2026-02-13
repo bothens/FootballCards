@@ -28,7 +28,7 @@ export async function apiFetch<T = unknown>(url: string, options: RequestInit = 
   const res = await fetch(url, { ...options, headers });
   const contentType = res.headers.get('content-type') || '';
 
-  // Om status inte Ã¤r OK, kasta fel med meddelande frÃ¥n backend om mÃ¶jligt
+  // If status is not OK, throw with backend message when possible
   if (!res.ok) {
     let errorMessage = `HTTP ${res.status}`;
     try {
@@ -40,17 +40,16 @@ export async function apiFetch<T = unknown>(url: string, options: RequestInit = 
         errorMessage = errorText || errorMessage;
       }
     } catch {
-      // fallback: behÃ¥ll status som felmeddelande
+      // fallback: keep status as error message
     }
     throw new Error(errorMessage);
   }
 
-  // Parsta JSON sÃ¤kert
-  const text = await res.text();       // LÃ¤s som text fÃ¶rst
-  console.log('API raw response for', url, ':', text);
+  // Parse JSON safely
+  const text = await res.text();       // Read as text first
 
   if (!text) {
-    // Ingen respons (ex: 204 No Content)
+    // No response (e.g. 204 No Content)
     return null as T;
   }
 
@@ -59,9 +58,10 @@ export async function apiFetch<T = unknown>(url: string, options: RequestInit = 
   }
 
   try {
-    const data = JSON.parse(text);     // Parsta texten som JSON
+    const data = JSON.parse(text);     // Parse text as JSON
     return data as T;
   } catch {
     throw new Error('Invalid JSON returned from API');
   }
 }
+

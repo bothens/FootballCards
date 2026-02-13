@@ -23,11 +23,17 @@ namespace Application_Layer.Features.Users.Commands.UpdateProfile
             if (user is null)
                 return OperationResult<UserProfileDto>.Fail("User not found");
 
-            var displayName = request.Request.DisplayName?.Trim() ?? "";
-            if (string.IsNullOrWhiteSpace(displayName))
-                return OperationResult<UserProfileDto>.Fail("DisplayName is required");
+            var displayName = request.Request.DisplayName?.Trim();
+            if (!string.IsNullOrWhiteSpace(displayName))
+            {
+                user.DisplayName = displayName;
+            }
 
-            user.DisplayName = displayName;
+            var imageUrl = request.Request.ImageUrl?.Trim();
+            if (!string.IsNullOrWhiteSpace(imageUrl))
+            {
+                user.ImageUrl = imageUrl;
+            }
 
             await _users.UpdateAsync(user, cancellationToken);
 
@@ -35,7 +41,10 @@ namespace Application_Layer.Features.Users.Commands.UpdateProfile
             {
                 UserId = user.UserId,
                 Email = user.Email,
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                UserRole = user.UserRole,
+                Balance = user.Balance,
+                ImageUrl = user.ImageUrl
             };
 
             return OperationResult<UserProfileDto>.Ok(dto);

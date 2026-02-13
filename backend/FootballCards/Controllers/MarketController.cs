@@ -2,6 +2,7 @@
 using Application_Layer.Common.Models;
 using Application_Layer.Features.Market.Commands.Purchase;
 using Application_Layer.Features.Market.Commands.Sell;
+using Application_Layer.Features.Market.Commands.Bid;
 using Application_Layer.Features.Market.DTOs;
 using Application_Layer.Features.Market.Queries;
 using Application_Layer.Features.Users.DTOs;
@@ -74,6 +75,26 @@ public sealed class MarketController : ControllerBase
 
         var result = await _mediator.Send(
             new SellCardCommand(sellerId, request.CardId, request.SellingPrice),
+            cancellationToken);
+
+        return result.Success
+            ? Ok(result.Data)
+            : BadRequest(result.Error);
+    }
+
+    [HttpPost("bid")]
+    public async Task<IActionResult> Bid(
+            [FromBody] BidCardRequestDto request,
+            CancellationToken cancellationToken)
+    {
+        var userId = _currentUser.UserId;
+        if (userId == 0)
+            return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
+
+        int bidderId = userId;
+
+        var result = await _mediator.Send(
+            new BidCardCommand(bidderId, request.CardId, request.BidAmount),
             cancellationToken);
 
         return result.Success

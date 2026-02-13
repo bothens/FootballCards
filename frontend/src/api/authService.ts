@@ -3,6 +3,9 @@ export interface AuthResponse {
   email: string;
   displayName: string;
   token: string;
+  userRole: string;
+  balance: number;
+  imageUrl?: string;
 }
 
 export type UserProfile = Omit<AuthResponse, "token">;
@@ -66,13 +69,16 @@ async function putJson<T>(url: string, body: unknown): Promise<T> {
 
 export function apiLogin(email: string, password: string) {
   return postJson<AuthResponse>(`${API_BASE}/api/auth/login`, {
-    request: { email, password },
+    email,
+    password,
   });
 }
 
 export function apiRegister(email: string, password: string, displayName: string) {
   return postJson<AuthResponse>(`${API_BASE}/api/auth/register`, {
-    request: { email, password, displayName },
+    email,
+    password,
+    displayName,
   });
 }
 
@@ -81,12 +87,12 @@ export function apiRegister(email: string, password: string, displayName: string
  * Du kan skicka ett eller flera fält samtidigt:
  * { displayName?: string, currentPassword?: string, newPassword?: string }
  */
-export function apiUpdateProfile(payload: {
-  displayName?: string;
-  currentPassword?: string;
-  newPassword?: string;
-}) {
+export function apiUpdateProfile(payload: { displayName?: string }) {
   return putJson<string>(`${API_BASE}/api/users/me`, payload);
+}
+
+export function apiChangePassword(payload: { oldPassword: string; newPassword: string }) {
+  return putJson<string>(`${API_BASE}/api/users/me/password`, payload);
 }
 
 export function saveToken(token: string) {

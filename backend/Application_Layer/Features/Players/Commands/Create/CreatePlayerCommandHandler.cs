@@ -26,7 +26,8 @@ namespace Application_Layer.Features.Players.Commands.Create
                 {
                     Name = dto.Name,
                     Position = dto.Position,
-                    ImageUrl = dto.ImageUrl
+                    ImageUrl = dto.ImageUrl,
+                    Team = dto.Team
                 };
 
                 // Lägg till i databasen via repository

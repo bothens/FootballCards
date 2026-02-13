@@ -12,7 +12,7 @@ export const mapCardDtoToUIPortfolioItem = (cards: CardDto[]): UICardItem[] => {
       team: 'Unknown Team', // kan uppdateras om backend skickar team
       position: mapPosition(c.playerPosition),
       price: c.price,
-      image: c.playerImageUrl,
+      image: c.cardImageUrl || c.playerImageUrl,
       rarity: mapRarity(c.cardType),
     },
     status: c.status,

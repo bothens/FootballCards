@@ -1,4 +1,5 @@
 using Infrastructure_Layer.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace FootballCards.API.Controllers
 {
     [ApiController]
     [Route("api/debug")]
+    [Authorize(Roles = "admin")]
     public class DebugController : ControllerBase
     {
         private readonly AppDbContext _db;

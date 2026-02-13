@@ -12,9 +12,10 @@ export const mapMarketCardDtoToUIMarketItem = (cards: MarketCardDto[]): UICardIt
       team: 'Unknown Team',
       position: mapPosition(c.playerPosition),
       price: c.sellingPrice,
-      image: c.playerImageUrl,
+      image: c.cardImageUrl || c.playerImageUrl,
       rarity: mapRarity(c.cardType),
     },
     status: c.status,
+    highestBid: c.highestBid ?? null,
   }));
 };

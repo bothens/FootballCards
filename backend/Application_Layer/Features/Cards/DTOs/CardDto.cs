@@ -7,6 +7,7 @@
         public string PlayerName { get; set; } = string.Empty;
         public string PlayerPosition { get; set; } = string.Empty;
         public string PlayerImageUrl { get; set; } = string.Empty;
+        public string CardImageUrl { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public decimal? SellingPrice { get; set; }
         public int? OwnerId { get; set; }

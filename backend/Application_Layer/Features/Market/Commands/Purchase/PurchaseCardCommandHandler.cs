@@ -11,13 +11,16 @@ namespace Application_Layer.Features.Market.Commands.Purchase
     {
         private readonly ICardRepository _cardRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IUserRepository _userRepository;
 
         public PurchaseCardCommandHandler(
             ICardRepository cardRepository,
-            ITransactionRepository transactionRepository)
+            ITransactionRepository transactionRepository,
+            IUserRepository userRepository)
         {
             _cardRepository = cardRepository;
             _transactionRepository = transactionRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<OperationResult<CardDto>> Handle(
@@ -56,11 +59,37 @@ namespace Application_Layer.Features.Market.Commands.Purchase
                 var sellerId = card.OwnerId;
                 var price = card.SellingPrice.Value;
 
+                var buyer = await _userRepository.GetByUserIdAsync(request.BuyerId, cancellationToken);
+                if (buyer == null)
+                {
+                    return OperationResult<CardDto>.Fail("User not found");
+                }
+
+                if (buyer.Balance < price)
+                {
+                    return OperationResult<CardDto>.Fail("Insufficient balance");
+                }
+
                 // Uppdatera kortet
                 card.OwnerId = request.BuyerId;
                 card.Price = price;
                 card.SellingPrice = null;
                 card.Status = "Owned";
+                card.HighestBid = null;
+                card.HighestBidderId = null;
+
+                buyer.Balance -= price;
+                await _userRepository.UpdateAsync(buyer, cancellationToken);
+
+                if (sellerId.HasValue)
+                {
+                    var seller = await _userRepository.GetByUserIdAsync(sellerId.Value, cancellationToken);
+                    if (seller != null)
+                    {
+                        seller.Balance += price;
+                        await _userRepository.UpdateAsync(seller, cancellationToken);
+                    }
+                }
 
                 var updatedCard = await _cardRepository.UpdateAsync(
                     card,
@@ -88,6 +117,7 @@ namespace Application_Layer.Features.Market.Commands.Purchase
                     PlayerName = updatedCard.Player?.Name ?? string.Empty,
                     PlayerPosition = updatedCard.Player?.Position ?? string.Empty,
                     PlayerImageUrl = updatedCard.Player?.ImageUrl ?? string.Empty,
+                    CardImageUrl = updatedCard.ImageUrl ?? updatedCard.Player?.ImageUrl ?? string.Empty,
                     Price = updatedCard.Price,
                     OwnerId = updatedCard.OwnerId,
                     Status = updatedCard.Status,

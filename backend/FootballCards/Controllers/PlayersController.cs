@@ -1,13 +1,16 @@
-﻿using Application_Layer.Features.Players.Commands.Create;
+using Application_Layer.Features.Players.Commands.Create;
 using Application_Layer.Features.Players.DTOs;
 using Application_Layer.Features.Players.Queries.GetAll;
+using Application_Layer.Features.Players.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballCards.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "admin")]
     public class PlayersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -28,8 +31,14 @@ namespace FootballCards.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetById([FromRoute] int id)
-            => Ok(new { message = $"Get player {id} (TODO)" });
+        public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetPlayerByIdQuery(id), cancellationToken);
+
+            return result.Success
+                ? Ok(result.Data)
+                : NotFound(result.Error);
+        }
 
         [HttpGet("filter")]
         public IActionResult Filter([FromQuery] string? position, [FromQuery] string? team)

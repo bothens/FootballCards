@@ -5,17 +5,20 @@ import type { CardDto } from '../types/dtos/card';
 import { mapCardDtoToUIPortfolioItem  } from '../utils/portfolioMapper';
 
 export const usePortfolio = () => {
-const [items, setItems] = useState(mapCardDtoToUIPortfolioItem([]));
+  const [items, setItems] = useState(mapCardDtoToUIPortfolioItem([]));
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadPortfolio = async () => {
       try {
+        setError(null);
         const response: CardDto[] = await PortfolioService.getMyPortfolio();
-        console.log("API response:", response);
         setItems(mapCardDtoToUIPortfolioItem(response));
       } catch (err) {
         console.error('Failed to load portfolio', err);
+        const message = err instanceof Error ? err.message : 'Failed to load portfolio';
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -36,5 +39,5 @@ const [items, setItems] = useState(mapCardDtoToUIPortfolioItem([]));
     }
   };
 
-  return { items, loading, sellItem };
+  return { items, loading, error, sellItem };
 };

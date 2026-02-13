@@ -14,9 +14,8 @@ namespace Infrastructure_Layer.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(120);
 
-            //builder.Property(x => x.Team)
-            //    .IsRequired()
-            //    .HasMaxLength(120);
+            builder.Property(x => x.Team)
+                .HasMaxLength(120);
 
             builder.Property(x => x.Position)
                 .IsRequired()

@@ -10,6 +10,9 @@ namespace Infrastructure_Layer.Data
         public DbSet<User> User => Set<User>();
         public DbSet<Player> Players => Set<Player>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
+        public DbSet<FriendRequest> FriendRequests => Set<FriendRequest>();
+        public DbSet<Message> Messages => Set<Message>();
+        public DbSet<TradeOffer> TradeOffers => Set<TradeOffer>();
         //public DbSet<Portfolio> Portfolios => Set<Portfolio>();
         //public DbSet<PortfolioItem> PortfolioItems => Set<PortfolioItem>();
         //public DbSet<PriceHistory> PriceHistories => Set<PriceHistory>();
@@ -23,6 +26,9 @@ namespace Infrastructure_Layer.Data
             modelBuilder.Entity<User>().ToTable("User", "dbo");
             modelBuilder.Entity<Player>().ToTable("Player", "dbo");
             modelBuilder.Entity<Transaction>().ToTable("Transaction", "dbo");
+            modelBuilder.Entity<FriendRequest>().ToTable("FriendRequest", "dbo");
+            modelBuilder.Entity<Message>().ToTable("Message", "dbo");
+            modelBuilder.Entity<TradeOffer>().ToTable("TradeOffer", "dbo");
             //modelBuilder.Entity<Portfolio>().ToTable("Portfolio", "dbo");
             modelBuilder.Entity<Card>().ToTable("Card", "dbo");
 

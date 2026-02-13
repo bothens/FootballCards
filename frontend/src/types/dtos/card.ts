@@ -4,6 +4,7 @@ export interface CardDto {
     playerName: string;
     playerPosition: string;
     playerImageUrl: string;
+    cardImageUrl?: string | null;
     price: number;
     sellingPrice?: number;
     ownerId?: number;
@@ -15,4 +16,5 @@ export interface CreateCardDto {
     playerId: number;
     price: number;
     cardType: string;
+    imageUrl?: string;
 }

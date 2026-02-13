@@ -43,6 +43,8 @@ namespace Application_Layer.Features.Market.Commands.Sell
                 // Uppdatera kortets status och selling price
                 card.SellingPrice = request.SellingPrice;
                 card.Status = "Available";
+                card.HighestBid = null;
+                card.HighestBidderId = null;
 
                 var updatedCard = await _cardRepository.UpdateAsync(card, cancellationToken);
 
@@ -54,6 +56,7 @@ namespace Application_Layer.Features.Market.Commands.Sell
                     PlayerName = updatedCard.Player?.Name ?? string.Empty,
                     PlayerPosition = updatedCard.Player?.Position ?? string.Empty,
                     PlayerImageUrl = updatedCard.Player?.ImageUrl ?? string.Empty,
+                    CardImageUrl = updatedCard.ImageUrl ?? updatedCard.Player?.ImageUrl ?? string.Empty,
                     Price = updatedCard.Price,
                     OwnerId = updatedCard.OwnerId,
                     Status = updatedCard.Status,

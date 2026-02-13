@@ -4,6 +4,7 @@ using Application_Layer.Features.Users.DTOs;
 using Application_Layer.Services;
 using Domain_Layer.Entities;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 
 namespace Application_Layer.Features.Auth.Commands.Register
 {
@@ -13,16 +14,18 @@ namespace Application_Layer.Features.Auth.Commands.Register
         private readonly IUserRepository _users;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenService _jwt;
-        private readonly int Userid;
+        private readonly IConfiguration _config;
 
         public RegisterCommandHandler(
             IUserRepository users,
             IPasswordHasher passwordHasher,
-            IJwtTokenService jwt)
+            IJwtTokenService jwt,
+            IConfiguration config)
         {
             _users = users;
             _passwordHasher = passwordHasher;
             _jwt = jwt;
+            _config = config;
         }
 
         public async Task<OperationResult<UserProfileDto>> Handle(RegisterCommand request, CancellationToken ct)
@@ -40,8 +43,15 @@ namespace Application_Layer.Features.Auth.Commands.Register
                 Email = email,
                 DisplayName = string.IsNullOrWhiteSpace(displayName) ? email.Split('@')[0] : displayName,
                 PasswordHash = _passwordHasher.Hash(password),
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Balance = 1000m
             };
+            var adminEmail = _config["Admin:Email"];
+            if (!string.IsNullOrWhiteSpace(adminEmail)
+                && email.Equals(adminEmail, StringComparison.OrdinalIgnoreCase))
+            {
+                user.UserRole = "admin";
+            }
 
             await _users.AddAsync(user, ct);
 
@@ -52,7 +62,10 @@ namespace Application_Layer.Features.Auth.Commands.Register
                 UserId = user.UserId,
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = token
+                Token = token,
+                UserRole = user.UserRole,
+                Balance = user.Balance,
+                ImageUrl = user.ImageUrl
             });
         }
     }

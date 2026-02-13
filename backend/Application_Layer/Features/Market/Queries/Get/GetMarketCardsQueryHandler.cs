@@ -37,7 +37,9 @@ namespace Application_Layer.Features.Market.Queries
                     PlayerName = c.Player!.Name,
                     PlayerPosition = c.Player.Position,
                     PlayerImageUrl = c.Player.ImageUrl,
+                    CardImageUrl = c.ImageUrl ?? c.Player.ImageUrl,
                     SellingPrice = c.SellingPrice ?? c.Price,
+                    HighestBid = c.HighestBid,
                     Status = c.Status,
                     CardType = c.CardType
                 }).ToList();

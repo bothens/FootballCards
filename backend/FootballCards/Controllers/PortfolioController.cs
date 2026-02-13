@@ -39,7 +39,7 @@ namespace FootballCards.Controllers
                 cancellationToken);
 
             if (!result.Success)
-                return BadRequest(result.Data);
+                return BadRequest(result.Error);
 
             return Ok(result.Data);
         }
