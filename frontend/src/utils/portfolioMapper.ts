@@ -9,7 +9,7 @@ export const mapCardDtoToUIPortfolioItem = (cards: CardDto[]): UICardItem[] => {
       id: String(c.playerId),
       identityId: '', // kan sättas om du har identityId i backend
       name: c.playerName,
-      team: 'Unknown Team', // kan uppdateras om backend skickar team
+      team: c.playerTeam || 'Unknown Team',
       position: mapPosition(c.playerPosition),
       price: c.price,
       image: c.cardImageUrl || c.playerImageUrl,

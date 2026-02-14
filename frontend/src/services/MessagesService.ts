@@ -24,6 +24,18 @@ class MessagesService {
       method: "POST",
     });
   }
+
+  async deleteConversation(friendId: number): Promise<number> {
+    return apiFetch(`${this.baseUrl}/with/${friendId}`, {
+      method: "DELETE",
+    });
+  }
+
+  async deleteMessage(messageId: number): Promise<number> {
+    return apiFetch(`${this.baseUrl}/${messageId}`, {
+      method: "DELETE",
+    });
+  }
 }
 
 export default new MessagesService();

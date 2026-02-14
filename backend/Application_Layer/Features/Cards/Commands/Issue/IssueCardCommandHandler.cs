@@ -60,6 +60,7 @@ namespace Application_Layer.Features.Cards.Commands.Issue
                 CardId = addedCard.CardId,
                 PlayerId = player.Id,
                 PlayerName = player.Name,
+                PlayerTeam = player.Team,
                 PlayerPosition = player.Position,
                 PlayerImageUrl = player.ImageUrl,
                 CardImageUrl = addedCard.ImageUrl ?? player.ImageUrl,

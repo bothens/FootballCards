@@ -54,6 +54,7 @@ namespace Application_Layer.Features.Market.Commands.Sell
                     CardId = updatedCard.CardId,
                     PlayerId = updatedCard.PlayerId,
                     PlayerName = updatedCard.Player?.Name ?? string.Empty,
+                    PlayerTeam = updatedCard.Player?.Team ?? string.Empty,
                     PlayerPosition = updatedCard.Player?.Position ?? string.Empty,
                     PlayerImageUrl = updatedCard.Player?.ImageUrl ?? string.Empty,
                     CardImageUrl = updatedCard.ImageUrl ?? updatedCard.Player?.ImageUrl ?? string.Empty,

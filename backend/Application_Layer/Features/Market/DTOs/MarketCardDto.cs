@@ -5,6 +5,7 @@
         public int CardId { get; set; }
         public int PlayerId { get; set; }
         public string PlayerName { get; set; } = string.Empty;
+        public string PlayerTeam { get; set; } = string.Empty;
         public string PlayerPosition { get; set; } = string.Empty;
         public string PlayerImageUrl { get; set; } = string.Empty;
         public string CardImageUrl { get; set; } = string.Empty;

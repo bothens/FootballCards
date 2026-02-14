@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Player } from '../../types/ui/types';
 import { useI18n } from '../../hooks/useI18n';
 
@@ -29,6 +29,8 @@ export const CardItem: React.FC<CardItemProps> = ({
   const { t } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+  const [showFacts, setShowFacts] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   const formatPrice = (price: number) => {
     if (price >= 1000000) {
@@ -103,6 +105,18 @@ export const CardItem: React.FC<CardItemProps> = ({
   const disabled = isProcessing || isListed;
   const hasSecondary = Boolean(secondaryActionLabel && onSecondaryAction);
 
+  useEffect(() => {
+    const media = window.matchMedia('(pointer: coarse)');
+    const update = () => setIsTouch(media.matches);
+    update();
+    if (media.addEventListener) {
+      media.addEventListener('change', update);
+      return () => media.removeEventListener('change', update);
+    }
+    media.addListener(update);
+    return () => media.removeListener(update);
+  }, []);
+
   const borderWeight =
     player.rarity === 'Common'
       ? 'border'
@@ -146,6 +160,21 @@ export const CardItem: React.FC<CardItemProps> = ({
     <div
       className={`group relative flex flex-col rounded-[2rem] ${borderWeight} ${style.border} bg-gradient-to-br ${style.bg} overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] shadow-2xl ${style.glow} h-[520px]`}
       style={mergedStyle}
+      onClick={() => {
+        if (isTouch) {
+          setShowFacts((prev) => !prev);
+        }
+      }}
+      onMouseEnter={() => {
+        if (!isTouch) {
+          setShowFacts(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isTouch) {
+          setShowFacts(false);
+        }
+      }}
     >
       {isEpic && (
         <div className="absolute inset-[8px] z-20 rounded-[1.5rem] pointer-events-none border-4 border-purple-400/90" />
@@ -203,7 +232,11 @@ export const CardItem: React.FC<CardItemProps> = ({
       <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none ${style.holographic} -translate-x-full group-hover:translate-x-full transform transition-transform ease-in-out`}></div>
 
       {/* 2. TOP SECTION: SPELARBILD */}
-      <div className="relative h-[360px] w-full overflow-hidden">
+      <div
+        className={`relative w-full overflow-hidden transition-all duration-300 ${
+          showFacts ? 'h-[260px]' : 'h-[360px]'
+        }`}
+      >
         {/* Huvudbild med subtil zoom-effekt vid hover */}
         <img 
           src={player.image} 
@@ -236,6 +269,29 @@ export const CardItem: React.FC<CardItemProps> = ({
         
         {/* Gradient-overlay för att mjuka upp bilden mot namnet */}
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
+
+        {/* Facts Overlay (hover on desktop, tap on mobile) */}
+        <div
+          className={`absolute top-4 right-4 z-40 max-w-[180px] rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md px-3 py-2 text-[10px] uppercase tracking-widest text-zinc-200 transition-all duration-300 ${
+            showFacts
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0'
+          } pointer-events-none`}
+        >
+          <div className="text-[9px] text-zinc-400 font-black mb-1">{t('quickView')}</div>
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-500">{t('position')}</span>
+            <span className="text-zinc-200 font-black">{player.position}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-500">{t('team')}</span>
+            <span className="text-zinc-200 font-black truncate max-w-[90px]">{player.team}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-zinc-500">{t('cardType')}</span>
+            <span className="text-zinc-200 font-black">{player.rarity}</span>
+          </div>
+        </div>
         
         {/* Position-badge uppe till vänster */}
         <div className="absolute top-6 left-6 flex flex-col items-center">
@@ -267,7 +323,7 @@ export const CardItem: React.FC<CardItemProps> = ({
       </div>
 
       {/* 3. MIDDLE SECTION: NAMN & KLUBB (Glassmorphism-look) */}
-      <div className="relative px-6 -mt-10 mb-2">
+      <div className={`relative px-6 mb-2 transition-all duration-300 ${showFacts ? 'mt-2' : '-mt-10'}`}>
         <div className="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-2xl shadow-xl">
             <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase leading-tight group-hover:text-emerald-400 transition-colors">
               {player.name}
@@ -277,6 +333,33 @@ export const CardItem: React.FC<CardItemProps> = ({
             </div>
         </div>
       </div>
+
+      {showFacts && (
+        <div className="px-6 pb-2">
+          <div className="rounded-2xl border border-emerald-400/50 bg-emerald-500/10 px-4 py-3 text-[11px] uppercase tracking-widest text-emerald-200 space-y-2">
+            {(player.rarity === 'Skiller' || player.rarity === 'Historical Moment') && (
+              <div className="rounded-xl border border-emerald-400/40 bg-black/40 px-3 py-2 text-[10px] font-black tracking-widest text-emerald-200">
+                {t('factsTab')}
+                <div className="mt-1 text-[9px] font-medium tracking-normal text-emerald-200/80 normal-case">
+                  {t('factsPlaceholder')}
+                </div>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <span className="text-emerald-300">FACT</span>
+              <span className="text-emerald-100 font-black">ON</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-emerald-300">{t('position')}</span>
+              <span className="text-emerald-100 font-black">{player.position}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-emerald-300">{t('team')}</span>
+              <span className="text-emerald-100 font-black truncate max-w-[120px]">{player.team}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 4. BOTTOM SECTION: PRIS & ACTION */}
       <div className="mt-auto px-6 pb-6 pt-2">

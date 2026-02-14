@@ -2,6 +2,7 @@ export interface MarketCardDto {
     cardId: number;
     playerId: number;
     playerName: string;
+    playerTeam?: string | null;
     playerPosition: string;
     playerImageUrl: string;
     cardImageUrl?: string | null;

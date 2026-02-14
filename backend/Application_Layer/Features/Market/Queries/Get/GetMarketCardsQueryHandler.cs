@@ -35,6 +35,7 @@ namespace Application_Layer.Features.Market.Queries
                     CardId = c.CardId,
                     PlayerId = c.PlayerId,
                     PlayerName = c.Player!.Name,
+                    PlayerTeam = c.Player.Team,
                     PlayerPosition = c.Player.Position,
                     PlayerImageUrl = c.Player.ImageUrl,
                     CardImageUrl = c.ImageUrl ?? c.Player.ImageUrl,

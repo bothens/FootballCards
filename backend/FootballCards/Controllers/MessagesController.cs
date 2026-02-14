@@ -1,6 +1,8 @@
 using Application_Layer.Common.Interfaces;
 using Application_Layer.Common.Models;
+using Application_Layer.Features.Messages.Commands.DeleteMessage;
 using Application_Layer.Features.Messages.Commands.MarkRead;
+using Application_Layer.Features.Messages.Commands.DeleteConversation;
 using Application_Layer.Features.Messages.Commands.SendMessage;
 using Application_Layer.Features.Messages.DTOs;
 using Application_Layer.Features.Messages.Queries.GetConversation;
@@ -75,6 +77,32 @@ namespace FootballCards.Controllers
                 return Unauthorized(OperationResult<int>.Fail("User not authenticated"));
 
             var result = await _mediator.Send(new MarkReadCommand(userId, friendId), cancellationToken);
+            return result.Success ? Ok(result.Data) : BadRequest(result.Error);
+        }
+
+        [HttpDelete("with/{friendId:int}")]
+        public async Task<IActionResult> DeleteConversation(
+            [FromRoute] int friendId,
+            CancellationToken cancellationToken)
+        {
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<int>.Fail("User not authenticated"));
+
+            var result = await _mediator.Send(new DeleteConversationCommand(userId, friendId), cancellationToken);
+            return result.Success ? Ok(result.Data) : BadRequest(result.Error);
+        }
+
+        [HttpDelete("{messageId:int}")]
+        public async Task<IActionResult> DeleteMessage(
+            [FromRoute] int messageId,
+            CancellationToken cancellationToken)
+        {
+            var userId = _currentUser.UserId;
+            if (userId == 0)
+                return Unauthorized(OperationResult<int>.Fail("User not authenticated"));
+
+            var result = await _mediator.Send(new DeleteMessageCommand(userId, messageId), cancellationToken);
             return result.Success ? Ok(result.Data) : BadRequest(result.Error);
         }
     }

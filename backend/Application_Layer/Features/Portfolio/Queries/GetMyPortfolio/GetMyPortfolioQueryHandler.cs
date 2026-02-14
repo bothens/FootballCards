@@ -34,6 +34,7 @@ namespace Application_Layer.Features.Portfolio.Queries.GetMyPortfolio
                     CardId = c.CardId,
                     PlayerId = c.PlayerId,
                     PlayerName = c.Player?.Name ?? string.Empty,
+                    PlayerTeam = c.Player?.Team ?? string.Empty,
                     PlayerPosition = c.Player?.Position ?? string.Empty,
                     PlayerImageUrl = c.Player?.ImageUrl ?? string.Empty,
                     CardImageUrl = c.ImageUrl ?? c.Player?.ImageUrl ?? string.Empty,

@@ -57,5 +57,43 @@ namespace Infrastructure_Layer.Repositories.Implementations
             await _db.SaveChangesAsync(ct);
             return messages.Count;
         }
+
+        public async Task<int> DeleteConversationAsync(int userId, int otherUserId, CancellationToken ct = default)
+        {
+            var messages = await _db.Messages
+                .Where(m =>
+                    (m.SenderId == userId && m.ReceiverId == otherUserId) ||
+                    (m.SenderId == otherUserId && m.ReceiverId == userId))
+                .ToListAsync(ct);
+
+            if (messages.Count == 0)
+            {
+                return 0;
+            }
+
+            _db.Messages.RemoveRange(messages);
+            await _db.SaveChangesAsync(ct);
+            return messages.Count;
+        }
+
+        public async Task<int> DeleteMessageAsync(int messageId, int userId, CancellationToken ct = default)
+        {
+            var message = await _db.Messages
+                .FirstOrDefaultAsync(m => m.MessageId == messageId, ct);
+
+            if (message == null)
+            {
+                return 0;
+            }
+
+            if (message.SenderId != userId && message.ReceiverId != userId)
+            {
+                return 0;
+            }
+
+            _db.Messages.Remove(message);
+            await _db.SaveChangesAsync(ct);
+            return 1;
+        }
     }
 }

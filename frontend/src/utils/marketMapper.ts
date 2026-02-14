@@ -9,7 +9,7 @@ export const mapMarketCardDtoToUIMarketItem = (cards: MarketCardDto[]): UICardIt
       id: String(c.playerId),
       identityId: '',
       name: c.playerName,
-      team: 'Unknown Team',
+      team: c.playerTeam || 'Unknown Team',
       position: mapPosition(c.playerPosition),
       price: c.sellingPrice,
       image: c.cardImageUrl || c.playerImageUrl,
