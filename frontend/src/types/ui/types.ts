@@ -15,6 +15,8 @@ export interface Player {
   price: number;
   image: string;
   rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary' | 'Skiller' | 'Historical Moment';
+  facts?: string;
+  factsEn?: string;
 }
 
 export interface User {

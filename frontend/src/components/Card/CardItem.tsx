@@ -26,7 +26,7 @@ export const CardItem: React.FC<CardItemProps> = ({
   isListed = false,
   currentBid = null
 }) => {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
   const [showFacts, setShowFacts] = useState(false);
@@ -340,8 +340,8 @@ export const CardItem: React.FC<CardItemProps> = ({
             {(player.rarity === 'Skiller' || player.rarity === 'Historical Moment') && (
               <div className="rounded-xl border border-emerald-400/40 bg-black/40 px-3 py-2 text-[10px] font-black tracking-widest text-emerald-200">
                 {t('factsTab')}
-                <div className="mt-1 text-[9px] font-medium tracking-normal text-emerald-200/80 normal-case">
-                  {t('factsPlaceholder')}
+                <div className="mt-1 whitespace-pre-line text-[9px] font-medium tracking-normal text-emerald-200/80 normal-case">
+                  {(language === 'en' ? player.factsEn : player.facts) || t('factsPlaceholder')}
                 </div>
               </div>
             )}

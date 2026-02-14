@@ -25,6 +25,12 @@ namespace Infrastructure_Layer.Data.Configurations
             builder.Property(x => x.ImageUrl)
                 .HasMaxLength(500);
 
+            builder.Property(x => x.Facts)
+                .HasMaxLength(1000);
+
+            builder.Property(x => x.FactsEn)
+                .HasMaxLength(1000);
+
             builder.Property(x => x.HighestBid)
                 .HasColumnType("decimal(18,2)");
 

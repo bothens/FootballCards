@@ -14,6 +14,8 @@ export const mapMarketCardDtoToUIMarketItem = (cards: MarketCardDto[]): UICardIt
       price: c.sellingPrice,
       image: c.cardImageUrl || c.playerImageUrl,
       rarity: mapRarity(c.cardType),
+      facts: c.facts || undefined,
+      factsEn: c.factsEn || undefined,
     },
     status: c.status,
     highestBid: c.highestBid ?? null,

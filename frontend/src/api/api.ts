@@ -186,23 +186,29 @@ export const createPlayerIdentity = async (
 export const issueCard = async (
   identityId: string,
   price: number,
-  rarity: Player["rarity"]
+  rarity: Player["rarity"],
+  facts?: string,
+  factsEn?: string
 ): Promise<Player> => {
   const created = await CardService.issueCard({
     playerId: Number(identityId),
     price,
     cardType: rarity,
+    facts,
+    factsEn,
   });
 
   return {
     id: String(created.cardId),
     identityId: String(created.playerId),
     name: created.playerName,
-    team: "Unknown Team",
+    team: created.playerTeam || "Unknown Team",
     position: mapPosition(created.playerPosition),
     price: created.price,
     image: created.cardImageUrl || created.playerImageUrl || "",
     rarity: mapRarity(created.cardType),
+    facts: created.facts || undefined,
+    factsEn: created.factsEn || undefined,
   };
 };
 
@@ -217,6 +223,8 @@ export const getPlayers = async (): Promise<Player[]> => {
     price: c.sellingPrice,
     image: c.cardImageUrl || c.playerImageUrl || "",
     rarity: mapRarity(c.cardType),
+    facts: c.facts || undefined,
+    factsEn: c.factsEn || undefined,
   }));
 };
 
@@ -234,6 +242,8 @@ export const getPortfolio = async (): Promise<PortfolioItem[]> => {
       price: c.price,
       image: c.cardImageUrl || c.playerImageUrl || "",
       rarity: mapRarity(c.cardType),
+      facts: c.facts || undefined,
+      factsEn: c.factsEn || undefined,
     },
     purchasePrice: c.price,
     acquiredAt: new Date().toISOString(),
@@ -261,6 +271,8 @@ export const buyCard = async (
       price: purchased.price,
       image: purchased.cardImageUrl || purchased.playerImageUrl || "",
       rarity: mapRarity(purchased.cardType),
+      facts: purchased.facts || undefined,
+      factsEn: purchased.factsEn || undefined,
     },
     purchasePrice: purchased.price,
     acquiredAt: new Date().toISOString(),

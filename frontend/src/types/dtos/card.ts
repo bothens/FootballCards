@@ -6,6 +6,8 @@ export interface CardDto {
     playerPosition: string;
     playerImageUrl: string;
     cardImageUrl?: string | null;
+    facts?: string | null;
+    factsEn?: string | null;
     price: number;
     sellingPrice?: number;
     ownerId?: number;
@@ -18,4 +20,6 @@ export interface CreateCardDto {
     price: number;
     cardType: string;
     imageUrl?: string;
+    facts?: string;
+    factsEn?: string;
 }

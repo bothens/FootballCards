@@ -58,6 +58,8 @@ namespace Application_Layer.Features.Market.Commands.Sell
                     PlayerPosition = updatedCard.Player?.Position ?? string.Empty,
                     PlayerImageUrl = updatedCard.Player?.ImageUrl ?? string.Empty,
                     CardImageUrl = updatedCard.ImageUrl ?? updatedCard.Player?.ImageUrl ?? string.Empty,
+                    Facts = updatedCard.Facts,
+                    FactsEn = updatedCard.FactsEn,
                     Price = updatedCard.Price,
                     OwnerId = updatedCard.OwnerId,
                     Status = updatedCard.Status,

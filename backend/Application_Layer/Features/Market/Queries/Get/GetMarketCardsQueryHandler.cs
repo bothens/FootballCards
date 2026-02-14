@@ -39,6 +39,8 @@ namespace Application_Layer.Features.Market.Queries
                     PlayerPosition = c.Player.Position,
                     PlayerImageUrl = c.Player.ImageUrl,
                     CardImageUrl = c.ImageUrl ?? c.Player.ImageUrl,
+                    Facts = c.Facts,
+                    FactsEn = c.FactsEn,
                     SellingPrice = c.SellingPrice ?? c.Price,
                     HighestBid = c.HighestBid,
                     Status = c.Status,

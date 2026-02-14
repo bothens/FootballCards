@@ -6,5 +6,7 @@
         public string? CardType { get; set; }
         public decimal Price { get; set; } // används både för Price och SellingPrice
         public string? ImageUrl { get; set; }
+        public string? Facts { get; set; }
+        public string? FactsEn { get; set; }
     }
 }

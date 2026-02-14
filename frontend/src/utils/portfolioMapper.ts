@@ -14,6 +14,8 @@ export const mapCardDtoToUIPortfolioItem = (cards: CardDto[]): UICardItem[] => {
       price: c.price,
       image: c.cardImageUrl || c.playerImageUrl,
       rarity: mapRarity(c.cardType),
+      facts: c.facts || undefined,
+      factsEn: c.factsEn || undefined,
     },
     status: c.status,
   }));

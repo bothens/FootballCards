@@ -14,6 +14,8 @@ namespace Domain_Layer.Entities
         public decimal? HighestBid { get; set; }
         public int? HighestBidderId { get; set; }
         public string? ImageUrl { get; set; }
+        public string? Facts { get; set; }
+        public string? FactsEn { get; set; }
 
         [NotMapped]
         public DateTime IssuedAt { get; set; } = DateTime.UtcNow;

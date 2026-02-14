@@ -38,6 +38,8 @@ namespace Application_Layer.Features.Portfolio.Queries.GetMyPortfolio
                     PlayerPosition = c.Player?.Position ?? string.Empty,
                     PlayerImageUrl = c.Player?.ImageUrl ?? string.Empty,
                     CardImageUrl = c.ImageUrl ?? c.Player?.ImageUrl ?? string.Empty,
+                    Facts = c.Facts,
+                    FactsEn = c.FactsEn,
                     Price = c.Price,
                     SellingPrice = c.SellingPrice,
                     OwnerId = c.OwnerId,

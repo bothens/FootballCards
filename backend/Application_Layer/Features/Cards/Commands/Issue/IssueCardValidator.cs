@@ -15,6 +15,22 @@ namespace Application_Layer.Features.Cards.Commands.Issue
 
             RuleFor(x => x.Card.CardType)
                 .MaximumLength(20).WithMessage("CardType cannot exceed 20 characters");
+
+            RuleFor(x => x.Card.Facts)
+                .NotEmpty()
+                .When(x =>
+                    x.Card.CardType != null &&
+                    (x.Card.CardType.Equals("Skiller", StringComparison.OrdinalIgnoreCase) ||
+                     x.Card.CardType.Equals("Historical Moment", StringComparison.OrdinalIgnoreCase)))
+                .WithMessage("Facts is required for Skiller and Historical Moment cards");
+
+            RuleFor(x => x.Card.FactsEn)
+                .NotEmpty()
+                .When(x =>
+                    x.Card.CardType != null &&
+                    (x.Card.CardType.Equals("Skiller", StringComparison.OrdinalIgnoreCase) ||
+                     x.Card.CardType.Equals("Historical Moment", StringComparison.OrdinalIgnoreCase)))
+                .WithMessage("FactsEn is required for Skiller and Historical Moment cards");
         }
     }
 }

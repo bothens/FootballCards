@@ -6,6 +6,8 @@ export interface MarketCardDto {
     playerPosition: string;
     playerImageUrl: string;
     cardImageUrl?: string | null;
+    facts?: string | null;
+    factsEn?: string | null;
     sellingPrice: number;
     highestBid?: number | null;
     status: string;

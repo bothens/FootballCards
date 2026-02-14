@@ -21,6 +21,8 @@ export const AdminDashboard: React.FC = () => {
   const [issuingId, setIssuingId] = useState<string | null>(null);
   const [cardPrice, setCardPrice] = useState(1000000);
   const [cardRarity, setCardRarity] = useState<Player['rarity']>('Common');
+  const [cardFacts, setCardFacts] = useState('');
+  const [cardFactsEn, setCardFactsEn] = useState('');
 
   const positions = ['GK', 'DEF', 'MID', 'FWD'] as const;
   type Position = (typeof positions)[number];
@@ -64,10 +66,18 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleIssueCard = async (id: string) => {
+    const needsFacts =
+      cardRarity === 'Skiller' || cardRarity === 'Historical Moment';
+    if (needsFacts && (!cardFacts.trim() || !cardFactsEn.trim())) {
+      alert(t('factsRequired'));
+      return;
+    }
     try {
-      await api.issueCard(id, cardPrice, cardRarity);
+      await api.issueCard(id, cardPrice, cardRarity, cardFacts.trim() || undefined, cardFactsEn.trim() || undefined);
       alert(t('cardAdded'));
       setIssuingId(null);
+      setCardFacts('');
+      setCardFactsEn('');
       loadData(); // Refresh supply counts
     } catch (err) {
       alert(err);
@@ -210,8 +220,36 @@ export const AdminDashboard: React.FC = () => {
                   ))}
                 </div>
               </div>
+              {(cardRarity === 'Skiller' || cardRarity === 'Historical Moment') && (
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-zinc-500 mb-2 tracking-widest">
+                    {t('factsLabel')}
+                  </label>
+                  <textarea
+                    value={cardFacts}
+                    onChange={(e) => setCardFacts(e.target.value)}
+                    rows={3}
+                    className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500"
+                    placeholder={t('factsPlaceholder')}
+                  />
+                </div>
+              )}
+              {(cardRarity === 'Skiller' || cardRarity === 'Historical Moment') && (
+                <div>
+                  <label className="block text-[10px] font-black uppercase text-zinc-500 mb-2 tracking-widest">
+                    {t('factsLabelEn')}
+                  </label>
+                  <textarea
+                    value={cardFactsEn}
+                    onChange={(e) => setCardFactsEn(e.target.value)}
+                    rows={3}
+                    className="w-full bg-black border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-emerald-500"
+                    placeholder={t('factsPlaceholderEn')}
+                  />
+                </div>
+              )}
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setIssuingId(null)} className="flex-1 py-4 text-zinc-500 text-[10px] font-black uppercase hover:text-white transition-colors">{t('cancel')}</button>
+                <button onClick={() => { setIssuingId(null); setCardFacts(''); setCardFactsEn(''); }} className="flex-1 py-4 text-zinc-500 text-[10px] font-black uppercase hover:text-white transition-colors">{t('cancel')}</button>
                 <button onClick={() => handleIssueCard(issuingId)} className="flex-1 py-4 bg-emerald-500 text-black rounded-xl text-[10px] font-black uppercase shadow-lg hover:bg-emerald-400 transition-all">{t('createAndList')}</button>
               </div>
             </div>
