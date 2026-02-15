@@ -70,6 +70,10 @@ export const ChatBubble: React.FC = () => {
     return () => clearInterval(id);
   }, [isAuthenticated]);
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div
       style={{
@@ -100,7 +104,7 @@ export const ChatBubble: React.FC = () => {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #27272a", padding: "10px 12px" }}>
             <strong style={{ fontSize: 12 }}>{selectedThread ? selectedThread.friendName : t("chatTitle")}</strong>
             <button type="button" onClick={() => { if (selectedThread) { setSelectedThread(null); setMessages([]); } else { setOpen(false); } }} style={{ background: "transparent", color: "#a1a1aa", border: 0, cursor: "pointer" }}>
-              {selectedThread ? "?" : "?"}
+              {selectedThread ? "<" : "X"}
             </button>
           </div>
 
