@@ -3,6 +3,8 @@ import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from "./hooks/useAuth";
 import { Navbar } from "./components/Layout/Navbar";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import { Notification } from "./components/Common/Notification";
 
 import { Home } from "./pages/Home";
 import { Market } from "./pages/Market";
@@ -41,10 +43,11 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const AppContent: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
-      <main className="pb-20">
+    <div className="min-h-screen bg-surface-100 dark:bg-black text-text dark:text-text-light">
+      {isAuthenticated && <Navbar />}
+      <main className={isAuthenticated ? "pb-20" : ""}>
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -124,18 +127,21 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-      <ChatBubble />
+      {isAuthenticated && <ChatBubble />}
+      <Notification />
     </div>
   );
 };
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
+    </NotificationProvider>
   );
 };
 

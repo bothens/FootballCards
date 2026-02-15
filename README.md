@@ -1,8 +1,8 @@
 🎯 Projektöversikt
-En fullstack trading-plattform där användare kan köpa och sälj fotbollsspelare som aktier baserat på deras matchprestationer. Priserna fluktuerar baserat på köp/sälj och simulerade matchresultat.
+**FootyTrade Elite** – Den ultimata plattformen för handel med fotbollstalanger. En fullstack trading-plattform där användare kan köpa och sälja fotbollsspelare som aktier baserat på deras matchprestationer. Priserna fluktuerar baserat på köp/sälj och simulerade matchresultat.
 
 ✅ MVP (minsta funktionella version)
-- Auth: register, login, profil
+- Auth: register, login, profil (1000 EUR välkomstbonus)
 - Player/Card: lista spelare, card details, ett kort per spelare
 - Marketplace: köpa och sälja kort, säljaren sätter pris
 - Portfolio: se sina ägda kort
@@ -81,4 +81,3 @@ yaml
 - npm install
 - npm run build
 - deploy to Azure Static Web Apps
-

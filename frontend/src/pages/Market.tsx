@@ -267,4 +267,3 @@ export const Market: React.FC = () => {
   );
 };
 
-

@@ -2186,3 +2186,4 @@ video {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+@keyframes historical-particles { 0% { transform: translate(0, 0); } 100% { transform: translate(-50px, -50px); } } @keyframes historical-flicker { 0%, 100% { opacity: 0.5; } 20% { opacity: 0.2; } 40% { opacity: 0.6; } 60% { opacity: 0.3; } 80% { opacity: 0.7; } } .animation-delay-400 { animation-delay: 400ms; }

@@ -23,8 +23,22 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("theme-light", theme === "light");
-    root.classList.toggle("theme-dark", theme === "dark");
+    const body = document.body;
+
+    // Reset both theme flags to avoid mixed light/dark UI.
+    root.classList.remove("dark", "theme-light");
+
+    if (theme === "dark") {
+      root.classList.add("dark");
+      root.style.colorScheme = "dark";
+      body.style.backgroundColor = "#000000";
+      body.style.color = "#ffffff";
+    } else {
+      root.classList.add("theme-light");
+      root.style.colorScheme = "light";
+      body.style.backgroundColor = "#f7f7f8";
+      body.style.color = "#0a0a0a";
+    }
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
