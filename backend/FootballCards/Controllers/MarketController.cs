@@ -3,6 +3,7 @@ using Application_Layer.Common.Models;
 using Application_Layer.Features.Market.Commands.Purchase;
 using Application_Layer.Features.Market.Commands.Sell;
 using Application_Layer.Features.Market.Commands.Bid;
+using Application_Layer.Features.Market.Commands.OpenPack;
 using Application_Layer.Features.Market.DTOs;
 using Application_Layer.Features.Market.Queries;
 using Application_Layer.Features.Users.DTOs;
@@ -95,6 +96,24 @@ public sealed class MarketController : ControllerBase
 
         var result = await _mediator.Send(
             new BidCardCommand(bidderId, request.CardId, request.BidAmount),
+            cancellationToken);
+
+        return result.Success
+            ? Ok(result.Data)
+            : BadRequest(result.Error);
+    }
+
+    [HttpPost("packs/open")]
+    public async Task<IActionResult> OpenPack(
+            [FromBody] OpenPackRequestDto request,
+            CancellationToken cancellationToken)
+    {
+        var userId = _currentUser.UserId;
+        if (userId == 0)
+            return Unauthorized(OperationResult<UserDto>.Fail("User not authenticated"));
+
+        var result = await _mediator.Send(
+            new OpenPackCommand(userId, request.PackType),
             cancellationToken);
 
         return result.Success

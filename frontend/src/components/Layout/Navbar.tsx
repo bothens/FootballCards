@@ -12,6 +12,7 @@ export const Navbar: React.FC = () => {
 
   const navItems = [
     { label: t('marketTitle'), path: '/market' },
+    { label: t('packsTitle'), path: '/packs' },
     { label: t('portfolioTitle'), path: '/portfolio' },
     { label: t('transactionsTitle'), path: '/transactions' },
     { label: t('profileTitle'), path: '/profile' },

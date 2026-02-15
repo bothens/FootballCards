@@ -28,7 +28,7 @@ export async function apiFetch<T = unknown>(url: string, options: RequestInit = 
   const res = await fetch(url, { ...options, headers });
   const contentType = res.headers.get('content-type') || '';
 
-  // If status is not OK, throw with backend message when possible
+  
   if (!res.ok) {
     let errorMessage = `HTTP ${res.status}`;
     try {

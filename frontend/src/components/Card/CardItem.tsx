@@ -346,10 +346,6 @@ export const CardItem: React.FC<CardItemProps> = ({
               </div>
             )}
             <div className="flex items-center justify-between">
-              <span className="text-emerald-300">FACT</span>
-              <span className="text-emerald-100 font-black">ON</span>
-            </div>
-            <div className="flex items-center justify-between">
               <span className="text-emerald-300">{t('position')}</span>
               <span className="text-emerald-100 font-black">{player.position}</span>
             </div>

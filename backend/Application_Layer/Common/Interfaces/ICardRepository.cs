@@ -22,6 +22,10 @@ namespace Application_Layer.Common.Interfaces
                string? sort = null,
                CancellationToken ct = default);
 
+        Task<List<Card>> GetAvailableCardsByTypesAsync(
+            IEnumerable<string> cardTypes,
+            CancellationToken ct = default);
+
         Task<List<Card>> GetCardsAsync(
             int? userId = null,
             bool onlyAvailable = false,

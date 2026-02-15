@@ -9,10 +9,12 @@ import { Market } from "./pages/Market";
 import { Portfolio } from "./pages/Portfolio";
 import { Transactions } from "./pages/Transactions";
 import { Profile } from "./pages/Profile";
+import { Packs } from "./pages/Packs";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { Settings } from "./pages/Settings";
 import { Friends } from "./pages/Friends";
 import { FriendsChat } from "./pages/FriendsChat";
+import { ChatBubble } from "./components/Chat/ChatBubble";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -59,6 +61,14 @@ const AppContent: React.FC = () => {
             element={
               <ProtectedRoute>
                 <Portfolio />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/packs"
+            element={
+              <ProtectedRoute>
+                <Packs />
               </ProtectedRoute>
             }
           />
@@ -114,6 +124,7 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <ChatBubble />
     </div>
   );
 };

@@ -113,6 +113,27 @@ namespace Infrastructure_Layer.Repositories.Implementations
             return await GetCardsAsync(userId: userId, search: search, filter: filter, sort: sort, ct: ct);
         }
 
+        public async Task<List<Card>> GetAvailableCardsByTypesAsync(
+            IEnumerable<string> cardTypes,
+            CancellationToken ct = default)
+        {
+            var types = cardTypes
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => x.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (types.Count == 0)
+            {
+                return new List<Card>();
+            }
+
+            return await _db.Cards
+                .Include(c => c.Player)
+                .Where(c => c.Status == "Available" && types.Contains(c.CardType))
+                .ToListAsync(ct);
+        }
+
         public async Task DeleteAsync(Card card, CancellationToken ct = default)
         {
             _db.Cards.Remove(card);

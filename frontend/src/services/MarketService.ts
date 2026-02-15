@@ -1,5 +1,13 @@
 import { API_BASE, apiFetch,  } from '../api/apiClient';
-import type { SellCardRequestDto, PurchaseCardRequestDto, BidCardRequestDto, BidResultDto, MarketCardDto } from '../types/dtos/market';
+import type {
+    SellCardRequestDto,
+    PurchaseCardRequestDto,
+    BidCardRequestDto,
+    BidResultDto,
+    MarketCardDto,
+    OpenPackRequestDto,
+    OpenPackResultDto,
+} from '../types/dtos/market';
 import type { CardDto } from '../types/dtos/card';
 import type { QueryParams } from '../types/ui/types';
 
@@ -37,6 +45,13 @@ class MarketService {
     // LÃ¤gg bud
     async bidCard(request: BidCardRequestDto): Promise<BidResultDto> {
         return apiFetch(`${this.baseUrl}/bid`, {
+            method: 'POST',
+            body: JSON.stringify(request),
+        });
+    }
+
+    async openPack(request: OpenPackRequestDto): Promise<OpenPackResultDto> {
+        return apiFetch(`${this.baseUrl}/packs/open`, {
             method: 'POST',
             body: JSON.stringify(request),
         });
