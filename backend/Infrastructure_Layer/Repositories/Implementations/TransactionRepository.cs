@@ -19,7 +19,7 @@ namespace Infrastructure_Layer.Repositories.Implementations
         {
             IQueryable<Transaction> query = _db.Transactions
                 .Include(t => t.Card)
-                .ThenInclude(c => c.Player);
+                .ThenInclude(c => c!.Player);
 
             filter = filter?.ToLower();
 
