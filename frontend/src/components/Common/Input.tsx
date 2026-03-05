@@ -13,7 +13,7 @@ export const Label: React.FC<{ children: React.ReactNode; htmlFor: string; }> = 
 
 export const Input: React.FC<InputProps> = ({ className = '', wrapperClassName = '', endIcon, ...props }) => {
   const baseStyle =
-    'w-full bg-white dark:bg-zinc-800 border border-border dark:border-zinc-700 rounded-ui-md px-4 py-3 text-text dark:text-white placeholder:text-text-muted dark:placeholder:text-zinc-400 focus:outline-none focus:border-border-focus transition-colors text-sm';
+    'w-full bg-zinc-900 border border-zinc-700 rounded-ui-md px-4 py-3 text-white placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500 transition-colors text-sm';
   
   if (endIcon) {
     return (
